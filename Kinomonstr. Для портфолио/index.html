@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1/0"> <!-- для адаптивной верстки -->
+    <title>Главная страница</title>
+    <meta name="description" content="Киномонстр - это портал о кино" />
+    <meta name="keywords" content="фильмы, фильмы онлайн, hd" />
+    <link rel="stylesheet" href="assets/css/outlines.css">
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <div class="logo">
+            <div class="logo_text">
+                <h1><a href="index.html">КиноМонстр</a></h1>
+                <h2>Кино - наша страсть!</h2>
+            </div>
+        </div>
+        <div class="menubar">
+            <ul class="menu">
+                <li class="selected"><a href="index.html">Главная</a></li>
+                <li><a href="films.html">Фильмы</a></li>
+                <li><a href="rating.html">Рейтинг фильмов</a></li>
+                <li><a href="contacts.html">Контакты</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="site_content">
+        <div class="sidebar_container">
+            <div class="sidebar">
+                <h2>Поиск</h2>
+                <form method="post" action="#" id="search_form">
+                    <input type="search" name="search_field" placeholder="ваш запрос" />
+                    <input type="submit" class="btn" value="Найти" />
+                </form>
+            </div>
+            <div class="sidebar">
+                <h2>Вход</h2>
+                <form method="post" action="#" id="login">
+                    <input type="text" name="login_field" placeholder="логин" />
+                    <input type="password" name="password_field" placeholder="пароль" />
+                    <input type="submit" class="btn" value="Войти" />
+                    <div class="lables_passreg_text">
+                        <span>
+                            <a href="#">забыли пароль?</a>
+                        </span> |
+                        <span>
+                            <a href="#">регистрация?</a>
+                        </span>
+                    </div>
+                </form>
+            </div>
+            <div class="sidebar">
+                <h2>Новости</h2>
+                <span>15.09.2023</span>
+                <p>Мы запустили расширенный поиск</p>
+                <a href="#">читать</a>
+            </div>
+            <div class="sidebar">
+                <h2>Рейтинг фильмов</h2>
+                <ul>
+                    <li>
+                        <a href="show.html">Интерстеллар</a>
+                        <span class="rating_sidebar">8.1</span>
+                    </li>
+                    <li>
+                        <a href="#">Матрица</a>
+                        <span class="rating_sidebar">8.0</span>
+                    </li>
+                    <li>
+                        <a href="#">Безумный Макс</a>
+                        <span class="rating_sidebar">7.5</span>
+                    </li>
+                    <li>
+                        <a href="#">Облачный атлас</a>
+                        <span class="rating_sidebar">7.4</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="content">
+                <h1>Новые фильмы</h1>
+                <div class="films_block">
+                    <a href="show.html"> <img src="assets/img/inter.png"> </a>
+                    <a href="#"> <img src="assets/img/matrix.png"> </a>
+                    <a href="#"> <img src="assets/img/max.png"> </a>
+                    <a href="#"> <img src="assets/img/cloud.png"> </a>
+                </div>
+            <h1>Новые сериалы</h1>
+            <div class="films_block">
+                <a href="#"> <img src="assets/img/dead.png"> </a>
+                <a href="#"> <img src="assets/img/silicon.png"> </a>
+                <a href="#"> <img src="assets/img/breakingbad.png"> </a>
+                <a href="#"> <img src="assets/img/xfiles.png"> </a>
+            </div>
+            <div class="posts">
+                <hr>
+                <h2><a href="show.html">Как снимали Интерстеллар</a></h2>
+                <div class="posts_content">
+                    <p>
+                        Стивен Спилберг был прикреплен к проекту с 2006 года и нанял Джонатана Нолана писать сценарий, но отложил работу и занялся другими фильмами. В 2012, после окончательного ухода Спилберга, Джонатан Нолан предложил нанять своего брата Кристофера Нолана в качестве режиссера.
+                    </p>
+                </div>
+                <p><a href="show.html">читать далее</a></p>
+            </div>
+            <div class="posts">
+                <hr>
+                <h2><a href="#">Безумный Макс: Дорога ярости. Знаете ли вы</a></h2>
+                <div class="posts_content">
+                    <p>
+                        Съёмки фильма начались в июле 2012 года в Намибии, спустя почти 18 месяцев после запланированного срока.
+                    </p>
+                </div>
+                <p><a href="#">читать далее</a></p>
+            </div>
+        </div>
+    </div>
+        <div class="footer">
+            <p>
+                <a href="index.html">Главная</a> |
+                <a href="films.html">Фильмы</a> |
+                <a href="rating.html">Рейтинг фильмов</a> |
+                <a href="contacts.html">Контакты</a>
+            </p>
+            <p>
+                2023
+            </p>
+        </div>
+</div>
+</body>
+</html>

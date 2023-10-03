@@ -1,0 +1,155 @@
+body {
+    font-family: "Playfair Display", serif;
+    font-size: 20px;
+    line-height: 27px;
+    color: #2d2829;
+    background-color: #fbebea;
+}
+
+.site-navigation-item a {
+    color: #2D2829;
+    font-size: 13px;
+    line-height: 16px;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.site-navigation-item a.active {
+    color: #f50049;
+}
+
+a.phone {
+    color: #2D2829;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 16px;
+    text-decoration: none;
+}
+
+.promo h1 {
+    font-size: 78px;
+    font-weight: 700;
+    line-height: 70px;
+    /*width: 314px;*/
+    /*height: 140px;*/
+}
+
+.promo p {
+    font-size: 40px;
+    font-style: italic;
+    line-height: 53px;
+}
+
+.button {
+    color: #FFF;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 27px;
+    text-transform: uppercase;
+    text-decoration: none;
+    background-color: #F50049;
+}
+
+.features {
+    color: #2E2829;
+    font-size: 14px;
+    line-height: 18px;
+}
+
+.catalog h2 {
+    font-size: 40px;
+    line-height: 66px;
+}
+
+.cards h3 {
+    font-size: 24px;
+    line-height: 32px;
+}
+
+.cards a {
+    color: #2D2829;
+    font-size: 18px;
+    line-height: 24px;
+    text-decoration: none;
+}
+
+.reviews h2 {
+    font-size: 40px;
+    line-height: 66px;
+    text-align: center;
+}
+
+.review h3 {
+    font-size: 27px;
+    line-height: 36px;
+}
+
+.review .review-info {
+    font-size: 25px;
+    line-height: 33px;
+}
+
+.advantages h2 {
+    font-size: 40px;
+    line-height: 66px;
+    text-align: center;
+}
+
+.advantages {
+    /*background-image: url("../img/berries.png");*/
+    background-position: left center;
+    background-repeat: no-repeat;
+}
+
+.advantages-text {
+    font-size: 30px;
+    font-style: italic;
+    line-height: 40px;
+    text-align: center;
+}
+
+.advantages-list h3 {
+    font-size: 20px;
+    line-height: 27px;
+}
+
+.contacts h2 {
+    font-size: 40px;
+    line-height: 66px;
+}
+
+.contact-item h3 {
+    font-size: 20px;
+    line-height: 27px;
+}
+
+.contact-item address {
+    font-style: normal;
+}
+
+.contact-item a {
+    color: #2d2829;
+    text-decoration: none;
+}
+
+.social-item a {
+    background-color: #FFF;
+}
+
+.main-footer {
+    background-color: #e8e8e8;
+    color: #888888;
+}
+
+.footer-navigation-item a {
+    font-size: 13px;
+    line-height: 16px;
+    text-decoration: none;
+    color: #2D2829;
+}
+
+.copyright {
+    font-size: 13px;
+    line-height: 16px;
+    text-transform: uppercase;
+}
