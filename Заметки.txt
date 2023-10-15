@@ -1,0 +1,16 @@
+sogdian4815@mail.ru
+sogdian
+
+
+
+
+
+
+
+-<div className={styles.declarations}>
+-div className={styles.declarationTitle}>{props.title}</div>
++<div className={styles.declarations} data-tid={props.dataTid}>
++<div className={styles.declarationTitle} data-tid={"Svk.SubTitle." + props.title}>{props.title}</div>
+
+
+ваш проект «весит» не больше 5 мб
