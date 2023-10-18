@@ -38,17 +38,17 @@ h1, h2, h3, h4, h5, h6, p, ul, ol, blockquote {
 .header__logo-image {
     width: 100%;
 }
-.header__menu-list {
+.header__links-list {
     list-style: none;
     display: flex;
     flex-direction: column;
     row-gap: 12px;
 }
-.header__menu-link {
+.header__link {
     color: #F5F5F5;
     line-height: 1.2;
 }
-.header__menu-item_active .header__menu-link{
+.header__links-list-item_no-bullit .header__link{
     text-decoration: none;
 }
 

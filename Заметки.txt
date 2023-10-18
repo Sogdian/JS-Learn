@@ -14,3 +14,7 @@ sogdian
 
 
 ваш проект «весит» не больше 5 мб
+Чек лист https://practicum.yandex.ru/trainer/frontend-developer/lesson/717bb6a1-68b5-4f49-9043-dac6c50adbd5/
+
+
+При сдаче некоторых проектных работ по JS также есть ограничение на 5 мб и частая ошибка — это папка node_modules, которую не добавили в .gitignore
