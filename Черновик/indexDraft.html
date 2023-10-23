@@ -1,19 +1,79 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Поисковик</title>
-  <link
-          rel="stylesheet"
-          href="https://code.s3.yandex.net/web-code/fonts/fonts.css"
-  />
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+    <title>Card «Overalls» | «Nîmes»</title>
 </head>
 <body>
-    <div>
+<header class="main-header">
+    <nav class="main-header-nav container">
+        <a class="main-header-logo" href="#">
+            <img src="img/denim-logo.svg" width="75" height="17" alt="Logo">
+        </a>
+        <ul class="site-navigation">
+            <li class="site-navigation-item">
+                <a class="link-item" href="#">Women</a>
+            </li>
+            <li class="site-navigation-item">
+                <a class="link-item" href="#">Man</a>
+            </li>
+            <li class="site-navigation-item">
+                <a class="link-item" href="#">New</a>
+            </li>
+        </ul>
+        <ul class="user-navigation">
+            <li class="user-navigation-item">
+                <a class="link-item" href="#">
+                    <img src="img/cart.svg" width="22" height="20" alt="cart">
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main>
+    <section class="card">
+        <div class="container card-wrapper">
+            <div class="card-photos-column">
 
-    </div>
+                <img class="main-image" src="img/1-full.jpg" width="400" height="520" alt="Фото">
+                <ul class="slider-preview">
+                    <li class="slider-preview-item">
+                        <a class="active" href="img/1-full.jpg"><img src="img/1-small.jpg" width="85" height="115" alt="Фото 1"></a>
+                    </li>
+                    <li class="slider-preview-item">
+                        <a href="img/2-full.jpg"><img src="img/2-small.jpg" width="85" height="115" alt="Фото 2"></a>
+                    </li>
+                    <li class="slider-preview-item">
+                        <a href="img/3-full.jpg"><img src="img/3-small.jpg" width="85" height="115" alt="Фото 3"></a>
+                    </li>
+                    <li class="slider-preview-item">
+                        <a href="img/4-full.jpg"><img src="img/4-small.jpg" width="85" height="115" alt="Фото 4"></a>
+                    </li>
+                </ul>
+
+            </div>
+            <div class="card-description-column">
+                <h2 class="card-description-header">Overalls</h2>
+                <p class="card-description-text">Overalls in washed organic cotton denim. Collar, button fly, and adjustable
+                    belt at waist. Chest pockets with flap. Long, gently flared sleeves and straight legs with front pockets and
+                    back pockets.</p>
+                <h3 class="card-description-category">Size</h3>
+                <ul class="card-description-sizes">
+                    <li>XS</li>
+                    <li>S</li>
+                    <li>M</li>
+                    <li class="unavailable">L</li>
+                    <li class="unavailable">XL</li>
+                </ul>
+                <p class="card-description-price">$160</p>
+                <button class="button" type="button">Add to cart</button>
+            </div>
+        </div>
+    </section>
+</main>
 </body>
 </html>
