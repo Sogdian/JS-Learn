@@ -1,5 +1,23 @@
 {
-  "devDependencies": {
-    "prettier": "3.0.3"
+  "name": "js",
+  "version": "1.0.0",
+  "main": "Общий js.js",
+  "scripts": {
+    "test": "echo 'Привет!'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SogAsh/JS-Learn.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SogAsh/JS-Learn/issues"
+  },
+  "homepage": "https://github.com/SogAsh/JS-Learn#readme",
+  "description": "",
+  "dependencies": {
+    "prettier": "^3.0.3",
+    "stylelint": "^15.11.0"
   }
 }
