@@ -1,10 +1,16 @@
 <!--
 Форматирование кода CTRL + ALT + L (Prettier)
     В терминале:
-        prettier --check './**/*.{html,css,js}'
+        prettier --check './**/*.{html,css,js}' — команда запустит проверку форматирования, после её выполнения в терминале будут сообщения о найденных ошибках форматирования
             npm run check
-        prettier --write './**/*.{html,css,js}'
+        prettier --write './**/*.{html,css,js}' — команда, которая сразу исправит все ошибки, которые сможет
             npm run format
+        stylelint '**/*.css' — выведет в терминал все ошибки в коде с указанием файлов и строк, где ошибки возникли
+            npm run lint
+        stylelint '**/*.css' --fix — попробует исправить те ошибки, которые сможет
+            npm run lintfix
+        npm run checkAll = npm run check + npm run lint
+        npm run fixAll = npm run format + npm run lintfix
 
 Фигма
     SHIFT + R - включить направляющие
