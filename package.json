@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "Общий js.js",
   "scripts": {
-    "test": "echo 'Привет!'"
+    "test": "echo 'Привет!'",
+    "check": "prettier --check './**/*.{html,css,js}'",
+    "format": "prettier --write './**/*.{html,css,js}'"
   },
   "repository": {
     "type": "git",
