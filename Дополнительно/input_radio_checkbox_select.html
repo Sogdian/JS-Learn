@@ -1,0 +1,204 @@
+<!-- создания и стилизация собственных маркеров для radio, checkbox и select -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Кастомные элементы формы</title>
+  <link
+          rel="stylesheet"
+          href="https://code.s3.yandex.net/web-code/fonts/fonts.css"
+  />
+  <link rel="stylesheet" href="./styles/style.css" />
+</head>
+<body>
+<form>
+  <fieldset>
+    <label>
+      <input type="radio" name="answer" class="visually-hidden" checked />
+      <span></span>
+      Да
+    </label>
+    <label>
+      <input type="radio" name="answer" class="visually-hidden" />
+      <span></span>
+      Нет
+    </label>
+    <label>
+      <input type="radio" name="answer" class="visually-hidden" />
+      <span></span>
+      Не знаю
+    </label>
+  </fieldset>
+  <fieldset>
+    <label>
+      <input
+              type="checkbox"
+              name="tv-show"
+              class="visually-hidden"
+              checked
+      />
+      <span></span>
+      Новости
+    </label>
+    <label>
+      <input type="checkbox" name="tv-show" class="visually-hidden" />
+      <span></span>
+      Фантастика
+    </label>
+    <label>
+      <input type="checkbox" name="tv-show" class="visually-hidden" />
+      <span></span>
+      Мультики
+    </label>
+  </fieldset>
+  <fieldset>
+    <select name="cartoon">
+      <option value="">История игрушек</option>
+      <option value="">Мулан</option>
+      <option value="">Король Лев</option>
+    </select>
+  </fieldset>
+  <label>
+    <span> Громкость крика </span>
+    <input type="range" min="0" max="100" step="20" value="40" />
+  </label>
+  <button>Ответить</button>
+</form>
+</body>
+</html>
+
+
+<!--
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 650px;
+  margin: 0;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 18px;
+  background-image: url(https://code.s3.yandex.net/web-code/images/dotted-l.svg);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 500px;
+  border: 1px solid #000;
+  padding: 45px;
+  background-color: #6dc1fd;
+}
+
+fieldset {
+  display: grid;
+  border: none;
+  padding: 0;
+}
+
+label {
+  display: block;
+  font-weight: 800;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+label:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+button {
+  border: 1px solid #000;
+  padding: 10px 65px;
+  color: #000;
+  font-family: inherit;
+  font-weight: 800;
+  font-size: inherit;
+  text-transform: uppercase;
+  background-color: #feafe8;
+}
+
+button:hover {
+  box-shadow: inset 0 0 0 100px rgb(0 0 0 / 0.15);
+  cursor: pointer;
+}
+
+button:focus {
+  outline: 2px solid #000;
+  outline-offset: 0;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+label span {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+  vertical-align: middle;
+  background-color: #feafe8;
+}
+
+input[type='radio'] + span {
+  border-radius: 50%;
+}
+
+input[type='radio']:checked + span {
+  border: 3px solid #fff;
+}
+
+input[type='checkbox']:checked + span {
+  background-image: url(./images/check.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+input[type='radio']:focus-visible + span,
+input[type='checkbox']:focus-visible + span {
+  box-shadow: 0 0 0 5px rgb(254 175 232 / 0.5);
+}
+
+select {
+  border: 1px solid #000;
+  border-radius: 0;
+  padding: 10px 15px;
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 15px;
+  text-transform: uppercase;
+  background-color: transparent;
+
+  /* Стили для стрелочки */
+  background-image: url(./images/up-down.svg);
+  background-repeat: no-repeat;
+  background-position: center right 15px;
+  background-size: 25px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+select:focus-visible {
+  box-shadow: 0 0 0 5px rgb(254 175 232 / 0.5);
+}
+
+
+-->

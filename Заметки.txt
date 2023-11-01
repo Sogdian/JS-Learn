@@ -1,20 +1,8 @@
 sogdian4815@mail.ru
 sogdian
 
-
-
-
-
-
-
--<div className={styles.declarations}>
--div className={styles.declarationTitle}>{props.title}</div>
-+<div className={styles.declarations} data-tid={props.dataTid}>
-+<div className={styles.declarationTitle} data-tid={"Svk.SubTitle." + props.title}>{props.title}</div>
-
-
-ваш проект «весит» не больше 5 мб
-Чек лист https://practicum.yandex.ru/trainer/frontend-developer/lesson/717bb6a1-68b5-4f49-9043-dac6c50adbd5/
-
-
 При сдаче некоторых проектных работ по JS также есть ограничение на 5 мб и частая ошибка — это папка node_modules, которую не добавили в .gitignore
+
+Настройка проекта https://practicum.yandex.ru/learn/frontend-developer/courses/738daf5a-b9fe-4bbe-800c-c43f30ebafd4/sprints/178889/topics/094f22ed-74be-4eb9-a626-5e37aa559901/lessons/31816616-1e88-4f0c-96ce-0424f6cb1463/
+Чтобы начать настраивать ваш проект для автоматизации, введите в терминале команду npm init, находясь в папке вашего проекта.
+Терминал задаст вам ряд вопросов. На все из них можно не отвечать, а просто нажимать клавишу enter. В конце процесса нужно напечатать yes в терминал, чтобы завершить процесс.
