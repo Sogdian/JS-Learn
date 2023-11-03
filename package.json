@@ -6,8 +6,8 @@
     "test": "echo 'Привет!'",
     "check": "prettier --check './**/*.{html,css,js}'",
     "format": "prettier --write './**/*.{html,css,js}'",
-    "lint": "stylelint '**/*.css'",
-    "lintfix": "stylelint '**/*.css' --fix",
+    "lint": "stylelint \"./**/*.css\" --formatter verbose",
+    "lintfix": "stylelint \"./**/*.css\" --fix",
     "checkAll": "npm run check && npm run lint",
     "fixAll": "npm run format && npm run lintfix"
   },
