@@ -1,0 +1,28 @@
+.social__item {
+  display: inline-block;
+  outline: 1px solid green;
+  /*width: 100px;*/
+  /*height: 100px;*/
+}
+
+.social__link {
+  display: block;
+  width: 30px;
+  height: 30px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  outline: 1px solid red;
+}
+
+.twitter {
+  background-image: url(photo.png);
+}
+
+.fb {
+  background-image: url(photo.png);
+}
+
+.youtube {
+  background-image: url(photo.png);
+}
