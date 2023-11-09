@@ -1,0 +1,88 @@
+@font-face {
+  font-weight: 400;
+  font-family: "Lora";
+  font-style: italic;
+  src: url("fonts/loraitalic.woff") format("woff");
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: rgb(42, 113, 113);
+  color: #333333;
+  font-family: "Lora", serif;
+}
+
+.outer {
+  position: relative;
+  display: block;
+  margin: 50px auto 0;
+  padding: 20px 0;
+  max-width: 320px;
+  border: 1px solid #888888;
+  border-width: 1px 0;
+  background-color: #ffffff;
+}
+
+.inner {
+  position: relative;
+  margin: 0 -20px;
+  padding: 0 40px;
+  background-color: #ffffff;
+  font-style: italic;
+}
+
+.inner p {
+  margin: 0 0 1em;
+  font-size: 1.5em;
+}
+
+.inner footer {
+  display: block;
+  text-align: right;
+}
+
+.inner::before,
+.inner::after,
+.outer::before {
+  position: absolute;
+  z-index: 1;
+  box-sizing: border-box;
+  width: 80px;
+  height: 80px;
+  border: 20px solid #ffffff;
+  border-radius: 50%;
+  content: "";
+}
+
+.inner::before {
+  bottom: -60px;
+  left: -40px;
+  clip: rect(auto, auto, 40px, 40px);
+}
+
+.inner::after {
+  right: -40px;
+  bottom: -60px;
+  clip: rect(auto, 40px, 40px, auto);
+}
+
+.outer::before {
+  top: -40px;
+  left: -60px;
+  clip: rect(40px, auto, auto, 40px);
+}
+
+.outer::after {
+  position: absolute;
+  z-index: 1;
+  box-sizing: border-box;
+  width: 80px;
+  height: 80px;
+  border: 20px solid #ffffff;
+  content: "";
+  border-radius: 50%;
+  top: -40px;
+  right: -60px;
+  clip: rect(40px, 40px, auto, auto);
+}

@@ -1,0 +1,88 @@
+@font-face {
+  font-weight: 400;
+  font-family: "PT Sans";
+  src: url("fonts/ptsans.woff") format("woff");
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-width: 400px;
+  background-color: #f5f5f5;
+  text-align: center;
+  font-size: 14px;
+  font-family: "PT Sans", sans-serif;
+}
+
+.breadcrumbs {
+  display: inline-block;
+  margin: 150px 0;
+  box-shadow: 0 0 2px #aaaaaa;
+  color: black;
+  counter-reset: flag; /*  позволяет создать переменную-счётчик; */
+}
+
+.breadcrumbs a {
+  position: relative;
+  float: left;
+  padding-right: 10px;
+  padding-left: 60px;
+  background-color: white;
+  color: black;
+  text-decoration: none;
+  line-height: 36px;
+  transition: background-color 0.1s;
+}
+
+.breadcrumbs a::after {
+  position: absolute;
+  top: 0;
+  right: -18px;
+  z-index: 1;
+  width: 36px;
+  height: 36px;
+  border-radius: 50px 0 0 0;
+  background-color: white;
+  box-shadow: 1px 1px 0 1px #dddddd;
+  content: "";
+  transition: background-color 0.1s;
+  transform: rotate(-45deg) scale(0.73);
+}
+
+.breadcrumbs a:hover,
+.breadcrumbs a:hover::after,
+.breadcrumbs a.active,
+.breadcrumbs a.active::after {
+  background-color: #f1c40f;
+}
+
+.breadcrumbs a::before {
+  position: absolute;
+  top: 8px;
+  left: 30px;
+  box-shadow: 0 0 2px #cccccc;
+  content: counter(flag); /* позволяет передавать значение счётчика свойству content у псевдоэлементов. */
+  counter-increment: flag; /* позволяет увеличивать значение счётчика; */
+  line-height: 20px;
+  width: 20px;
+  background-color: white;
+  border-radius: 50%;
+}
+
+.breadcrumbs a:first-child {
+  padding-left: 46px;
+}
+
+.breadcrumbs a:first-child::before {
+  left: 14px;
+}
+
+/*
+counter-reset, которое позволяет создать переменную-счётчик;
+counter-increment, которое позволяет увеличивать значение счётчика;
+функцию counter(), которая позволяет передавать значение счётчика свойству content у псевдоэлементов.
+В исходном CSS для .breadcrumbs уже добавлено свойство counter-reset: flag. То есть наш счётчик уже создан и называется flag.
+
+Чтобы увеличивать счётчик, нужно добавить свойство counter-increment: flag к каждому элементу, который будет нумероваться.
+А чтобы считывать значение счётчика и передавать его в псевдоэлементы, нужно задать им свойство content: counter(flag).
+ */

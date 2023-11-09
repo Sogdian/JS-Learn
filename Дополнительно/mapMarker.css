@@ -1,0 +1,37 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+  font-family: "Arial", sans-serif;
+  font-size: 12px;
+}
+
+.map {
+  position: relative;
+  margin: 50px auto;
+  width: 360px;
+  height: 360px;
+  border: 20px solid white;
+  background: url(https://htmlacademy.ru/assets/courses/76/map.jpg) no-repeat 50% 50% #ffffff;
+  box-shadow: 0 0 3px #cccccc;
+}
+
+.pin {
+  position: absolute;
+  top: 150px;
+  left: 250px;
+  width: 15px;
+  height: 15px;
+  border: 10px solid #f75850;
+  border-radius: 50% 50% 50% 0;
+  box-shadow: -2px 2px 2px #aaaaaa;
+  font-size: 0;
+  transform: rotate(-45deg);
+}
+
+.annotation {
+  position: absolute;
+  bottom: -60px;
+  width: 100%;
+  text-align: center;
+}
