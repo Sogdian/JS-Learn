@@ -64,10 +64,24 @@ let aliExpress = ['Лазерная указка Xioamo', 'Гарнитура в
 
 //объекты
 let user = {
-    name: 'Мария',
-    dotaLevel: 21, };
-console.log(user.name);
+    nickname: 'Мария',
+    getGreeting: function() {
+        return 'nickname';
+    },
+    getGreeting2: function() {
+        return this.nickname; //вернуть значение ключа этого же объекта
+    }
+};
+console.log(user.getGreeting()); //Мария
+console.log(user.getGreeting2()); //Мария
 
+//словари
+let users = {
+    'favorite food': 'Сметана',
+    fullname: 'Иванова'
+};
+console.log(users['favorite food']); //Сметана
+console.log(user['fullname']); //Иванова
 
 //циклы
 for (let i = 0; i <= 4; i = i + 1) {
