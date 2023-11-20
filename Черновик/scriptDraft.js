@@ -1,18 +1,18 @@
-let materialPrice = {
-  'wood': 1000,
-  'stone': 1500,
-  'brick': 2000
-};
+var pictures = [
+  'gallery-tomato/tomato-red-large.jpg',
+  'gallery-tomato/tomato-yellow-large.jpg',
+  'gallery-tomato/tomato-strange-large.jpg'
+];
 
-let house = {
-  rooms: 10,
-  floors: 5,
-  material: 'wood',
-  coefficient: 10.5,
-  calculateSquare: function() {
-    return house.coefficient * house.rooms * house.floors;
-  },
-  calculatePrice: function() {
-    return this.calculateSquare() * materialPrice[house.material];
+let galleryPicturePreviews = document.querySelectorAll(".gallery__picture-preview")
+let fullPicture = document.querySelector(".full-picture")
+
+let func = function(galleryPicturePreviews, pictures){
+  galleryPicturePreviews.onclick = function(){
+    fullPicture.src = pictures;
   }
-};
+}
+
+for(let i = 0; i < galleryPicturePreviews.length; i++) {
+  func(galleryPicturePreviews[i], pictures[i]);
+}

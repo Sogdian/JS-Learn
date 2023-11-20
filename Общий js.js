@@ -103,6 +103,7 @@ function sayHello(name) {
     return 'Привет, ' + name;
 }
 
+
 //js функции
 //принимает на вход число и округляет его до целого в большую сторону
 Math.ceil(number);
@@ -118,36 +119,79 @@ throwDice(min, max)
 
 //------------------------------
 /*
+JavaScript особым образом воспринимает разметку: элементы здесь не строки, которые мы пишем в HTML-файлах, а объекты. При этом каждый объект связан с другими такими же объектами и знает о своём родителе, соседних объектах-элементах, вложенных объектах.
+    В итоге получается древовидная структура, которая называется DOM (Document Object Model или объектная модель документа).
 aria-pressed - атрибут указывает, в каком состоянии находится кнопка-переключатель. Например, если лайк стоит, то значение у атрибута должно быть "true", а если лайка нет, то "false". Атрибут aria-pressed не влияет на внешний вид кнопки, но он помогает скринридерам правильно прочитать содержимое страницы. https://medium.com/web-standards/toggle-buttons-a41388e80974#2347
 append - метод не копирует элементы, а перемещает. Если указать в скобках элемент, который уже есть в разметке, этот элемент исчезнет со своего прежнего места и появится там, куда его добавил метод append. Получить таким образом несколько элементов не выйдет.
 data-name1-name2 - дата атрибут. Атрибуты, начинающиеся с data-, обычно используют, чтобы хранить вспомогательную информацию. https://html.spec.whatwg.org/multipage/dom.html#embedding-custom-non-visible-data-with-the-data-*-attributes
 output - тег используют, чтобы показать на странице результат вычислений, полученный с помощью JavaScript. https://htmlacademy.ru/courses/74/run/14
-*/
 
+document
+    В каждом DOM-дереве есть корневой объект, из которого «растут» другие объекты. Он называется document.
+    Этот глобальный объект доступен во всех программах, которые работают в браузере. Проще говоря, document — страница, которая содержит все элементы разметки (объекты).
+
+методы DOM API:
+    querySelector, addEventListener
+*/
 
 element = document.querySelector('.class'); //Метод ищет по селектору, который указан в скобках. Словом document обозначается веб-страница, к которой подключили скрипт.
     elementBody = document.body;  //элемент body
     element2 = element.querySelector('class'); //искать черз querySelector внутри element, который ищем тоже через querySelector
     element.href; //вывести значение атрибута элемента
     element = document.querySelector('.slider-preview-item .active'); //поиск по селектору (двум классам)
-element = document.querySelectorAll('.class'); //Метод ищет по всем селекторам и возвращает коллекцию
+        element = document.querySelector('li:last-child');
+    element = document.querySelector('ul'); //поиск по тегу
+parent.children; //вернет список (динамическую коллекцию) дочерних элементов. Можно использовать вместо querySelectorAll
+    //children возвращает тип коллекции — HTMLCollection. Такая коллекция содержит только DOM-элементы
+array = document.querySelectorAll('.class'); //Метод ищет по всем селекторам и возвращает статичную коллекцию (псевдомассив с DOM-элементами )
+    //querySelectorAll находит необходимые элементы один раз, фиксирует их и всё. // Эта запись остаётся статичной и изменения в DOM на неё никак не влияют.
+    // Можно сказать, что querySelectorAll работает, как любая переменная, в которую мы записали какое-нибудь значение.
+    // Пока мы не переопределим переменную, в ней так и будет находиться то значение, которое мы в неё записали, независимо от того, что происходит в коде.
+    //querySelectorAll возвращает тип коллекции — NodeList. может содержать не только DOM-элементы вроде li или div, но и перенос строки, текстовое содержимое элементов в качестве отдельных элементов коллекции. NodeList может быть статичной или динамической, это зависит от того, каким способом она вызвана.
+document.querySelector('#text-template'); //поиск по id. может быть вызван только на всём документе, а не отдельном элементе
+
+element.cloneNode(false); // Вернёт склонированный элемент без вложенностей
+    element.cloneNode(true);  // Вернёт склонированный элемент со всеми вложенностями
+
+
 element.textContent = "123"; //textContent хранит в себе текстовое содержимое элемента
+    //<p>123</p>
+    element.children[0].textContent = 1; //если element это div, то это строка создаст это <span>1</span>
 element.style.fontSize = '33px'; //менять размер шрифта
+
 element.classList.remove('class'); //Метод убирает с элемента тот класс, который указан в скобках
 element.classList.add('class'); //метод добавляет элементу класс (без точки), указанный в скобках.
-button.addEventListener('click', function () { }); //addEventListener слушатели событий» //https://developer.mozilla.org/ru/docs/Web/API/EventTarget/addEventListener
+element.classList.toggle('.class'); //добавление класса, когда этого класса нет и удаление класса (изначального), когда этот класс есть. Если класс у элемента есть, метод classList.toggle ведёт себя как classList.remove и класс у элемента убирает. А если указанного класса у элемента нет, то classList.toggle, как и classList.add, добавляет элементу этот класс.
+element.classList.contains('.class'); //проверить, есть ли у элемента класс. вернёт true (истина), если класс у элемента есть, и false (ложь), если класса нет.
+
+button.addEventListener('click', function () { }); //addEventListener слушатели событий» //https://developer.mozilla.org/ru/docs/Web/Events
     button.onclick = function() {}; //Свойство onclick означает «по клику» //function() - обработчик событий
     button.onclick = function(evt) {
         evt.preventDefault(); //отменить действие браузера по умолчанию (при наступлении события) - переход по ссылке
     };
-element.classList.toggle('.class'); //добавление класса, когда этого класса нет и удаление класса (изначального), когда этот класс есть. Если класс у элемента есть, метод classList.toggle ведёт себя как classList.remove и класс у элемента убирает. А если указанного класса у элемента нет, то classList.toggle, как и classList.add, добавляет элементу этот класс.
-element.classList.contains('.class'); //проверить, есть ли у элемента класс. вернёт true (истина), если класс у элемента есть, и false (ложь), если класса нет.
+    document.addEventListener('keydown', function(evt) { // keydown - код выполнится при каждом нажатии любой клавиши
+        if (evt.keyCode === 27) {} //Код отсюда выполнится только при нажатии ESC
+        if (evt.keyCode === 13) {} //Код отсюда выполнится только при нажатии Enter
+            //коды клавиш KeyboardEvent: keyCode property https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
+        if (evt.key === 13) {} //вернет название клавиши в виде строки - «Escape» //https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
+        if (evt.code === 13) {} //вернет название клавиши в виде строки - «Escape», при этом на значение не влияет выбранный язык клавиатуры //https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
+    });  //слушать это событие можно только на элементах, которые имеют состояние фокуса: поля ввода, кнопки, элементы с атрибутом tabindex, документ.
+        //При нажатии фокус должен находиться на соответствующем элементе.
+    checkbox.addEventListener('change', function () {}); //change - событие изменения инпута
+    form.addEventListener('submit', function () {}); //отправка формы, событие на теге <form>
+
 element.onsubmit = function() {}; //обработчик событий onsubmit добавляется на форму <form> (не на кнопку)
 input = document.querySelector('input').value; //value - это значение поля ввода (input), значение вернется только после того, как форма была отправлена. textContent вернет пусто, т.к. для JavaScript поля формы не имеют текстового содержимого, их значения хранятся именно в value.
-    element.oninput = function() {} //вернет value из формы в процессе ввода текста (сразу каждую букву)
+element.oninput = function() {} //вернет value из формы в процессе ввода текста (сразу каждую букву)
+
+let li = document.createElement('li'); //Создание элемента div в document
+    parent.appendChild(li); //добавить li в родителя list(ul)
 parent.append(element); //Добавляем новый элемент в конец элемента-родителя. При этом содержимое элемента-родителя не затирается. Добавлять с помощью этого метода можно и элементы, и простые строки.
-document.createElement('div'); //Создание элемента div в document
+element.remove(); //удалить элемент
+    //но статичная коллекция (массив) будет иметь ту же длину length
+
 element.dataset.tooltipText; //dataset - получить значение дата атрибута data-tooltip-text (без data и без префикса, в camelCase)
+
 button.disabled = true; //заблокировать кнопку
 window.onscroll = function () {} //отслеживание скрола (мин на 1 px). window - окно (или вкладка) браузера. Обработчик событий onscroll можно добавлять не только окну браузера, но и отдельным элементам на странице. Чтобы обработчик сработал, у элемента должна быть своя полоса прокрутки. Управлять прокруткой элемента можно с помощью CSS свойства overflow https://www.w3.org/TR/css-overflow-3/#overflow-properties
 window.pageYOffset //Вычисляет на какое кол-во пикселей была прокручена страница по Y

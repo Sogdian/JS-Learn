@@ -1,5 +1,3 @@
-let diceNumber = 2;
-
 let firstCat = {
   name: 'Кекс',
   points: 0
@@ -11,11 +9,22 @@ let secondCat = {
 };
 
 let cats = [firstCat, secondCat];
+/*
+= let cats = [
+  {
+    name: 'Кекс',
+    points: 0
+  },
+  {
+    name: 'Рудольф',
+    points: 0
+  }
+]; */
 
-let runGame = function (quantity, players) {
-  for (let i = 0; i < players.length; i++) {
-    console.log(players[i]);
+let runGame = function (quantity, animals) {
+  for (let i = 0; i < animals.length; i++) {
+    console.log(animals[i]);
   }
 };
 
-runGame(diceNumber, cats);
+runGame(2, cats);
