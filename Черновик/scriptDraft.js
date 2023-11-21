@@ -1,18 +1,17 @@
-var pictures = [
-  'gallery-tomato/tomato-red-large.jpg',
-  'gallery-tomato/tomato-yellow-large.jpg',
-  'gallery-tomato/tomato-strange-large.jpg'
-];
+function Example() {
+  const [count, setCount] = React.useState(0);
+  const [name, setName] = React.useState("John");
 
-let galleryPicturePreviews = document.querySelectorAll(".gallery__picture-preview")
-let fullPicture = document.querySelector(".full-picture")
-
-let func = function(galleryPicturePreviews, pictures){
-  galleryPicturePreviews.onclick = function(){
-    fullPicture.src = pictures;
-  }
-}
-
-for(let i = 0; i < galleryPicturePreviews.length; i++) {
-  func(galleryPicturePreviews[i], pictures[i]);
+  return (
+    <div>
+      <p>Вы нажали {count} раз</p>
+      <p>Вас зовут {name}</p>
+      <button onClick={() => setCount(count + 1)}>
+        Нажми на меня
+      </button>
+      <button onClick={() => setName("Jane")}>
+        Изменить имя
+      </button>
+    </div>
+  );
 }
