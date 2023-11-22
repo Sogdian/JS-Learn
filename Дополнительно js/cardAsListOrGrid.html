@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <script src="vendor/react.development.js"></script>
+  <script src="vendor/react-dom.development.js"></script>
+  <script src="vendor/babel.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="data.js"></script>
+  <title>Аренда яхт</title>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+  // <!--
+  const container = document.getElementById('root');
+  const root = ReactDOM.createRoot(container);
+  root.render(<App cards={cards} topSellers={topSellers}/>);
+
+  function App({cards, topSellers}) {
+    const isShownByGrid = false;
+    const listClassName = `cards ${isShownByGrid ? '' : 'list'}`
+    return (
+      <section className="rent">
+        <RentHeader isShownByGrid={isShownByGrid} />
+        <ul className={listClassName}>
+          {cards.map((item) => (
+            <Card cardData={item} isTopSeller={topSellers.includes(item.id)} key={item.id}
+            />
+          ))}
+        </ul>
+      </section>
+    );
+  }
+
+  function RentHeader({ isShownByGrid }) {
+    // Добавьте компоненту параметр isShownByGrid для отображения режима
+    // Привяжите класс active на кнопках к значению этого параметра
+    return (
+      <header>
+        <h2>Аренда яхты</h2>
+        <ul class="card-view-buttons">
+          <li class="card-view-item">
+            <button class={`card-view-button-grid ${isShownByGrid ? 'active' : ''}`} type="button" />
+          </li>
+          <li class="card-view-item">
+            <button class={`card-view-button-list ${!isShownByGrid ? 'active' : ''}`} type="button" />
+          </li>
+        </ul>
+      </header>
+    );
+  }
+
+  function Card({cardData, isTopSeller}) {
+    const featuresList = cardData.features.map((feature) => (
+      <li>{feature}</li>
+    ));
+    const formattedPrice = `${cardData.price.toLocaleString()} ₽/час`;
+
+    return (
+      <li className={`card ${isTopSeller ? 'card-top-seller' : ''}`}>
+        <img className="card-img" src={cardData.img} width="280" height="140" alt="Белая двухпалубная яхта"/>
+        <div className="card-content">
+          <h3 className="card-title">{cardData.name}</h3>
+          <p className="card-description">{cardData.description}</p>
+          <ul className="card-features">
+            {featuresList}
+          </ul>
+        </div>
+        <p className="card-price">
+          <span className="card-price-name">Цена:</span>
+          <span className="card-price-value">{formattedPrice}</span>
+        </p>
+      </li>
+    );
+  }
+  // -->
+</script>
+</body>
+</html>

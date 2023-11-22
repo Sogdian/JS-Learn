@@ -23,6 +23,8 @@
   "homepage": "https://github.com/SogAsh/JS-Learn#readme",
   "description": "",
   "dependencies": {
+    "@babel/cli": "^7.23.0",
+    "@babel/preset-env": "^7.23.3",
     "prettier": "^3.0.3",
     "stylelint": "^15.11.0"
   }
