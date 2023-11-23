@@ -32,21 +32,24 @@ function MyComponent () {
   );
 }
 
-//Вызываем функции библиотеки React
+const child = React.createElement('span', { className: 'text-green' }, 'Hello React!');
 const element = React.createElement('h1', { className: 'title', children: 'Hello world!' }); //Метод создаёт новый React-элемент
+const element2 = React.createElement('h1', { className: 'title'}, child);
+
+//Вызываем функции библиотеки React
 const containerElement = document.getElementById('root');
 const root = ReactDOM.createRoot(containerElement); //создать коревой элемент
 root.render(element); //Hello world! //Для отрисовки используем метод render у объекта ReactDOM
+  root.render(element2); //Hello React!
+  root.render(<HelloWorld date='13.02.23' />); //
   root.render(HelloWorld({date: '13.02.23'})); //<h1>Привет, Мир!!! Моё приложение создано: 13.02.23</h1>
   root.render(<App />); //<h1>Привет, Мир!!! Моё приложение создано: 13.02.23</h1>
     root.render(<App> <p>Это дочерний компонент</p> </App>); //<p>...</p> = children
   root.render(<h1>Hello world!</h1>); //Hello world!
-  root.render(<MyComponent />); //вызвать <React.Fragment>. Этот компонент вместо DOM-элемента создаёт «фрагмент» документа, который объединяет вложенные в него элементы.
-
-
+  root.render('Hello world!'); //Hello world!
+  root.render(<MyComponent />); //Hello React! //вызвать <React.Fragment>. Этот компонент вместо DOM-элемента создаёт «фрагмент» документа, который объединяет вложенные в него элементы.
 
 const className = `card ${ isSelected ? 'selected' : ''} ${ isFinished ? 'disabled' : '' }`; //card selected disabled или card или другие вариации
-
 
 /* Хуки
 useState - для работы с состоянием, позволяет использовать состояние в функциональных компонентах

@@ -7,26 +7,36 @@
   <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
   <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-</head>
 <body>
 <div id="root">
   Корневой элемент приложения.
 </div>
-<script>
-  const container = document.getElementById('root');
-  const root = ReactDOM.createRoot(container);
-  function MyComponent ({title}) {
-    return (
-      React.createElement('div', {className: 'container'}, [
-        React.createElement('h1', {className: 'title'}, title),
-        React.createElement('img', {src: '', alt: 'Мне нужен url'})
-      ]),
-      <h3 className="card-title">{title}</h3>
-    );
-  }
-  root.render(
-    React.createElement(MyComponent, {title: 'Приложение на React без JSX'})
-  );
-</script>
+    <script type="text/babel">
+      const container = document.getElementById('root');
+      const root = ReactDOM.createRoot(container);
+
+      function MyComponent ({title}) {
+        return (
+          <h3>{title}</h3>
+        );
+      }
+
+      function MyComponent2 () {
+        return (
+          <h3>Приложение на React</h3>
+        );
+      }
+
+      function MyComponent3 (title) {
+        return (
+          <h3>Приложение на React {title}</h3>
+        );
+      }
+
+      root.render(MyComponent ({title: 'Приложение на React без JSX'}));
+      root.render(<MyComponent title="Hello React!" />);
+      root.render(<MyComponent2 />);
+      root.render(<MyComponent3 title={title} />);
+    </script>
 </body>
 </html>

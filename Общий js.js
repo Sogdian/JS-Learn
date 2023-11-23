@@ -73,17 +73,12 @@ const featuresList = features.map((feature) => (
     { featuresList }
 </ul>
 //includes - содержит элементов в масссиве
-selectedItems = [2, 3];
-    isSelected={isSelected={selectedItems.includes(index)};
-//
 root.render(<App words={words} selectedItems={selectedItems}/>);
 const selectedItems = ['3', '4'];
 const words = [ { id: '1', word: 'Сasa' };
 function App({words = [], selectedItems = []}) {
-    const cards = words.map((item, index) => (
-      <Card
-        isSelected={selectedItems.includes(item.id)
-      } />
+    const cards = words.map((item) => (
+      <Card isSelected={selectedItems.includes(item.id)} /> //https://up.htmlacademy.ru/fe-react/1/demos/10321#19
     ));
     return (
           <ul> {cards} </ul>
