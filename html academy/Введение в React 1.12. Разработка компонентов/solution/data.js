@@ -48,10 +48,5 @@ const images = [{
   'description': 'white and purple flower petals',
 }];
 
-// списки выделенных и отгаданных карточек для отладки
 const visibleItems = ['hX_hf2lPpUU', '3tYZjGSBwbk'];
 const finishedItems = ['YdAqiUkUoWA', 'YdAqiUkUoWA1', 'w1JE5duY62M', 'w1JE5duY62M1'];
-
-window.images = images;
-window.visibleItems = visibleItems;
-window.finishedItems = finishedItems;

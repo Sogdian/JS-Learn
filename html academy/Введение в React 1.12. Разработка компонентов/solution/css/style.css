@@ -41,6 +41,28 @@ body {
   margin: 0 auto;
 }
 
+.button {
+  padding: 16px 24px;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  color: #333333;
+  border: none;
+  background-color: #ffbf20;
+  border-radius: 10px;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.button:hover {
+  background-color: #ffd97c;
+}
+
+.button:active {
+  background-color: #ffd97c;
+}
+
 .game {
   display: grid;
   grid-template-columns: 460px auto 1fr;
@@ -48,6 +70,37 @@ body {
   gap: 40px 20px;
   padding-top: 40px;
   margin-bottom: 155px;
+}
+
+.progress-wrapper {
+  display: flex;
+  width: 460px;
+  height: 16px;
+  background-color: #ffffff;
+  border-radius: 8px;
+}
+
+.progress {
+  background-color: #00ca51;
+  border-radius: 8px;
+  transition: width var(--animation-duration);
+}
+
+.progress-description {
+  margin: 0;
+  font-size: 16px;
+  line-height: 22px;
+}
+
+.steps {
+  justify-self: end;
+  padding: 8px 20px;
+  font-weight: 900;
+  font-size: 20px;
+  line-height: 28px;
+  color: #ffffff;
+  background-color: #00ca51;
+  border-radius: 22px;
 }
 
 .cards {
@@ -118,8 +171,6 @@ body {
 .card:not(.card-show):not(.card-finished):hover {
   box-shadow: 0 6px 16px rgba(140, 174, 200, 0.6);
 }
-
-/* Состояния карточек */
 
 .card-show {
   transform: rotateY(180deg);
