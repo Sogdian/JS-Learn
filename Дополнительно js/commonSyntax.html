@@ -4,8 +4,9 @@
   <meta charset="UTF-8">
   <title>Hello React</title>
   <link rel="stylesheet" href="css/style.css">
-  <script src="vendor/react.development.js"></script>
-  <script src="vendor/react-dom.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <body>
 <div id="root">
@@ -19,7 +20,8 @@
       React.createElement('div', {className: 'container'}, [
         React.createElement('h1', {className: 'title'}, title),
         React.createElement('img', {src: '', alt: 'Мне нужен url'})
-      ])
+      ]),
+      <h3 className="card-title">{title}</h3>
     );
   }
   root.render(

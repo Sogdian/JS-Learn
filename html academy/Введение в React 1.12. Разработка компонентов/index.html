@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang='ru'>
+<head>
+  <meta charset='UTF-8'>
+  <title>Игра Мемори</title>
+  <link href='css/style.css' rel='stylesheet'>
+  <script crossorigin src='https://unpkg.com/react@18/umd/react.development.js'></script>
+  <script crossorigin src='https://unpkg.com/react-dom@18/umd/react-dom.development.js'></script>
+  <script crossorigin src='https://unpkg.com/@babel/standalone/babel.min.js'></script>
+  <script src='data.js' type='text/babel'></script>
+</head>
+<body>
+<div id='root'>Корневой элемент</div>
+
+<script type='text/babel'>
+  const container = document.getElementById('root');
+  const root = ReactDOM.createRoot(container);
+
+  function App() {
+    return (
+    <section className="game container">
+      <ul className="cards cards-theme-cars">
+        <li className="card card-show">
+          <img src="img/cats-1.jpg" width={204} height={144} alt="Котик" />
+        </li>
+        <li className="card">
+          <img src="img/cats-2.jpg" width={204} height={144} alt="Котик" />
+        </li>
+        <li className="card">
+          <img src="img/cats-3.jpg" width={204} height={144} alt="Котик" />
+        </li>
+        <li className="card">
+          <img src="img/cats-4.jpg" width={204} height={144} alt="Котик" />
+        </li>
+        <li className="card card-finished">
+          <img src="img/cats-5.jpg" width={204} height={144} alt="Котик" />
+        </li>
+        <li className="card card-show">
+          <img src="img/cats-6.jpg" width={204} height={144} alt="Котик" />
+        </li>
+        <li className="card">
+          <img src="img/cats-6.jpg" width={204} height={144} alt="Котик" />
+        </li>
+        <li className="card card-finished">
+          <img src="img/cats-5.jpg" width={204} height={144} alt="Котик" />
+        </li>
+        <li className="card">
+          <img src="img/cats-4.jpg" width={204} height={144} alt="Котик" />
+        </li>
+        <li className="card">
+          <img src="img/cats-3.jpg" width={204} height={144} alt="Котик" />
+        </li>
+        <li className="card">
+          <img src="img/cats-2.jpg" width={204} height={144} alt="Котик" />
+        </li>
+        <li className="card">
+          <img src="img/cats-1.jpg" width={204} height={144} alt="Котик" />
+        </li>
+      </ul>
+    </section>
+  );
+  }
+
+  root.render(<App />);
+</script>
+</body>
+</html>
