@@ -1,30 +1,26 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>Hello React</title>
-  <link rel="stylesheet" href="css/style.css">
-  <script src="vendor/react.development.js"></script>
-  <script src="vendor/react-dom.development.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Чёрно-белый мир</title>
+  <link
+    rel="stylesheet"
+    href="https://code.s3.yandex.net/web-code/fonts/fonts.css"
+  />
+  <link rel="stylesheet" href="styleDraft.css" />
 </head>
 <body>
-<div id="root">
-  Корневой элемент приложения.
+<h1 class="title">Следуй за белым кроликом!</h1>
+
+<div class="something"></div>
+
+<div class="theme-toggler">
+  <label class="theme-toggler__label">
+    Переключить тему
+    <input type="checkbox" class="theme-toggler__control"
+    /></label>
 </div>
-<script>
-  const container = document.getElementById('root');
-  const root = ReactDOM.createRoot(container);
-  function MyComponent ({title}) {
-    return (
-      React.createElement('div', {className: 'container'}, [
-        React.createElement('h1', {className: 'title'}, title),
-        React.createElement('img', {src: '', alt: 'Мне нужен url'})
-      ])
-    );
-  }
-  root.render(
-    React.createElement(MyComponent, {title: 'Приложение на React без JSX'})
-  );
-</script>
 </body>
 </html>
