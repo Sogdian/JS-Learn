@@ -1,3 +1,11 @@
+html {
+  --main-font: Raleway, sans-serif;
+  --accent-font: 'STIX Two Text', serif;
+  --bg-color: #F3EFEC;
+  --text-color: #312A4E;
+  --accent-color: #FFAB6B;
+}
+
 *,
 *::before,
 *::after {
@@ -7,6 +15,9 @@
 .page {
   min-inline-size: 360px;
   margin: 0;
+  background-color: var(--bg-color, #F3EFEC);
+  color: var(--text-color, #312A4E);
+  font-family: var(--main-font, sans-serif);
 }
 
 p,
@@ -20,3 +31,106 @@ li,
 figure {
   margin: 0;
 }
+
+.header {
+  padding-block-start: 10%;
+}
+
+.heading {
+  text-align: center;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 0.9;
+  font-family: var(--accent-font, serif);
+}
+
+.header__title {
+  font-size: clamp(3.75rem, 2.5rem + 5.5556vw, 7.5rem);
+  margin-block-end: 40px;
+}
+
+.content-section {
+  padding: 0 5vw;
+}
+
+.content__title {
+  font-size: 30px;
+  margin: 7% 0 2.5%;
+}
+
+.content__text-block {
+  font-size: 18px;
+}
+
+.content__text-block .content__paragraph:not(:last-child) {
+  padding-block-end: 1.5em;
+}
+
+.content__text-link {
+  color: inherit;
+}
+
+.content__blockquote {
+  display: flex;
+  margin: 0 auto 1.5em;
+  font-style: italic;
+  line-height: 2;
+  inline-size: 75%;
+}
+
+.content__list {
+  list-style: none;
+  padding-inline-start: 40px;
+}
+
+.content__list li {
+  position: relative;
+}
+
+.content__list li:not(:last-child) {
+  padding-block-end: 10px;
+}
+
+.content__list li::before {
+  content: '';
+  background-image: url(../images/marker-light.svg);
+  inline-size: 15px;
+  block-size: 15px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: -25px;
+  margin-block-start: -7.5px; /* отодвигаем наверх*/
+}
+
+.content__text-block_type_first-lettered .content__paragraph:first-child::first-letter {
+  background-color: var(--accent-color, #FFAB6B);
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 9px;
+  padding: 0 4px;
+  margin-inline-end: 1px;
+  display: inline-block;
+}
+
+.content__figure {
+  margin: 7% auto;
+  inline-size: calc(100% + 2 * 5vw); /* 2 по content-section = 5vw */
+  position: relative;
+  inset-inline-end: 5vw; /* content-section = 5vw */ /* т.к. картинка уехала на 2 по 5 vw вправо от левого отступа в 5vw */
+}
+
+.content__picture-caption {
+  text-align: center;
+  border-block-end: 1px solid currentColor;
+  padding: 20px 0;
+}
+
+.content__picture {
+  inline-size: 100%;
+}
+
+
+
