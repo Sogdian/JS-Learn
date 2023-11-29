@@ -49,6 +49,78 @@ figure {
   margin-block-end: 40px;
 }
 
+.header__menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  padding-block: 20px;
+}
+
+.header__logo {
+  padding: 20px 0;
+}
+
+.header__theme-toggler {
+  list-style: none;
+  gap: 20px;
+  display: flex;
+  padding: 0;
+}
+
+.header__theme-button {
+  position: relative;
+  border: none;
+  font-family: inherit;
+  color: currentColor;
+  cursor: pointer;
+  padding: 0;
+  font-size: 18px;
+  background-color: transparent;
+}
+
+.header__theme-button:hover {
+  text-decoration: underline;
+}
+
+button:focus,
+a:focus {
+  outline: none;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 1px solid currentColor;
+}
+
+button:disabled {
+  pointer-events: none;
+}
+
+.header__theme-button_is-active {
+  font-weight: 700;
+}
+
+.header__theme-button_is-active::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  background-color: var(--accent-color, #FFAB6B);
+  inline-size: calc(85% + 0px);
+  block-size: 0.5ch;
+  inset-block-end: 0.3ch;
+  margin-inline-start: calc((85% + 0px) - 2 * (85% + 0px));
+}
+
+.header__theme-button_type_dark {
+
+}
+
+.header__theme-button_type_light {
+
+}
+
 .content-section {
   padding: 0 5vw;
 }
@@ -132,5 +204,49 @@ figure {
   inline-size: 100%;
 }
 
+.content__card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-block-start: 7%;
+  border: 1px solid var(--text-color, #312A4E);
+  aspect-ratio: 4/3;
+}
 
+.content__card-title {
+  font-size: 60px;
+}
+
+.content__card-subtitle {
+  font-size: 18px;
+}
+
+.colored-text {
+  position: relative;
+  display: inline-block;
+}
+
+.colored-text::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  background-color: var(--accent-color, #FFAB6B);
+  --size-after: calc(100% + 8px);
+  inline-size: calc(100% + 8px);
+  block-size: 0.5ch;
+  inset-block-end: 0.3ch;
+  margin-inline-start: calc(var(--size-after) - 2 * var(--size-after));
+}
+
+.footer {
+  margin-block-start: 10%;
+  border-block-start: 1px solid currentColor;
+  padding: 2.5%;
+  text-align: center;
+}
+
+.footer__copyright {
+  font-size: 18px;
+}
 
