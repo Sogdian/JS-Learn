@@ -119,14 +119,6 @@ button:disabled {
   margin-inline-start: calc((85% + 0px) - 2 * (85% + 0px));
 }
 
-.header__theme-button_type_dark {
-
-}
-
-.header__theme-button_type_light {
-
-}
-
 .content-section {
   padding: 0 5vw;
 }

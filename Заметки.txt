@@ -111,3 +111,39 @@ sogdian
     768
     320
 
+//Вопросы
+//1
+Зачем в готовом кейсе window.onload? У нас же есть кнопки по которым меняется тема
+Или это чтобы точно темная тема загрузилась если есть параметр theme?
+window.onload = () => {
+  const themeInLocal = localStorage.getItem('theme');
+  if (themeInLocal) {
+    setDarkTheme();
+  } else {
+    setLightTheme();
+  }
+};
+
+darkThemeBtn.onclick = () => {
+  setDarkTheme();
+  localStorage.setItem('theme', 'dark'); //зачем это?
+};
+
+//2
+как получить отрицательное значение в расчете в calc?
+
+//3
+https://codepen.io/Sogdian/pen/rNPyQBy
+есть такой код, как сделать, чтобы всевдоелемент был сзади слов "old idea"
+
+//4
+Пояснить про color-scheme
+https://practicum.yandex.ru/learn/frontend-developer/courses/d763b691-52eb-4ff3-8ab9-35de4faf9449/sprints/178893/topics/a219d915-1575-4582-a352-6d005915c556/lessons/db019d1e-fb9f-4c4e-8e25-314f1792d267/
+https://sandbox.practicum-team.ru/tasks/03-design/06-different-devices/05-prefers/example-03/pre/
+"Обратите внимание, меняются только те цвета, которые мы не задавали собственноручно. Например, цвета формы, подписей чекбокса и радиокнопок не меняются, там мы переопределили дефолтные стили браузера."
+но цвет в label меняется
+если поставить для form цвет желтый, то он тоже будет меняться
+
+//5
+При  prefers-reduced-motion со значением reduce у меня наоборот все быстрее анимируется
+https://sandbox.practicum-team.ru/tasks/03-design/06-different-devices/05-prefers/example-06/pre/

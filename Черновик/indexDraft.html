@@ -4,23 +4,70 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <title>Чёрно-белый мир</title>
+  <title>Различные варианты элементов</title>
   <link
     rel="stylesheet"
     href="https://code.s3.yandex.net/web-code/fonts/fonts.css"
   />
   <link rel="stylesheet" href="styleDraft.css" />
 </head>
-<body>
-<h1 class="title">Следуй за белым кроликом!</h1>
+<body class="page">
+<h1>Просто текст</h1>
+<form>
+  <fieldset>
+    Текстовое поле:
+    <label class="input">
+      <input type="text" placeholder="Плейсхолдер" />
+    </label>
+  </fieldset>
 
-<div class="something"></div>
+  <fieldset>
+    Чекбоксы:
+    <label>
+      <input type="checkbox" value="Чекбокс 1" name="checkbox" checked />
+      <span>Чекбокс 1 (Выбран)</span>
+    </label>
+    <label>
+      <input type="checkbox" value="Чекбокс 2" name="checkbox" />
+      <span>Чекбокс 2</span>
+    </label>
+  </fieldset>
 
-<div class="theme-toggler">
-  <label class="theme-toggler__label">
-    Переключить тему
-    <input type="checkbox" class="theme-toggler__control"
-    /></label>
-</div>
+  <fieldset>
+    Радиокнопки:
+    <label class="radio-label">
+      <input type="radio" name="radio" value="Вариант 1" checked />
+      <span>Вариант 1 (Выбран)</span>
+    </label>
+    <label class="radio-label">
+      <input type="radio" name="radio" value="Вариант 2" />
+      <span>Вариант 2</span>
+    </label>
+    <label class="radio-label">
+      <input type="radio" name="radio" value="Вариант 3" />
+      <span>Вариант 3</span>
+    </label>
+  </fieldset>
+
+  <fieldset>
+    Селект:
+    <select>
+      <option value="Вариант 1">Вариант 1</option>
+      <option value="Вариант 2">Вариант 2</option>
+      <option value="Вариант 3">Вариант 3</option>
+      <option value="Вариант 4">Вариант 4</option>
+    </select>
+  </fieldset>
+
+  <fieldset>
+    Диапазон:
+    <label>
+      <input type="range" min="0" max="100" value="40" step="10" />
+    </label>
+  </fieldset>
+
+  <button>Кнопка</button>
+  <button disabled>Кнопка выключена</button>
+</form>
 </body>
 </html>
