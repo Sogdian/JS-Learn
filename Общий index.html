@@ -11,6 +11,21 @@
             npm run lintfix
         npm run checkAll = npm run check + npm run lint
         npm run fixAll = npm run format + npm run lintfix
+        npm run fixAndBuild = npm run fixAll && npm run build //сначала исправлять ваши исходники, а потом собирать проект
+
+        //сборка проекта, см. gulpfile.js
+        gulp watchapp (или просто gulp) объединяет
+          gulp build объединяет
+            gulp html
+            gulp css
+            gulp images
+            gulp clean
+          watchFiles
+          serve
+
+Опубликовать ваш статический сайт бесплатно - Heroku, Netlify и Vercel.
+
+Преобразование уже написанного кода под специфические требования браузеров называют постпроцессингом.
 
 Фигма
     SHIFT + R - включить направляющие
