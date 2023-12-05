@@ -29,6 +29,10 @@
     "stylelint": "^15.11.0"
   },
   "devDependencies": {
-    "gulp": "^4.0.2"
+    "browser-sync": "^2.29.3",
+    "del": "^6.0.0",
+    "gulp": "^4.0.2",
+    "gulp-concat-css": "^3.1.0",
+    "gulp-plumber": "^1.2.1"
   }
 }
