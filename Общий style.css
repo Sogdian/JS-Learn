@@ -142,7 +142,7 @@ Cпецсимволы
 
 :root { /* объявление переменных в root, т.е. в html */
     --main-color: #000;
-    --background-color: #80d994;
+    --background-color: blue;
 }
 button {
     --main-color: #fff;

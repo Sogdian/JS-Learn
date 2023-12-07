@@ -1,6 +1,8 @@
 const lightThemeBtn = document.querySelector('.header__theme-button_type_light');
 const darkThemeBtn = document.querySelector('.header__theme-button_type_dark');
 
+//если нет theme, то это светлая тема и value пусто
+//если есть theme, то это темная тема и value=dark
 window.onload = () => {
   const themeInLocal = localStorage.getItem('theme');
   if (themeInLocal) {
