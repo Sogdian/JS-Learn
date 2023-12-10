@@ -4,10 +4,10 @@ sogdian
 БЭМ https://practicum.yandex.ru/learn/frontend-developer/courses/738daf5a-b9fe-4bbe-800c-c43f30ebafd4/sprints/178889/topics/094f22ed-74be-4eb9-a626-5e37aa559901/lessons/0a29854e-bcae-4658-8a4d-8814dc397534/
     Использовать kebab-case
     правила именования https://ru.bem.info/methodology/naming-convention/
-    block-name__elem-name_mod-name_mod-val
-    блок-1__элемент_модификатор-1
-    блок модификатор_1
-    блок-1__элемент блок-2 (микс)
+        block-name__elem-name_mod-name_mod-val
+        блок1__элемент1_модификатор1
+        блок1 модификатор1
+        блок1__элемент1 блок2 (микс)
 
     //Блоки. Блоки принято определять через имена классов. В случае имени из нескольких слов, их разбивают дефисом "-".
     Эти имена должны описывать назначение блока, а не его внешний вид или состояние.
@@ -22,16 +22,16 @@ sogdian
     //Элементы. Элементы — составная часть блока. В элементах стилизуются элементы блока
     Если вы вкладываете один блок в другой, вы считаете, что каждый из них может оказаться по отдельности в другом месте в интерфейсе.
     Элементы же не могут жить вне своего блока, они с ним связаны. Нужно строить связи только между блоками и элементами
-        <ul class="tracklist"> - блок
-            <li class="tracklist__item">Алла Пугачева — Приезжай</li> - блок__элемент1
-                <a href="#" class="tracklist__link">Алла Пугачева — Приезжай</a> - блок__элемент2
+        <ul class="tracklist"> - блок1
+            <li class="tracklist__item">Алла Пугачева — Приезжай</li> - блок1__элемент1
+                <a href="#" class="tracklist__link">Алла Пугачева — Приезжай</a> - блок1__элемент2
         </ul>
         <header class="header"> - блок1
-            <a href="tel:112" class="header__link">Экстренный вызов</a> - - блок1__элемент1, тут ссылка связана с одним блоком
-            <nav class="menu"> - блок2
+            <a href="tel:112" class="header__link">Экстренный вызов</a> - блок2__элемент2, тут ссылка связана с одним блоком
+            <nav class="menu"> - блок3
                 <ul>
                     <li>
-                        <a href="#" class="header__link menu__link">Пожарная служба</a> - - блок1__элемент1, - блок2__элемент2, тут ссылка связана с двумя блоками, два класса по-разному определяют поведение этого элемента в своём контексте.
+                        <a href="#" class="header__link menu__link">Пожарная служба</a> - блок2__элемент2, блок3__элемент2, тут ссылка связана с двумя блоками, два класса по-разному определяют поведение этого элемента в своём контексте.
                     </li>
                 </ul>
             </nav>
@@ -41,13 +41,13 @@ sogdian
         Это про обстоятельства использования, способ уточнять поведение блока или элемента в зависимости от ситуации их применения.
         Модификаторы «булевы» и типа «ключ-значение»
         Основные стили всегда должны быть написаны в базовом классе, а модифицирующие в отдельных.
-            <nav class="menu"> - блок
+            <nav class="menu"> - блок1
                 <ul>
-                    <li><a class="menu__link menu__link_is-current">Главная</a></li> - блок__элемент блок__элемент_модификатор, в блок__элемент будут общие стили для всех ссылок, в блок__элемент_модификатор будет только стиль подчёркивания для текущей страницы
-                    <li><a class="menu__link">О проекте</a></li> - блок__элемент
+                    <li><a class="menu__link menu__link_is-current">Главная</a></li> - блок1__элемент1 блок1__элемент1_модификатор1, в блок1__элемент1 будут общие стили для всех ссылок, в блок1__элемент1_модификатор1 будет только стиль подчёркивания для текущей страницы
+                    <li><a class="menu__link">О проекте</a></li> - блок1__элемент1
                 </ul>
             </nav>
-            <button class="button button_size_l button_theme_dark button_action_approve"> - блок модификатор_1 модификатор_2 модификатор_3, Каждому такому состоянию интерфейса могут быть назначены свои стили в дополнение к общим для блока или элемента.
+            <button class="button button_size_l button_theme_dark button_action_approve"> - блок2 модификатор_1 модификатор_2 модификатор_3, Каждому такому состоянию интерфейса могут быть назначены свои стили в дополнение к общим для блока или элемента.
                 Подтвердить
             </button>
 
@@ -55,17 +55,17 @@ sogdian
         Миксом называют способы примешивания стилей к основным
         Если в вашем макете есть повторяющийся паттерн, применимый ко многим компонентам, то на вы описываете абстрактный блок с повторяющимися стилями
             <header class="header"> - блок1
-                <button class="button header__button">Кнопка в шапке</button> - блок2 блок1__элемент
+                <button class="button header__button">Кнопка в шапке</button> - блок2 блок1__элемент1
             </header>
-            <form class="subscribe-form"> - блок1
-                <input type="checkbox" class="subscribe-form__checkbox visually-hidden"> - блок1__элемент1 блок-2
-                <span class="subscribe-form__pseudo-checkbox"></span> - блок1__элемент2
+            <form class="subscribe-form"> - блок2
+                <input type="checkbox" class="subscribe-form__checkbox visually-hidden"> - блок2__элемент1 блок-3
+                <span class="subscribe-form__pseudo-checkbox"></span> - блок2__элемент2
             </form>
-            <section class="cover"> - блок1
-                <img src="/illustration.svg" class="cover__illustration rotation"> блок1__элемент блок2
+            <section class="cover"> - блок3
+                <img src="/illustration.svg" class="cover__illustration rotation"> блок3__элемент3 блок4
             </section>
-            <section class="content"> блок3
-                <div class="content__illustration-pic rotation"></div> блок3__элемент-3 блок2
+            <section class="content"> блок5
+                <div class="content__illustration-pic rotation"></div> блок5__элемент-4 блок4
             </section>
 
         //Стилизация
@@ -96,6 +96,44 @@ sogdian
             класс модификатор не используется без указания блока или элемента, который он модифицирует;
             классы модификаторы описывают только модифицированное значение, остальные описаны в стилях блока;
             внешняя геометрия блоков задана через миксы.
+
+//Пример БЭМ
+
+<body class="page">
+    <header class="header">
+      <h1 class='header__title '></h1>
+      <nav class='header__menu'>
+        <div class="header__logo">
+        </div>
+        <ul class='header__theme-toggler'>
+          <li>
+            <button class='header__theme-button header__theme-button_type_dark'></button>
+          </li>
+          <li>
+            <button class='header__theme-button header__theme-button_type_light header__theme-button_is-active'></button>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main class="content">
+      <h2 class='heading content__title'></h2>
+      <div class='content__text-block content__text-block_type_first-lettered'>
+        <p class='content__paragraph'></p>
+      </div>
+      <div class='content__text-block content__text-block_type_first-lettered'>
+        <figure class='content__figure'>
+          <img class='content__picture'>
+          <figcaption class='content__picture-caption'></figcaption>
+        </figure>
+      </div>
+      <div class='content__text-block'>
+        <ul class='content__list'></ul>
+      </div>
+    </main>
+<footer class="footer">
+    <p class='footer__copyright'></p>
+</footer>
+
 
 Разрешения:
 Статистика https://screensizemap.com/
@@ -141,6 +179,7 @@ https://codepen.io/Sogdian/pen/rNPyQBy
 https://practicum.yandex.ru/learn/frontend-developer/courses/d763b691-52eb-4ff3-8ab9-35de4faf9449/sprints/178893/topics/a219d915-1575-4582-a352-6d005915c556/lessons/db019d1e-fb9f-4c4e-8e25-314f1792d267/
 https://sandbox.practicum-team.ru/tasks/03-design/06-different-devices/05-prefers/example-03/pre/
 "Обратите внимание, меняются только те цвета, которые мы не задавали собственноручно. Например, цвета формы, подписей чекбокса и радиокнопок не меняются, там мы переопределили дефолтные стили браузера."
+1. у меня не меняется тема на темную при включенном в настройках брайзера "prefers-color-scheme: dark", только когда "Automatic-dark-mode"
 но цвет в label меняется
 если поставить для form цвет желтый, то он тоже будет меняться
 
