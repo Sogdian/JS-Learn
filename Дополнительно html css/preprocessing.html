@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <title>Title</title>
+</head>
+<body>
+  <div>
+    <ul>
+      <li>
+        include '/components/card.html' image='/images/card-1.jpg' title='Карточка 1' <!-- вставка шаблона card-->
+      </li>
+      <li>
+        include '/components/card.html' image='/images/card-2.jpg' title='Карточка 2'
+      </li>
+    </ul>
+  </div>
+  <div>
+    data = [
+    {image: '/images/card-1.jpg', title: 'Карточка 1'},
+    {image: '/images/card-2.jpg', title: 'Карточка 2'},
+    ]
+    <ul>
+      <li forLoop="card in data">  <!-- вставка шаблона card через цикл. Под каждый объект будет создана своя карточка в HTML с уникальными данными -->
+        include '/components/card.html' image=card.image title=card.title
+      </li>
+    </ul>
+  </div>
+</body>
+</html>
+
+
+<!-- шаблон /components/card.html -->
+<article class="card">
+  <img class="card__image" src={{image}} alt={{title}}>
+  <h3 class="card__title">{{title}}</h3>
+</article>
