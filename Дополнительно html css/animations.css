@@ -108,3 +108,125 @@ svg {
     fill: #5f0dee;
   }
 }
+
+/*тень блинкует */
+p {
+  text-shadow: 0 0 5px #ffdd1b, 0 0 10px #ffdd1b, 0 0 15px #ffdd1b,
+    0 0 30px #ffd700, 0 0 60px #ffd700, 0 0 90px #ffd700, 0 0 120px #ffd700;
+}
+p:hover {
+  animation: blink 0.5s infinite alternate;
+}
+@keyframes blink {
+  0% {
+    text-shadow:
+      0 0 5px #ffdd1b, 0 0 10px #ffdd1b, 0 0 15px #ffdd1b,
+      0 0 30px #ffd700, 0 0 60px #ffd700, 0 0 90px #ffd700, 0 0 120px #ffd700;
+  }
+  18% {
+    text-shadow:
+      0 0 5px #ffdd1b, 0 0 10px #ffdd1b, 0 0 15px #ffdd1b,
+      0 0 30px #ffd700, 0 0 60px #ffd700, 0 0 90px #ffd700, 0 0 120px #ffd700;
+  }
+  22% {
+    text-shadow:
+      0 0 5px #ffdd1b, 0 0 10px #ffdd1b, 0 0 15px #ffdd1b,
+      0 0 30px #ffd700, 0 0 60px #ffd700, 0 0 90px #ffd700, 0 0 120px #ffd700;
+  }
+  25% {
+    text-shadow:
+      0 0 5px #ffdd1b, 0 0 10px #ffdd1b, 0 0 15px #ffdd1b,
+      0 0 30px #ffd700, 0 0 60px #ffd700, 0 0 90px #ffd700, 0 0 120px #ffd700;
+  }
+  53% {
+    text-shadow:
+      0 0 5px #ffdd1b, 0 0 10px #ffdd1b, 0 0 15px #ffdd1b,
+      0 0 30px #ffd700, 0 0 60px #ffd700, 0 0 90px #ffd700, 0 0 120px #ffd700;
+  }
+  57% {
+    text-shadow:
+      0 0 5px #ffdd1b, 0 0 10px #ffdd1b, 0 0 15px #ffdd1b,
+      0 0 30px #ffd700, 0 0 60px #ffd700, 0 0 90px #ffd700, 0 0 120px #ffd700;
+  }
+  100% {
+    text-shadow:
+      0 0 5px #ffdd1b, 0 0 10px #ffdd1b, 0 0 15px #ffdd1b,
+      0 0 30px #ffd700, 0 0 60px #ffd700, 0 0 90px #ffd700, 0 0 120px #ffd700;
+  }
+
+  20% {
+    text-shadow: none;
+  }
+  24% {
+    text-shadow: none;
+  }
+  55% {
+    text-shadow: none;
+  }
+}
+
+/* Анимация цвета градиента */
+/*Анимацию простых градиентов вы можете потестировать в генераторе https://www.gradient-animator.com/. */
+@property --color{ /* @property - Анимация цвета градиента. переменная называется --color */
+  syntax: '<color>';
+  inherits: false;
+  initial-value: red;
+}
+@keyframes grad {
+  from {
+    --color: red;
+  }
+  to {
+    --color: green;
+  }
+}
+.box {
+  background-image:
+    linear-gradient(
+      20deg,
+      var(--color) 10%,
+      blue,
+      var(--color) 90%
+    );
+  animation: grad 3s linear infinite alternate;
+}
+
+/* 3д анимации
+По умолчанию точка, вокруг которой происходит трансформация находится в центре элемента, который трансформируют
+*/
+
+.translate {
+  transform: translate3d(30px, 40px, -50px);
+  transform: translateX(20px) translateY(30%) translateZ(10vh); /* Сдвиг на 20px по X, на 30% по Y и 10vh по Z.
+    Так как блоки в HTML плоские, значение translateZ в процентах бесполезно. Поэтому не нужно его задавать в процентах. От нуля толщины процента не взять */
+}
+.rotate {
+  transform: rotate3d(1, 1, 1, 45deg);
+  transform: rotateX(90deg) rotateY(0.25turn) rotateZ(1rad); /* Поворот на 90° по X, четверть оборота по оси Y и один радиан по оси Z. */
+}
+.scale {
+  transform: scale3d(1.2, 1, 1.5); /* координату вектора вращения по оси X, координату по оси Y, координату по оси Z и угол поворота */
+  transform: scaleX(1.5) scaleY(0.8) scaleZ(1); /* Масштабирование на 1.5 по X, на 0.8 по Y и без масштабирования по Z. */
+}
+.block {
+  transform: perspective(200px) rotateY(30deg); /* перспектива
+    Чем больше значение перспективы, тем менее будут заметны эффекты трёхмерности. */
+}
+/* перспектива для контейнера */
+.parent {
+  perspective: 200px;
+  perspective-origin: 100% 40px; /* Точку, в которую приходится фокус зрения для контейнера. значения по осям X и Y*/
+  transform-style: flat; /* Контейнер, в который будут проникать элементы, может стать 3D-пространством
+    flat - стенка сзади
+    preserve-3d - 3D-пространство внутри контейнера */
+  transform: translateZ(calc(-1 * var(--size)));
+  transform: matrix3d(a1, b1, c1, d1,
+                      a2, b2, c2, d2,
+                      a3, b3, c3, d3,
+                      a4, b4, c4, d4); /* Матрица трансформаций в 3D */
+}
+.parent .child {
+  transform: rotateY(45deg);
+  transform-origin: left center; /* изменения точки поворота */
+  backface-visibility: hidden; /* управлять видимостью */
+}

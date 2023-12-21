@@ -241,6 +241,11 @@ window.getComputedStyle; //Получить стили, но только те �
 input.type = 'text'; //сменить тип на 'text'
 showPassword.checked; //свойство чекбокса true/false, включен ли он или выключен
 
+/*js в html, кнопка открытия dialog */
+// <button type="button" onClick="window['dialog-id'].show();" aria-controls="dialog-id">Открыть окно</button>
+// <button type="button" onClick="window['dialog-id'].showModal()" aria-controls="dialog-id">Открыть окно</button>
+// <dialog id="dialog-id"></dialog>
+
 
 
 

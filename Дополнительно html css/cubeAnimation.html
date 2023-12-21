@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cube</title>
+  <link
+    rel="stylesheet"
+    href="https://code.s3.yandex.net/web-code/fonts/fonts.css"
+  />
+  <link rel="stylesheet" href="cubeAnimation.css" />
+  <link rel="stylesheet" href="cubeAnimation2.css" />
+</head>
+<body>
+<div class="container">
+  <form class="controls">
+    <label>
+      <span>Cube rotateX</span>
+      <input
+        class="range"
+        name="cube-rotate-x"
+        type="range"
+        min="-360"
+        max="360"
+        step="1"
+      />
+    </label>
+    <label>
+      <span>Cube rotateY</span>
+      <input
+        class="range"
+        name="cube-rotate-y"
+        type="range"
+        min="-360"
+        max="360"
+        step="1"
+      />
+    </label>
+  </form>
+  <div class="view">
+    <div class="cube">
+      <div class="side top">Контент</div>
+      <div class="side right">Наставник</div>
+      <div class="side bottom">Куратор</div>
+      <div class="side left">Проект</div>
+      <div class="side front">Студент</div>
+      <div class="side back">Ревью</div>
+    </div>
+  </div>
+</div>
+<script src="./scripts/script.js"></script>
+</body>
+</html>

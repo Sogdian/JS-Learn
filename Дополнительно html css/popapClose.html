@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Диалог</title>
+  <link
+    rel="stylesheet"
+    href="https://code.s3.yandex.net/web-code/fonts/fonts.css"
+  />
+  <link rel="stylesheet" href="popapClose.css" />
+</head>
+<body>
+<div class="wrapper">
+  <p>
+    Подумайте обо всем этом, а затем взгляните на нашу зеленую, добрую,
+    смирную землю — сравните их, море и землю, не замечаете ли вы тут
+    странного сходства с тем, что внутри вас? Ибо как ужасный океан со всех
+    сторон окружает цветущую землю, так и в душе у человека есть свой Таити,
+    свой островок радости и покоя, а вокруг него бушуют бессчетные ужасы
+    неведомой жизни. Упаси тебя бог, человек! Не вздумай покинуть этот
+    остров и пуститься в плавание. Возврата не будет.
+  </p>
+  <button
+    type="button"
+    onclick="window['dialog-id'].showModal();"
+    aria-controls="dialog-id"
+  >
+    Открыть окно
+  </button>
+</div>
+<dialog id="dialog-id">
+  <h2>Подпишитесь на нашу рассылку</h2>
+  <form>
+    <label for="email">Введите вашу почту</label>
+    <input type="email" id="email" placeholder="test@example.com" />
+    <button type="submit">Подписаться</button>
+
+    <button
+      class="close"
+      type="button"
+      onclick="window['dialog-id'].close();"
+    >
+      Не подписываться
+    </button>
+  </form>
+
+  <form method="dialog">
+    <button class="close-button">
+      <span class="visually-hidden">Закрыть окно</span>
+    </button>
+  </form>
+</dialog>
+</body>
+</html>
