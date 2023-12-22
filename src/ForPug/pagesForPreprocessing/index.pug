@@ -1,0 +1,25 @@
+extends ../layoutsForPreprocessing/default
+//экстендим (наследуем) default в эту страницу index
+block content
+  //включаем компонент card-list в эту страницу
+  include ../components/card-list/card-list
+    block items
+      article.card
+        .card__image
+          img(src='/images/card.svg', alt="")
+        .card__content
+          .card__title Заголовок карточки 1
+          .card__text Текст карточки 1
+      article.card
+        .card__image
+          img(src='/images/card.svg', alt="")
+        .card__content
+          .card__title Заголовок карточки 2
+          .card__text Текст карточки 2
+      article.card
+        .card__image
+          img(src='/images/card.svg', alt="")
+        .card__content
+          .card__title Заголовок карточки 3
+          .card__text Текст карточки 3
+

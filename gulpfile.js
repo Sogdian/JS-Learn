@@ -11,6 +11,7 @@ const postcss = require('gulp-postcss'); //постпроцессинг
   const mediaquery = require('postcss-combine-media-query'); //постпроцессинг. Склейка медиазапросов
   const cssnano = require('cssnano'); //постпроцессинг. Минификация CSS
   const htmlMinify = require('html-minifier'); //постпроцессинг. Минификация HTML
+const gulpPug = require('gulp-pug'); /* препроцессинг с Pug */
 
 
 function serve() {//для browserSync. запуск Сервер
@@ -71,18 +72,20 @@ function clean() {//del. Очистка папки dist/
 function watchFiles() {//Отслеживание изменений в файлах
   //Запуск задачи watchapp следит за файлами в src/ и делает пересборку после каждого изменения этих файлов.
   //Отключить такое слежение в терминале можно клавишами CTRL + C8*
+  gulp.watch(['src/**/*.pug'], pug);
   gulp.watch(['src/**/*.html'], html);
   gulp.watch(['src/blocks/**/*.css'], css);
   gulp.watch(['src/images/**/*.{jpg,png,svg,gif,ico,webp,avif}'], images);
 }
 
-const build = gulp.series(clean, gulp.parallel(html, css, images));
-const watchapp = parallel(build, watchFiles, serve); //build + Отслеживание изменений в файлах + запуск сервера
+const build = gulp.series(clean, gulp.parallel(pug, html, css, images));
+const watchapp = gulp.parallel(build, watchFiles, serve); //build + Отслеживание изменений в файлах + запуск сервера
 
 exports.html = html // строчка, которая позволит вызвать эту задачу из терминала. Мы создали функцию с именем html и экспортировали её для вызова из терминала.
 exports.css = css;
 exports.images = images;
 exports.clean = clean;
+exports.pug = pug; //Чтобы заработала команда gulp-pug, нужно настроить экспорт получившейся функции.
 
 exports.build = build;
 exports.watchapp = watchapp;
@@ -91,3 +94,13 @@ exports.default = watchapp; //просто вызвать gulp  терминал
 //Сборка одной командой
 //series() — выполняет задачи по очереди
 //parallel() — выполняет задачи параллельно
+
+function pug() {
+  return gulp.src('src/ForPug/pagesForPreprocessing/**/*.pug') //Gulp находит все файлы с расширением .pug внутри папки src/pages/.
+    .pipe(gulpPug({
+      pretty: true
+    })) //Затем включается преобразование кода на языке Pug в HTML.
+    .pipe(gulp.dest('dist/')) //Потом преобразованный код отправляется в папку dist/
+    .pipe(browserSync.reload({stream: true})); //Сервер перезагружается, чтобы показать результаты в браузере
+}
+
