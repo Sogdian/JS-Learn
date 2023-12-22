@@ -1,15 +1,21 @@
 //лэйаут, повторяющаяся часть страницы
 //экстендится (наследуется) в страницы index и в about
+
+block variables
+
 doctype html
 html(lang="ru")
   head
     meta(charset="utf-8")
     meta(name="viewport", content="width=device-width, initial-scale=1")
-    title Карточки
+    //в title подставляется переменная либо из index либо из about
+    title= title
     link(rel="stylesheet", href="/bundle.css")
   body.default-layout
     //включение компонента header в страницу
     include ../components/header/header
+    +header(includeHomeLink)
+    //подключаем блок content на странице index
     block content
     //включение компонента footer в страницу
     include ../components/footer/footer

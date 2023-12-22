@@ -1,25 +1,32 @@
 extends ../layoutsForPreprocessing/default
-//экстендим (наследуем) default в эту страницу index
+
+block variables
+  - var title = 'Главная страница'
+  - var includeHomeLink = false
+  -
+    var cardsData = [
+      { 'image': '/images/card.svg', 'title': 'Заголовок карточки 1', 'text': 'Текст карточки 1' },
+      { 'image': '/images/card.svg', 'title': 'Заголовок карточки 2', 'text': 'Текст карточки 2' },
+      { 'image': '/images/card.svg', 'title': 'Заголовок карточки 3', 'text': 'Текст карточки 3' }
+    ]
+
 block content
   //включаем компонент card-list в эту страницу
   include ../components/card-list/card-list
     block items
-      article.card
-        .card__image
-          img(src='/images/card.svg', alt="")
-        .card__content
-          .card__title Заголовок карточки 1
-          .card__text Текст карточки 1
-      article.card
-        .card__image
-          img(src='/images/card.svg', alt="")
-        .card__content
-          .card__title Заголовок карточки 2
-          .card__text Текст карточки 2
-      article.card
-        .card__image
-          img(src='/images/card.svg', alt="")
-        .card__content
-          .card__title Заголовок карточки 3
-          .card__text Текст карточки 3
-
+      include ../components/card/card
+      //вар 1
+      //+card("/images/card.svg", "Карточка 1", "Текст карточки 1")
+      //+card("/images/card.svg", "Карточка 2", "Текст карточки 2")
+      //+card("/images/card.svg", "Карточка 3", "Текст карточки 3")
+      //вар 2
+      //if cardsData.length > 0
+      //  +card(cardsData[0].image, cardsData[0].title, cardsData[0].text)
+      //  +card(cardsData[1].image, cardsData[1].title, cardsData[1].text)
+      //  +card(cardsData[2].image, cardsData[2].title, cardsData[2].text)
+      //вар 3
+      if cardsData.length > 0
+        each card in cardsData
+          +card(card.image, card.title, card.text)
+      else
+        p Карточки нет
