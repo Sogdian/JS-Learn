@@ -31,17 +31,32 @@ function pug() {
     .pipe(gulp.dest('dist/')) //преобразованный код отправляется в папку dist/
     .pipe(browserSync.reload({stream: true})); //Сервер перезагружается, чтобы показать результаты в браузере
 }
-//препроцессинг с css
-function scss() {
+//препроцессинг с scss
+function layoutScss() {
   const plugins = [
     autoprefixer(),
     mediaquery(),
     // cssnano() //минификация
   ];
-  return gulp.src('gulp-scss/src/layouts/default.scss') // ищет все файлы с расширением .scss внутри папки с исходниками
+  return gulp.src('gulp-scss/src/layouts/**/*.scss') // ищет все файлы с расширением .scss внутри папки с исходниками
     //вместо gulp.src('gulp-scss/src/**/*.scss')
     .pipe(sass()) //применяет преобразование из подключённого плагина
     .pipe(concat('bundle.css')) //использовали concat для склеивания CSS в один файл с именем bundle.css
+    .pipe(postcss(plugins))//постпроцессинг через postcss
+    .pipe(gulp.dest('dist/')) //преобразованный код отправляется в папку dist/
+    .pipe(browserSync.reload({stream: true})); //Сервер перезагружается, чтобы показать результаты в браузере
+}
+
+//препроцессинг с scss
+function pagesScss() {
+  const plugins = [
+    autoprefixer(),
+    mediaquery(),
+    // cssnano() //минификация
+  ];
+  return gulp.src('gulp-scss/src/pages/**/*.scss') // ищет все файлы с расширением .scss внутри папки с исходниками
+    //вместо gulp.src('gulp-scss/src/**/*.scss')
+    .pipe(sass()) //применяет преобразование из подключённого плагина
     .pipe(postcss(plugins))//постпроцессинг через postcss
     .pipe(gulp.dest('dist/')) //преобразованный код отправляется в папку dist/
     .pipe(browserSync.reload({stream: true})); //Сервер перезагружается, чтобы показать результаты в браузере
@@ -101,22 +116,25 @@ function watchFiles() {//Отслеживание изменений в файл
   //Отключить такое слежение в терминале можно клавишами CTRL + C8*
   gulp.watch(['gulp-scss/src/**/*.pug'], pug);
   gulp.watch(['gulp-scss/src/**/*.html'], html);
-  gulp.watch(['gulp-scss/src/blocks/**/*.css'], css);
-  gulp.watch(['gulp-scss/src/blocks/**/*.scss'], scss);
-  gulp.watch(['gulp-scss/src/images/**/*.{jpg,png,svg,gif,ico,webp,avif}'], images);
+  gulp.watch(['gulp-scss/src/**/*.css'], css);
+  gulp.watch(['gulp-scss/src/layouts/**/*.scss'], layoutScss);
+  gulp.watch(['gulp-scss/src/pages/**/*.scss'], pagesScss);
+  gulp.watch(['gulp-scss/src/**/*.{jpg,png,svg,gif,ico,webp,avif}'], images);
 }
 
 // const build = gulp.series(clean, gulp.parallel(pug, html, css, images)); //для css
-const build = gulp.series(clean, gulp.parallel(pug, html, scss, images)); //для scss
+const build = gulp.series(clean, gulp.parallel(pug, html, layoutScss, pagesScss, images)); //для scss
 const watchapp = gulp.parallel(build, watchFiles, serve); //build + Отслеживание изменений в файлах + запуск сервера
 
 
 exports.html = html // строчка, которая позволит вызвать эту задачу из терминала. Мы создали функцию с именем html и экспортировали её для вызова из терминала.
+exports.layoutScss = layoutScss;
+exports.pagesScss = pagesScss;
 exports.css = css;
 exports.images = images;
 exports.clean = clean;
 exports.pug = pug; //Чтобы заработала команда gulp-pug, нужно настроить экспорт получившейся функции.
-exports.scss = scss;
+
 
 exports.build = build;
 exports.watchapp = watchapp;
