@@ -194,3 +194,7 @@ https://sandbox.practicum-team.ru/tasks/03-design/06-different-devices/05-prefer
 //5
 При  prefers-reduced-motion со значением reduce у меня наоборот все быстрее анимируется
 https://sandbox.practicum-team.ru/tasks/03-design/06-different-devices/05-prefers/example-06/pre/
+
+//6
+ПОВТОРИТЬ в vs.code
+https://practicum.yandex.ru/learn/frontend-developer/courses/4f5191d5-2bc3-4234-be24-967e3d31d2df/sprints/195469/topics/1f7cb4e0-5cea-4e5f-9d5c-68cfbd9126b7/lessons/de78ace9-13e1-4f6c-a1c1-056c902d3bde/
