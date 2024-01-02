@@ -27,13 +27,13 @@ console.log(21 + "2"); //"212"
     console.log('2' * 50); // = 100. Звёздочка — это знак умножения, со строками она не используется. Поэтому JavaScript пытается превратить строку '2' в число, и ему это удаётся. Затем числа 2 и 50 перемножаются, и получается 100.
 
 //Приведение к типу
-String(1); // Выведет строку: 1 (String)
-    toString(1); // Выведет строку: 1 (String)
-    Number('1'); // Выведет число: 1 (Number)
-    parseInt('17');   // Вернёт 17
-    parseInt('10001', 2); // Вернёт 17
-    parseInt('11', 16);   // Вернёт 17
-/*Приведение к логическому типу данных
+  String(1); // Выведет строку: 1 (String)
+      toString(1); // Выведет строку: 1 (String)
+      Number('1'); // Выведет число: 1 (Number)
+      parseInt('17');   // Вернёт 17
+      parseInt('10001', 2); // Вернёт 17
+      parseInt('11', 16);   // Вернёт 17
+/* Приведение к логическому типу данных
     Значения, которые как бы ничего в себе не содержат (как 0, пустая строка '' или undefined), приводятся к false, а все остальные приводятся к true */
 
 let pages = 0;
@@ -42,117 +42,201 @@ let pages = 0;
 
 //операторы
     //оператор строгого равенства, тут нет приведения типов. https://htmlacademy.ru/courses/209/run/5
-    'a' === 'a'; // Результат: true
-    'a' !== 'a'; // Результат: false
+      'a' === 'a'; // Результат: true
+      'a' !== 'a'; // Результат: false
     //оператор нестрогого равенства, тут есть приведение типов
-    'a' == 'a'; // Результат: true
+      'a' == 'a'; // Результат: true
     //оператор нестрогого неравенства
-    'a' != 'a';
+      'a' != 'a';
     //логическое И
-    //true && true; Результат: true; true && false;  // Результат: false; false && true;  // Результат: false; false && false; // Результат: false
+      //true && true - возвращает значение true, если оба операнда равны true.
+      //сокращенное вычисление логического выражения в реакте
+      <div> { isFinished && <Modal /> } </div> //если isFinished = true, то вызовется <Modal />
     //логическое ИЛИ
-    //true || true;   // Результат: true; // true || false;  // Результат: true; // false || true;  // Результат: true; // false || false; // Результат: false
+     //true || true - возвращает true, если хотя бы один из операндов равен true.
 
-//массивы
-    /* в массиве можно хранить любые данные: строки, булевы значения, числа и даже другие массивы.
-    если в массиве нет элемента под тем номером, под которым мы записываем, то этот элемент будет создан */
-let phrases = []; //пустой массив
-let numbers = [1, 2, 3, 4, 5];
-    numbers.push(6); //добавить новый элемент в конец
-let aliExpress = ['Лазерная указка Xioamo', 'Гарнитура в виде телефонной трубки', 'Форма для льда «Титаник»'];
-    aliExpress.length //длина массиыв = 3 элемента
-//вывод элементов массива (feature) в шаблоне { featuresList }
-const features = [
-    '2 каюты',
-    '4 спальных места',
-];
-const featuresList = features.map((feature) => (
-  <li>{feature}</li>
-));
-<ul className="card-features">
-    { featuresList }
-</ul>
-//includes - содержит элементов в масссиве
-root.render(<App words={words} selectedItems={selectedItems}/>);
-const selectedItems = ['3', '4'];
-const words = [ { id: '1', word: 'Сasa' };
-function App({words = [], selectedItems = []}) {
-    const cards = words.map((item) => (
-      <Card isSelected={selectedItems.includes(item.id)} /> //https://up.htmlacademy.ru/fe-react/1/demos/10321#19
-    ));
-    return (
-          <ul> {cards} </ul>
-    );}
+/* массивы
+  в массиве можно хранить любые данные: строки, булевы значения, числа и даже другие массивы.
+  если в массиве нет элемента под тем номером, под которым мы записываем, то этот элемент будет создан */
+  let phrases = []; //пустой массив
+  let numbers = [1, 2, 3, 4, 5];
+      numbers.push(6); //добавить новый элемент в конец массива
+  let aliExpress = ['Лазерная указка Xioamo', 'Гарнитура в виде телефонной трубки', 'Форма для льда «Титаник»'];
+      aliExpress.length //длина массиыв = 3 элемента
+
+  const results = new Array(size); //size - размер массива. У этого массива задана длина, но он не будет заполнен элементами. Для элементов создаются «ячейки» — слоты
+    const results = new Array(size).fill(value); //fill - для заполнения слотов пустого массива
+
+  const count = 5;
+    const results = Array.from({length: count}, (_,i) => i * 2); //Где size — это желаемый размер массива, i — значение, которое мы добавляем в массив.
+      //Метод from создаёт массив из любого объекта, похожего на массив. Здесь мы создаём новый массив с помощью метода Array.from()
+    console.log(results)
+
+  const count = 5;
+    const results = [...Array(count)].map((_, i) => i * 2); //Ещё один способ заполнить «разреженный» массив — создать его копию spread-оператором
+    console.log(results)
+
+  //map
+    const newArray = array.map(item => {
+      // код преобразования элемента из array в newArray
+    })
+    //пример
+      const numbers = [1, 2, 3, 4, 5];
+      const results = numbers.map(number => number * 2);
+      console.log(results); // [2, 4, 6, 8, 10]
+    //вывод элементов массива (feature) в шаблоне { featuresList }
+      const features = [
+          '2 каюты',
+          '4 спальных места',
+      ];
+      const featuresList = features.map((feature) => (
+        <li>{feature}</li>
+      ));
+      <ul className="card-features">
+          { featuresList }
+      </ul>
+
+  //includes - Метод используется для проверки наличия элемента в массиве. Если элемент найден, возвращает true, если нет — false.
+    const fruits = ["apple", "banana", "orange", "mango"];
+    console.log(fruits.includes("banana")); // true
+    console.log(fruits.includes("kiwi")); // false
+      //Эту же операцию можно записать методом indexOf, который вернёт индекс нужного элемента в массиве, и сравнить его с -1.
+    //пример
+      root.render(<App words={words} selectedItems={selectedItems}/>);
+      const selectedItems = ['3', '4'];
+      const words = [ { id: '1', word: 'Сasa' };
+      function App({words = [], selectedItems = []}) {
+          const cards = words.map((item) => (
+            <Card isSelected={selectedItems.includes(item.id)} /> //https://up.htmlacademy.ru/fe-react/1/demos/10321#19
+          ));
+          return (
+                <ul> {cards} </ul>
+          );}
+
+  //filter. если при переборе в массиве item === true, то элемент добавляется в новый массив
+  const persons = [
+    { name: 'Пётр', age: 16 },
+    { name: 'Максим', age: 18 },
+  ];
+  const fullAgePersons = persons.filter(person => person.age >= 18); //На вход filter передадим другую функцию, которая возвращает true, если поле age больше либо равно 18.
+  console.log(fullAgePersons); //fullAgePersons - массив, который будет содержать только совершеннолетних
+
+  const fruits = ['apple', 'banana', 'orange', 'grape'];
+  const itemToRemove = 'orange';
+  const filteredFruits = fruits.filter((item) => item !== itemToRemove); //filter можно использовать и для удаления элемента из массива
+  console.log(filteredFruits);
+
+  //find Метод find ищет элементы в массиве.
+    const numbers = [1, 2, 3, 4, 5, 6, 7];
+    const result = numbers.find((item) => item > 3);
+    console.log(result); // 4. Метод find находит первый элемент массива, удовлетворяющий условию, и возвращает его. В нашем случае это элемент 4.
+    //пример с объектами
+      const persons = [
+        { id: 1, name: 'Alice' },
+        { id: 2, name: 'Bob' },
+      ];
+      const resultByName = persons.find((item) => item.name === 'Bob'); //Метод find можно использовать для поиска объекта в массиве по значению одного из его полей.
+      console.log(resultByName); // { id: 2, name: 'Bob' }
 
 //объекты
-let user = {
-    nickname: 'Мария',
-    getGreeting: function() {
-        return 'nickname';
-    },
-    getGreeting2: function() {
-        return this.nickname; //вернуть значение ключа этого же объекта
-    }
-};
-console.log(user.getGreeting()); //Мария
-console.log(user.getGreeting2()); //Мария
+  let user = {
+      nickname: 'Мария',
+      getGreeting: function() {
+          return 'nickname';
+      },
+      getGreeting2: function() {
+          return this.nickname; //вернуть значение ключа этого же объекта
+      }
+  };
+  console.log(user.getGreeting()); //Мария
+  console.log(user.getGreeting2()); //Мария
 
 //словари
-let users = {
-    'favorite food': 'Сметана',
-    fullname: 'Иванова'
-};
-console.log(users['favorite food']); //Сметана
-console.log(user['fullname']); //Иванова
+  let users = {
+      'favorite food': 'Сметана',
+      fullname: 'Иванова'
+  };
+  console.log(users['favorite food']); //Сметана
+  console.log(user['fullname']); //Иванова
+
+//условия if else
+  //блоки if else нельзя использовать в JSX-выражениях в фигурных скобках.
+  const a = 5, b = 10;
+  let max;
+  if (a > b) {
+    max = a;
+  } else {
+    max = b;
+  }
+  //тернарный оператор
+    const a = 5, b = 10;
+    const max = (a > b) ? a : b; //условие ? значение1 : значение2;
+    //тернарный оператор в реакт
+    <div>{ condition ? <Component1 /> : <Component2 />; }</div>
 
 //циклы
-for (let i = 0; i <= 4; i = i + 1) {
-    console.log(aliExpress[i]);
-}
-for (let tooltipButton of tooltipButtons) { //элемент tooltipButton из коллекции tooltipButtons
-    console.log(tooltipButton);
-}
-while (a >= b) {
-}
+  //for
+    for (let i = 0; i <= 4; i = i + 1) {
+        console.log(aliExpress[i]);
+    }
+    for (let tooltipButton of tooltipButtons) { //элемент tooltipButton из коллекции tooltipButtons
+        console.log(tooltipButton);
+    }
+    while (a >= b) {    }
+
+  //switch
+    let day = 'Monday';
+    switch (day) {
+      case 'Monday':
+        alert('Сегодня понедельник');
+        break;
+      case 'Tuesday':
+        document.body.style.backgroundColor = 'blue';
+        break;
+      default:
+        alert('Сегодня неизвестный день недели');
+        break;
+    }
 
 //функции
-let functionName = function (userName, bookName) { //Передавать аргументы надо в том же порядке, в котором объявлены параметры функции. Потому что порядок аргументов соответствует порядку параметров в функции. У нас параметры записаны в таком порядке: userName, bookName.
-    console.log('Меня зовут ' + userName + '. Моя любимая книга: ' + bookName);
-    let name = userName + bookName;
-    return name;
-};
-function sayHello(name) {
-    return 'Привет, ' + name;
-}
+  let functionName = function (userName, bookName) { //Передавать аргументы надо в том же порядке, в котором объявлены параметры функции. Потому что порядок аргументов соответствует порядку параметров в функции. У нас параметры записаны в таком порядке: userName, bookName.
+      console.log('Меня зовут ' + userName + '. Моя любимая книга: ' + bookName);
+      let name = userName + bookName;
+      return name;
+  };
+  function sayHello(name) {
+      return 'Привет, ' + name;
+  }
 
 
 //js функции
-//принимает на вход число и округляет его до целого в большую сторону
-Math.ceil(number);
-//делает то же самое, только округляет в меньшую сторону
-Math.floor(number)
-//округляет число до ближайшего целого значения
-Math.round(number)
-//Генерация случайного числа
-Math.random() ;//Она возвращает случайное число между 0 и 0.99999999999, включая 0:
-    Math.random() * 10; //если нужно случайное число от 0 до 10
-//генерирует случайные числа в заданном промежутке, включая минимальное и максимальное значение.
-throwDice(min, max)
-//
-price.toLocaleString(); //1500 -> 1 500 //преобразует число в строку и возвращает значение, используя указанный языковой стандарт. Если метод используется без параметров, то он использует язык по-умолчанию.
+  //принимает на вход число и округляет его до целого в большую сторону
+  Math.ceil(number);
+  //делает то же самое, только округляет в меньшую сторону
+  Math.floor(number)
+  //округляет число до ближайшего целого значения
+  Math.round(number)
+  //Генерация случайного числа
+  Math.random() ;//Она возвращает случайное число между 0 и 0.99999999999, включая 0:
+      Math.random() * 10; //если нужно случайное число от 0 до 10
+  //генерирует случайные числа в заданном промежутке, включая минимальное и максимальное значение.
+  throwDice(min, max)
+  //
+  price.toLocaleString(); //1500 -> 1 500 //преобразует число в строку и возвращает значение, используя указанный языковой стандарт. Если метод используется без параметров, то он использует язык по-умолчанию.
+
 //Интерполяция шаблонной строки
-const formattedPrice = `${price.toLocaleString()} ₽/час`; // = price.toLocaleString() + " ₽/час"
-    const formattedPrice = {`cards ${!isShownByGrid ? 'list' : ''}`}; // "cards list" или "cards"
+  const formattedPrice = `${price.toLocaleString()} ₽/час`; // = price.toLocaleString() + " ₽/час"
+      const formattedPrice = {`cards ${!isShownByGrid ? 'list' : ''}`}; // "cards list" или "cards"
 
 
 //Деструктуризация
-const x = 5;
-    const obj = {x}; // или const obj = {x: x}; //создать объект со свойством x, равный значению этой переменной х = «возьми значение из переменной x и помести его в свойство объекта с таким же именем».
-    const arr = [x]; //также для массивов
-//Деструктуризация объекта (destructuring) — это синтаксический способ извлечения значений из объекта и присвоения их переменным.
-const obj = {x: 5};
-const { x } = obj; // Вместо сonst x = obj.x
-console.log(x); // Выведет в консоль 5
+  const x = 5;
+      const obj = {x}; // или const obj = {x: x}; //создать объект со свойством x, равный значению этой переменной х = «возьми значение из переменной x и помести его в свойство объекта с таким же именем».
+      const arr = [x]; //также для массивов
+  //Деструктуризация объекта (destructuring) — это синтаксический способ извлечения значений из объекта и присвоения их переменным.
+  const obj = {x: 5};
+  const { x } = obj; // Вместо сonst x = obj.x
+  console.log(x); // Выведет в консоль 5
 
 
 //Браузерный js ------------------------------
@@ -203,7 +287,8 @@ element.classList.toggle('class'); //добавление класса, когд
 element.classList.contains('class'); //проверить, есть ли у элемента класс. вернёт true (истина), если класс у элемента есть, и false (ложь), если класса нет.
 
 button.addEventListener('click', function () { }); //addEventListener слушатели событий» //https://developer.mozilla.org/ru/docs/Web/Events
-    button.onclick = function() {}; //Свойство onclick означает «по клику» //function() - обработчик событий
+    //addEventListener, onclick, oninput - обработка событий в DOM-элементах без React. Сначала находим DOM-элемент, затем подписываемся на нужное событие.
+    button.onclick = function() {}; //onclick - событие //function() - обработчик событий
     button.onclick = function(evt) {
         evt.preventDefault(); //отменить действие браузера по умолчанию (при наступлении события) - переход по ссылке
     };
@@ -218,7 +303,7 @@ button.addEventListener('click', function () { }); //addEventListener слуша
     checkbox.addEventListener('change', function () {}); //change - событие изменения инпута
     form.addEventListener('submit', function () {}); //отправка формы, событие на теге <form>
 
-element.onsubmit = function() {}; //обработчик событий onsubmit добавляется на форму <form> (не на кнопку)
+form.onsubmit = function() {}; //обработчик событий onsubmit добавляется на форму <form> (не на кнопку)
 input = document.querySelector('input').value; //value - это значение поля ввода (input), значение вернется только после того, как форма была отправлена. textContent вернет пусто, т.к. для JavaScript поля формы не имеют текстового содержимого, их значения хранятся именно в value.
 element.oninput = function() {} //вернет value из формы в процессе ввода текста (сразу каждую букву)
 
@@ -242,12 +327,19 @@ input.type = 'text'; //сменить тип на 'text'
 showPassword.checked; //свойство чекбокса true/false, включен ли он или выключен
 
 /*js в html, кнопка открытия dialog */
-// <button type="button" onClick="window['dialog-id'].show();" aria-controls="dialog-id">Открыть окно</button>
-// <button type="button" onClick="window['dialog-id'].showModal()" aria-controls="dialog-id">Открыть окно</button>
-// <dialog id="dialog-id"></dialog>
+  // <button type="button" onClick="window['dialog-id'].show();" aria-controls="dialog-id">Открыть окно</button>
+  // <button type="button" onClick="window['dialog-id'].showModal()" aria-controls="dialog-id">Открыть окно</button>
+  // <dialog id="dialog-id"></dialog>
 
 
-
+/*
+без реакта - с реактом (атрибут / пропс). React сохраняет исходные имена событий (onclick), но устанавливает правило: события именуются в стиле camelCase (onClick)
+  onclick - onClick
+  oninput - onInput
+  onmouseover - onMouseOver
+  mouseover - mouseOver
+  oninput - onInput
+*/
 
 
 
