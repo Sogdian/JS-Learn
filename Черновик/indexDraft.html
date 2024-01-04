@@ -18,17 +18,38 @@
 
   function App({words = []}) {
     const finishedItems = ['2'];
+    const [stepsCount, setStepsCount] = React.useState(0);
+
+    const checkItems = () => {
+      setStepsCount((i) => i + 1);
+    };
+
+    const hearts = [];
+    for (let i = 0; i < 3; i++) {
+      const className = i < stepsCount ? 'hit-points-used' : 'hit-points-unused';
+      hearts.push(
+        <span className={className}></span>
+      );
+    }
     return (
       <section className="game">
-        <Grid words={words} finishedItems={finishedItems}/>
+        <img src="img/pics-to-words.svg" width="112" height="16" alt="Pics to words"/>
+        <p className="hit-points-indicator">
+          {hearts}
+        </p>
+        <Grid words={words} finishedItems={finishedItems} checkItems={checkItems}/>
       </section>
     );
   }
 
-  function Grid({words, finishedItems}) {
+  function Grid({words, finishedItems, checkItems}) {
     const [selectedItems, setSelectedItems] = React.useState([]);
 
     const handleCardClick = (id) => {
+      if (selectedItems.includes(id)) {
+        return;
+      }
+      checkItems();
       setSelectedItems((items) => [...items, id]);
     };
 
@@ -63,6 +84,9 @@
     }`;
 
     const handleClick = () => {
+      if (isFinished) {
+        return;
+      }
       onCardClick(id);
     };
 

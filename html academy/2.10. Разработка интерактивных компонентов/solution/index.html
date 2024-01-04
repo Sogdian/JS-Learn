@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Игра Мемори</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="vendor/react.development.js"></script>
+  <script src="vendor/react-dom.development.js"></script>
+  <script src="vendor/babel.min.js"></script>
+  <script src="data.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const container = document.getElementById('root');
+    const root = ReactDOM.createRoot(container);
+    // В параметры приложения передаем только данные карточек.
+    // Данные карточек не изменятся в процессе работы приложения.
+    // Выбор карточек происходит пользователем, поэтому списки отгаданных и открытых карточек
+    // переносим «внутрь» приложения, в состояние.
+    root.render(<App images={images}/>);
+
+    function App({images = []}) {
+      // Список отгаданных карточек на этом этапе оставляем пустым
+      // пока не реализовано сравнение карточек, будем считать количество шагов.
+      const finishedItems = [];
+      // Счетчик шагов определили в состоянии React, чтобы отображать его обновление.
+      // Для создания состояния компонента вызываем метод React.useState.
+      // При вызове React.useState(0) передали начальное значение состояния.
+      // Вызов React.useState возвращает пару, которую мы сохранили в локальные переменные.
+      // Для назначения переменных использовали деструктуризацию массива,
+      // первое значение в массиве — текущее состояние, второе — функция для его изменения.
+      const [stepsCount, setStepsCount] = React.useState(0);
+      // Состояние счетчика stepsCount отображается в элементе div.steps.
+      // Чтобы React мог отслеживать изменения состояния используем функцию setStepsCount.
+      // Колбэк для изменения состояния checkItems передали в компонент сетки.
+      // Функция checkItems на этом этапе только считает количество шагов.
+      const checkItems = () => setStepsCount((i) => i + 1);
+
+      return (
+        <section className="game container">
+          <div className="steps">Шаг {stepsCount}</div>
+          <Grid
+            images={images}
+            finishedItems={finishedItems}
+            checkItems={checkItems}
+          />
+        </section>
+      );
+    }
+
+    function Grid({images = [], checkItems, finishedItems = []}) {
+      // Компонент сетки отвечает за управление списком выбранных карточек.
+      // Список visibleItems изменяется в процессе работы приложения,
+      // поэтому помещаем его в состояние React.useState.
+      const [visibleItems, setVisibleItems] = React.useState([]);
+
+      // Объявляем один обработчик клика для всех карточек,
+      // а чтобы обработчик «узнал», на какой карточке произошло событие,
+      // передадим ему идентификатор карточки в параметре.
+      const handleCardClick = (id) => {
+        // Игнорируем повторные клики по выбранным карточкам,
+        // проверяем идентификатор по спискам.
+        if (finishedItems.includes(id) || visibleItems.includes(id)) {
+          return;
+        }
+        // Сообщение родительскому компоненту будем передавать в колбэке через параметры (но пока ничего не передаём).
+        checkItems();
+        // Добавляем идентификатор в список выбранных.
+        // Для вычисления нового состояния используем функцию обновления.
+        // Создаем новый массив из копии текущего и добавляем элемент.
+        setVisibleItems((items) => [...items, id]);
+      };
+
+      return (
+        <ul className="cards">
+          {images.map((item) => (
+            <Card
+              key={item.id}
+              id={item.id}
+              url={item.url}
+              description={item.description}
+              isVisible={visibleItems.includes(item.id)}
+              isFinished={finishedItems.includes(item.id)}
+              onCardClick={handleCardClick}
+            />
+          ))}
+        </ul>
+      );
+    }
+
+    function Card({url, description, id, isVisible, isFinished, onCardClick}) {
+      const className = `${
+        isVisible ? 'card-show' : ''
+      } ${
+        isFinished ? 'card-finished' : ''
+      }`;
+
+      const handleClick = () => {
+        // Передаем идентификатор карточки родительскому компоненту в колбэке.
+        // Родительский компонент обновит свое состояние и карточка получит его в параметре.
+        onCardClick(id);
+      };
+
+      return (
+        <li onClick={handleClick} className={`card ${className}`}>
+          <img
+            width="204" height="144"
+            src={url}
+            alt={description}
+          />
+        </li>
+      );
+    }
+  </script>
+</body>
+</html>

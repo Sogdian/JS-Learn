@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <script src="data.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+  const container = document.getElementById('root');
+  const root = ReactDOM.createRoot(container);
+  root.render(<App words={words}/>);
+
+  function App({words = []}) {
+    const finishedItems = [];
+    const [stepsCount, setStepsCount] = React.useState(0);
+
+    const checkItems = () => {
+      setStepsCount((i) => i + 1);
+    };
+
+    //вар 1
+    const hearts = Array(3).fill(null).map((_, i) => (
+      <span className={i < stepsCount ? 'hit-points-used' : 'hit-points-unused'}/>
+    ));
+
+    return (
+      <section >
+        <img />
+        //<Hearts count={3} value={stepsCount}/> //ИЛИ вар 2 (сложнее)
+        <p>
+          {hearts} //вар 1
+        </p>
+        <Grid words={words} finishedItems={finishedItems} checkItems={checkItems}/>
+      </section>
+    );
+  }
+
+  // function Hearts({count = 0, value = 0}) { ИЛИ вар 2 (сложнее)
+  //   return (
+  //     <p>
+  //       {Array(count).fill(null).map((_, i) => (
+  //         <span className={i < value ? 'hit-points-used' : 'hit-points-unused'}/>
+  //       ))}
+  //     </p>
+  //   );
+  // }
+
+  function Grid({words, finishedItems, checkItems}) {
+    const [selectedItems, setSelectedItems] = React.useState([]);
+
+    const handleCardClick = (id) => {
+      if (selectedItems.includes(id)) {
+        return;
+      }
+      checkItems();
+      setSelectedItems((items) => [...items, id]);
+    };
+
+    const cards = words.map((item) => (
+      <Card
+        key={item.id}
+        id={item.id}
+        type={item.type}
+        url={item.url}
+        text={item.word}
+        isSelected={selectedItems.includes(item.id)}
+        isFinished={finishedItems.includes(item.id)}
+        onCardClick={handleCardClick}
+      />
+    ));
+    return (
+      <ul>
+        {cards}
+      </ul>
+    );
+  }
+
+  function Card({isSelected, isFinished, onCardClick, id}) {
+    const className = `card ${isSelected ? 'selected' : ''} ${isFinished ? 'disabled' : ''}`;
+
+    const handleClick = () => {
+      if (isFinished) {
+        return;
+      }
+      onCardClick(id);
+    };
+
+    return (
+      <li onClick={handleClick} className={className}>
+        {content}
+      </li>
+    );
+  }
+</script>
+</body>
+</html>
+
+
+
+<!-- data.js
+const words = [
+  {
+    id: '1',
+    token: 'house',
+    word: 'Сasa',
+    type: 'word'
+  },
+  {
+    id: '2',
+    token: 'house',
+    url: 'img/photo-card-4.jpg',
+    type: 'image'
+  },
+  {
+    id: '3',
+    token: 'dog',
+    word: 'Сane',
+    type: 'word'
+  },
+  {
+    id: '4',
+    token: 'dog',
+    url: 'img/photo-card-6.jpg',
+    type: 'image'
+  },
+  {
+    id: '5',
+    token: 'teapot',
+    word: 'Teiera',
+    type: 'word'
+  },
+  {
+    id: '6',
+    token: 'teapot',
+    url: 'img/photo-card-5.jpg',
+    type: 'image'
+  },
+  {
+    id: '7',
+    token: 'bed',
+    word: 'Letto',
+    type: 'word'
+  },
+  {
+    id: '8',
+    token: 'bed',
+    url: 'img/photo-card-2.jpg',
+    type: 'image'
+  },
+  {
+    id: '9',
+    token: 'headphone',
+    word: 'Cuffia',
+    type: 'word'
+  },
+  {
+    id: '10',
+    token: 'headphone',
+    url: 'img/photo-card-1.jpg',
+    type: 'image'
+  },
+  {
+    id: '11',
+    token: 'laptop',
+    word: 'Portatile',
+    type: 'word'
+  },
+  {
+    id: '12',
+    token: 'laptop',
+    url: 'img/photo-card-3.jpg',
+    type: 'image'
+  }
+];
+
+window.words = words;
+-->

@@ -13,9 +13,13 @@
   root.render(<App articlesData={articlesData}/>);
 
   function App({articlesData}) {
-    const [openedArticle, setOpened] = React.useState(null); //openedArticle - идентификатор открытой статьи
+    const [openedArticles, setOpened] = React.useState(null); //openedArticle - идентификатор открытой статьи
     const handleArticleOpen = (id) => {
-      setOpened((current) => id === current ? null : id); //условие для сброса id открытой статьи
+      if (openedArticles.includes(id)) { //проверить, находится ли идентификатор статьи, на которой произошло событие в списке открытых
+        setOpened(openedArticles.filter(i => i !== id)); //если да, то удаляем элемент из списка открытых статьей
+      } else {
+        setOpened([...openedArticles, id]); //создать копию списка открытых статьей и добавить в него новый элемент
+      }
     };
     const [firstArticle, secondArticle] = articlesData; //из data.js
 
@@ -24,12 +28,12 @@
         <Article
           onOpen={handleArticleOpen} //колбек функция
           content={firstArticle} //контекнт из data.js
-          isOpen={openedArticle === firstArticle.id} //если openedArticle === id открытой статья, то это true
+          isOpen={openedArticles === firstArticle.id} //если openedArticles === id открытой статья, то это true
         />
         <Article
           onOpen={handleArticleOpen} //колбек функция
           content={secondArticle}
-          isOpen={openedArticle === secondArticle.id} //если openedArticle != id открытой статья, то это false
+          isOpen={openedArticles === secondArticle.id} //если openedArticles != id открытой статья, то это false
         />
       </section>
     );
