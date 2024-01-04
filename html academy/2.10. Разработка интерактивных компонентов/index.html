@@ -17,20 +17,18 @@
     root.render(<App images={images}/>);
 
     function App({images = []}) {
-      const visibleItems = [];
       const finishedItems = [];
       // TODO: добавьте состояние для счётчика шагов
       const [count, setCount] = React.useState(0);
 
       const handleCheckItems = () => {
-        setCount(i => i + 1);
+        setCount((i) => i + 1);
       }
 
       return (
         <section className="game container">
           <div className="steps">Шаг {count}</div>
           <Grid images={images}
-                visibleItems={visibleItems}
                 finishedItems={finishedItems}
                 checkItems={handleCheckItems}/>
         </section>
@@ -71,9 +69,6 @@
       const className = `${isVisible ? 'card-show' : ''} ${isFinished ? 'card-finished' : ''}`;
 
       const handleClick = () => {
-        if(isFinished) {
-          return
-        }
         onCardClick(id);
       }
 
