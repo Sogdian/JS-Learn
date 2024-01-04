@@ -1,0 +1,75 @@
+<!-- https://up.htmlacademy.ru/fe-react/1/module/2/item/8/9 -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <script src="data.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+  const container = document.getElementById('root');
+  const root = ReactDOM.createRoot(container);
+  root.render(<App articlesData={articlesData}/>);
+
+  function App({articlesData}) {
+    const [openedArticle, setOpened] = React.useState(null); //openedArticle - идентификатор открытой статьи
+    const handleArticleOpen = (id) => {
+      setOpened((current) => id === current ? null : id); //условие для сброса id открытой статьи
+    };
+    const [firstArticle, secondArticle] = articlesData; //из data.js
+
+    return (
+      <section>
+        <Article
+          onOpen={handleArticleOpen} //колбек функция
+          content={firstArticle} //контекнт из data.js
+          isOpen={openedArticle === firstArticle.id} //если openedArticle === id открытой статья, то это true
+        />
+        <Article
+          onOpen={handleArticleOpen} //колбек функция
+          content={secondArticle}
+          isOpen={openedArticle === secondArticle.id} //если openedArticle != id открытой статья, то это false
+        />
+      </section>
+    );
+  }
+
+  function Article({content, isOpen, onOpen}) {
+    const {id, title} = content;
+    const toggleOpen = () => {
+      onOpen(id); //колбек функция
+    };
+    const articleClassName = `${isOpen ? '' : 'short'}`;
+
+    return (
+      <article className={articleClassName}>
+        <div>
+          <h3>{title}</h3>
+          <button onClick={toggleOpen} type="button">
+            {isOpen ? 'Свернуть' : 'Читать дальше'}
+          </button>
+        </div>
+      </article>
+    );
+  }
+</script>
+</body>
+</html>
+
+
+<!-- data.js
+
+const articlesData = [
+  {
+    id: '1',
+    title: 'Стань частью команды',
+  },
+  {
+    id: '2',
+    title: 'Рожденные в воде',
+  },
+];
+
+window.articlesData = articlesData;
+-->

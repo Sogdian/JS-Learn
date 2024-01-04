@@ -333,12 +333,12 @@ showPassword.checked; //свойство чекбокса true/false, включ
 
 
 /*
-без реакта - с реактом (атрибут / пропс). React сохраняет исходные имена событий (onclick), но устанавливает правило: события именуются в стиле camelCase (onClick)
-  onclick - onClick
-  oninput - onInput
-  onmouseover - onMouseOver
+  событие - обработчик без реакта - обработчик с реактом (атрибут / пропс).
+    React сохраняет исходные имена событий (onclick), но устанавливает правило: события именуются в стиле camelCase (onClick)
+  click - onclick - onClick
+  ??? - oninput - onInput
+  mouseover - onmouseover - onMouseOver
   mouseover - mouseOver
-  oninput - onInput
 */
 
 

@@ -7,16 +7,14 @@ function Counter() {
       <h1>{count}</h1>
       <button
         onClick={() => {
-          setCount(count + 1);
+          setCount(count + 1); //setCount((state) => state + 1); - можно и через эту функцию обновления, state - универсальный параметр
           setIncCount(incCount + 1)
         }}
-        className="custom-button"
       >
         INC ({incCount})
       </button>
       <button
         onClick={() => {setCount(count - 1)}}
-        className="custom-button"
       >
         DEC
       </button>
