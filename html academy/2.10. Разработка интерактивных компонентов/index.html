@@ -18,40 +18,64 @@
 
     function App({images = []}) {
       // TODO: добавьте состояние для счётчика шагов
+      const [count, setCount] = React.useState(0);
+
+      const checkCount = () => {
+        setCount(count + 1);
+        console.log("setCount + " + count);
+      }
+
       return (
         <section className="game container">
-          <div className="steps">Шаг {42}</div>
-          <Grid images={images}/>
+          <div className="steps">Шаг {count}</div>
+          <Grid images={images} checkCount={checkCount}/>
         </section>
       );
     }
 
-    function Grid({images = [], visibleItems = [], finishedItems = []}) {
+    function Grid({images = [], finishedItems = [], checkCount}) {
       // TODO: добавьте состояние списка открытых карточек
+      const [visibleItems, setVisibleItems] = React.useState([]);
+
+      const handleClick = (id) => {
+        if(visibleItems.includes(id)) {
+          console.log("35 setVisibleItems return");
+          return
+        }
+        checkCount();
+        setVisibleItems((items) => [...items, id]);
+        console.log("39 setVisibleItems + " + visibleItems);
+      }
+
       return (
         <ul className="cards">
           {images.map((item) => (
             <Card
-              key={item.id}
+              id={item.id}
               url={item.url}
               description={item.description}
               isVisible={visibleItems.includes(item.id)}
               isFinished={finishedItems.includes(item.id)}
+              onClick={handleClick}
             />
           ))}
         </ul>
       );
     }
 
-    function Card({url, description, isVisible, isFinished}) {
+    function Card({id, url, description, isVisible, isFinished, onClick}) {
       // TODO: добавьте обработку события
-      const className = `${
-        isVisible ? 'card-show' : ''
-      } ${
-        isFinished ? 'card-finished' : ''
-      }`;
+
+      const handleClick = () => {
+        onClick(id);
+        console.log("63 onClick + " + id);
+      }
+
+      const className = `${isVisible ? 'card-show' : ''} ${isFinished ? 'card-finished' : ''}`;
+
       return (
-        <li className={`card ${className}`}>
+        <li className={`card ${className}`}
+        onClick={handleClick}>
           <img
             width="204" height="144"
             src={url}

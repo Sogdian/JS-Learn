@@ -1,17 +1,17 @@
 const images = [{
-  'id': 'YdAqiUkUoWA',
+  'id': '1',
   'url': 'img/cats-1.jpg',
   'description': 'pink petaled flower',
 }, {
-  'id': 'hX_hf2lPpUU',
+  'id': '2',
   'url': 'img/cats-2.jpg',
   'description': 'green leaf',
 }, {
-  'id': 'w1JE5duY62M',
+  'id': '3',
   'url': 'img/cats-3.jpg',
   'description': 'red and white petaled flower close-up photography',
 }, {
-  'id': '3tYZjGSBwbk',
+  'id': '4',
   'url': 'img/cats-4.jpg',
   'description': 'white daisy in bloom during daytime',
 }, {
