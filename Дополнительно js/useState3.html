@@ -54,7 +54,8 @@
         return;
       }
       checkItems();
-      setSelectedItems((items) => [...items, id]);
+      setSelectedItems((items) => [...items, id]); //слева items - это старый массив, который создает (=>) новый массив [...items, id] из копии старого (текущего),
+        // где парсятся элементы из старого массива (...items, т.е. spread) и добавляется новый ", id"
     };
 
     const cards = words.map((item) => (
