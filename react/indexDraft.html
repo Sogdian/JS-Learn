@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Pics to words. Игра для изучения иностранных языков</title>
+  <script src="vendor/react.development.js"></script>
+  <script src="vendor/react-dom.development.js"></script>
+  <script src="vendor/babel.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="data.js"></script>
+  <script src="settings.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+  const container = document.getElementById('root');
+  const root = ReactDOM.createRoot(container);
+  root.render(<App words={words}/>);
+
+  const useGame = (words) => {
+    const [finishedItems, setFinishedItems] = React.useState([]);
+    const [stepsCount, setStepsCount] = React.useState(0);
+
+    const checkItems = (firstItem, secondItem) => {
+      const firstWord = words.find(({id}) => id === firstItem);
+      const secondWord = words.find(({id}) => id === secondItem);
+      if (firstWord.type === secondWord.type) {
+        return;
+      }
+      if (firstWord.token === secondWord.token) {
+        setFinishedItems((items) => [...items, firstItem, secondItem]);
+      }
+      setStepsCount((i) => i + 1);
+    };
+
+    const handleReset = () => {
+      setFinishedItems([]);
+      setStepsCount(0);
+    };
+
+    const errorsCount = stepsCount - finishedItems.length / 2;
+    const lives = LIVES_COUNT - errorsCount;
+    const isWin = finishedItems.length === words.length;
+    const isGameOver = isWin || lives === 0;
+    return {
+      finishedItems,
+      handleReset,
+      checkItems,
+      errorsCount,
+      isGameOver,
+      isWin
+    };
+  };
+
+  function App({words = []}) {
+    const {
+      finishedItems,
+      handleReset,
+      checkItems,
+      errorsCount,
+      isGameOver,
+      isWin
+    } = useGame(words);
+
+    const modalClassName = isWin ? '' : 'modal-box-lose';
+    const modalCaption = isWin ? 'Победа' : 'Поражение';
+    const modalDescription = `Вы нашли ${finishedItems.length / 2} слова`;
+
+    return (
+      <section className="game">
+        <GameHeader value={finishedItems.length} max={words.length} errorsCount={errorsCount} />
+        <Grid words={words} finishedItems={finishedItems} checkItems={checkItems} />
+        {isGameOver && (
+          <Modal className={modalClassName}>
+            <h3 className="modal-caption">{modalCaption}</h3>
+            <p className="modal-description">{modalDescription}</p>
+            <button onClick={handleReset} className="button" type="button">Новая игра</button>
+          </Modal>
+        )}
+      </section>
+    );
+  }
+
+  function GameHeader({value, max, errorsCount}) {
+    return (
+      <>
+        <img src="img/pics-to-words.svg" width="112" height="16" alt="Pics to words"/>
+        <Progress value={value} max={max} />
+        <Hearts count={LIVES_COUNT} value={errorsCount}/>
+      </>
+    );
+  }
+
+  function Hearts({count = 0, value = 0}) {
+    return (
+      <p className="hit-points-indicator">
+        {Array(count).fill(null).map((_, i) => (
+          <span className={i < value ? 'hit-points-used' : 'hit-points-unused'}></span>
+        ))}
+      </p>
+    );
+  }
+
+  function Progress({value, max}) {
+    return (
+      <div className="progress-wrapper">
+        <div className="progress" style={{width: `${(max - value) / max * 100}%`}}>
+        </div>
+      </div>
+    );
+  }
+
+  function Modal({children, className}) {
+    return (
+      <div className="modal">
+        <div className={`modal-box ${className}`}>
+          {children}
+        </div>
+      </div>
+    );
+  }
+
+  function Grid({words, finishedItems, checkItems}) {
+    const [selectedItems, setSelectedItems] = React.useState([]);
+
+    const handleCardClick = (id) => {
+      if (selectedItems.includes(id)) {
+        return;
+      }
+      switch (selectedItems.length) {
+        case 0:
+          setSelectedItems([id]);
+          break;
+        case 1:
+          setSelectedItems((items) => [...items, id]);
+          checkItems(selectedItems[0], id);
+          setTimeout(() => {
+            setSelectedItems([]);
+          }, TIMEOUT);
+          break;
+        default:
+          setSelectedItems([]);
+      }
+    };
+
+    const cards = words.map((item) => (
+      <Card
+        key={item.id}
+        item={item}
+        isSelected={selectedItems.includes(item.id)}
+        isFinished={finishedItems.includes(item.id)}
+        isChecking={selectedItems.length === 2}
+        onCardClick={handleCardClick}
+      />
+    ));
+    return (
+      <ul className="cards">
+        {cards}
+      </ul>
+    );
+  }
+
+  function Card({item, isSelected, isFinished, onCardClick, isChecking}) {
+    const {type, url, word: text, id} = item;
+    const content = type === 'image'
+      ? <img src={url} width="185" height="100" alt=""/>
+      : <span>{text}</span>;
+
+    const showError = isChecking && isSelected && !isFinished;
+
+    const className = `card ${
+      isSelected ? 'selected' : ''
+    } ${
+      isFinished ? 'disabled' : ''
+    } ${
+      showError ? 'error' : ''
+    }`;
+
+    const handleClick = () => {
+      if (isFinished) {
+        return;
+      }
+      onCardClick(id);
+    };
+
+    return (
+      <li onClick={handleClick} className={className}>
+        {content}
+      </li>
+    );
+  }
+</script>
+</body>
+</html>

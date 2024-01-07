@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Лаборатория</title>
+</head>
+<body class="page">
+<div id="root"></div>
+<script type="text/babel">
+  const container = document.getElementById('root');
+  const root = ReactDOM.createRoot(container);
+  root.render(<App reagents={['air', 'earth', 'water']}/>);
+
+  function App({reagents}) {
+    const [firstCounter, setFirstCounter] = React.useState(0);
+    const [secondCounter, setSecondCounter] = React.useState(0);
+    const [showResult, setShowResult] = React.useState(true);
+
+    const handleStart = () => {
+      setShowResult(false);
+      setTimeout(() => {
+        setShowResult(true);
+      }, 5000);
+    };
+
+    const handleFirstClick = () => {
+      const nextIndex = (firstCounter + 1) % reagents.length;
+      setFirstCounter(nextIndex);
+    };
+
+    const handleSecondClick = () => {
+      const nextIndex = (secondCounter + 1) % reagents.length;
+      setSecondCounter(nextIndex);
+    };
+
+    const getReagent = (index) => reagents[index];
+
+    const compare = ({leftChoice, rightChoice, choices}) => {
+      if (leftChoice === choices.length - 1 && rightChoice === 0) {
+        return choices[leftChoice];
+      }
+      if (rightChoice === choices.length - 1 && leftChoice === 0) {
+        return choices[rightChoice];
+      }
+
+      if (leftChoice === rightChoice) {
+        return choices[rightChoice];
+      }
+      if (rightChoice > leftChoice) {
+        return choices[leftChoice];
+      } else {
+        return choices[rightChoice];
+      }
+    };
+
+    const result = compare({
+      leftChoice: firstCounter,
+      rightChoice: secondCounter,
+      choices: reagents,
+    });
+
+    return (
+      <Game>
+        <Progress active={!showResult} />
+        <button disabled={!showResult} onClick={handleStart} className="button button-start" type="button">Старт</button>
+        <button onClick={handleFirstClick} disabled={showResult} className={`button button-first button-${getReagent(firstCounter)}`} type="button"/>
+        <button onClick={handleSecondClick} disabled={showResult} className={`button button-second button-${getReagent(secondCounter)}`} type="button"/>
+        <button
+          className={`button button-result button-${showResult && result}`}
+          disabled={showResult}
+          type="button"
+        >
+          {showResult ? '' : '?'}
+        </button>
+      </Game>
+    )
+  }
+
+  function Progress({active}) {
+    return (
+      <div className="progress">
+        <div className={`progress-bar ${active ? 'active' : ''}`}/>
+      </div>
+    )
+  }
+
+  function Game({children}) {
+    return (
+      <section className="game">
+        <header className="game-header">
+          <h1 className="game-title">Лаборатория</h1>
+          <p className="game-description">химические опыты</p>
+        </header>
+        <img className="logo" src="img/atom.svg" width="78" height="78" alt="Атом"/>
+        {children}
+        <img className="professor" src="img/professor.svg" width="200" height="200" alt="Профессор"/>
+      </section>
+    )
+  }
+</script>
+</body>
+</html>
