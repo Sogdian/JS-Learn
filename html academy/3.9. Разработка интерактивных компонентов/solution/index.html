@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Игра Мемори</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="vendor/react.development.js"></script>
+  <script src="vendor/react-dom.development.js"></script>
+  <script src="vendor/babel.min.js"></script>
+  <script src="data.js"></script>
+  <script src="settings.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const container = document.getElementById('root');
+    const root = ReactDOM.createRoot(container);
+    root.render(<App images={images}/>);
+
+    // Логику игры выносим из компонента.
+    const useGame = (images) => {
+      // Для вычисления текущего состояния игры сохраним список отгаданных карточек.
+      const [finishedItems, setFinishedItems] = React.useState([]);
+      const [stepsCount, setStepsCount] = React.useState(0);
+
+      // При выборе двух карточек будем их сравнивать.
+      const checkItems = (firstItem, secondItem) => {
+        // Чтобы сравнить карточки, нам нужно получить полные объекты данных.
+        // Найдем объекты по их идентификаторам из параметров функции.
+        const firstImage = images.find(({id}) => id === firstItem);
+        const secondImage = images.find(({id}) => id === secondItem);
+        // Сравним карточки по адресу изображения.
+        if (firstImage.url === secondImage.url) {
+          // Если изображения совпадают, обновляем список отгаданных карточек.
+          // Для обновления списка создаем новый массив из копии текущего.
+          // Добавляем оба идентификатора в новый массив.
+          setFinishedItems((items) => [...items, firstItem, secondItem]);
+        }
+        setStepsCount((i) => i + 1);
+      };
+
+      // При старте новой игры очищаем список отгаданных и счетчик шагов.
+      const handleReset = () => {
+        setFinishedItems([]);
+        setStepsCount(0);
+      };
+
+      // Игра заканчивается, когда все карточки отгаданы,
+      // чтобы понять, что все карточки отгаданы, сравниваем длину массива карточек и списка отгаданных.
+      const isWin = finishedItems.length > 0 && finishedItems.length === images.length;
+
+      // Логика игры скрыта в функции, а приложению мы сделаем доступным часть параметров.
+      return {
+        finishedItems,
+        handleReset,
+        stepsCount,
+        checkItems,
+        isWin
+      };
+    };
+
+    function App({images = []}) {
+      // Получаем состояние игры из функции, которая содержит логику.
+      const {
+        finishedItems,
+        handleReset,
+        stepsCount,
+        checkItems,
+        isWin
+      } = useGame(images);
+
+      // В разметке два новых компонента
+      // Progress получает текущее и общее количество из списков состояния.
+      // Мы отображаем пары карточек в прогрессе, поэтому длину массивов делим пополам.
+      // Modal отображается при окончании игры, по условию isWin.
+      // В модальное окно передано содержание из контекста текущего компонента,
+      // это позволяет не передавать в параметрах stepsCount и handleReset.
+      return (
+        <section className="game container">
+          <Progress value={finishedItems.length / 2} max={images.length / 2} />
+          <div className="steps">Шаг {stepsCount}</div>
+          <Grid
+            images={images}
+            finishedItems={finishedItems}
+            checkItems={checkItems}
+          />
+          {isWin && (
+            <Modal>
+              <h3 className="modal-caption">Победа!</h3>
+              <p className="modal-description">Вы собрали все пары за {stepsCount} шагов</p>
+              <button className="button modal-button" type="button" onClick={handleReset}>Новая игра</button>
+            </Modal>
+          )}
+        </section>
+      );
+    }
+
+    function Progress({value, max}) {
+      // В разметке два элемента объединены фрагментом.
+      // Стили для ползунка вычисляются динамически.
+      // В атрибут style передаем объект с нужными CSS-свойствами.
+      return (
+        <>
+          <div className="progress-wrapper">
+            <div className="progress" style={{width: `${value / max * 100}%`}}></div>
+          </div>
+          <p className="progress-description">Открыто {value} / {max}</p>
+        </>
+      );
+    }
+
+    function Modal({children}) {
+      // Компонент отрисовывает внешнее содержание
+      // внутри двух HTML-элементов для отображения подложки и контейнера модального окна.
+      return (
+        <div className="modal">
+          <div className="modal-box">
+            {children}
+          </div>
+        </div>
+      );
+    }
+
+    function Grid({images = [], finishedItems, checkItems}) {
+      const [visibleItems, setVisibleItems] = React.useState([]);
+
+      const handleCardClick = (id) => {
+        if (finishedItems.includes(id) || visibleItems.includes(id)) {
+          return;
+        }
+        // Выделение карточек зависит от текущего состояния.
+        switch (visibleItems.length) {
+          case 0:
+            // Если открытых карточек нет, создаем список из одной карточки.
+            setVisibleItems([id]);
+            break;
+          case 1:
+            // Если уже открыта одна карточка, добавляем вторую к списку.
+            setVisibleItems((items) => [...items, id]);
+            // Отправляем обе карточки на проверку.
+            // Обновление visibleItems ещё не произошло и
+            // вызов setVisibleItems только планирует обновление состояния,
+            // поэтому мы явно указываем нужные идентификаторы.
+            checkItems(visibleItems[0], id);
+            // Включаем таймер для сброса видимых карточек.
+            setTimeout(() => {
+              setVisibleItems([]);
+              // Величина задержки таймера задана в настройках,
+              // если задержка будет велика, пользователь успеет выбрать другие карточки,
+              // которые будут закрыты при срабатывании таймера.
+              // Это ограничение нашей реализации, ради наглядности решения.
+            }, TIMEOUT);
+            break;
+          default:
+            // Выбор следующих карточек до срабатывания таймера,
+            // сбрасываем список видимых.
+            setVisibleItems([]);
+        }
+      };
+
+      return (
+        <ul className="cards">
+          {images.map((item) => (
+            <Card
+              key={item.id}
+              item={item}
+              isVisible={visibleItems.includes(item.id)}
+              isFinished={finishedItems.includes(item.id)}
+              onCardClick={handleCardClick}
+            />
+          ))}
+        </ul>
+      );
+    }
+
+    function Card({item, isVisible, isFinished, onCardClick}) {
+      // Компонент получает объект с данными в параметре item.
+      // Деструктуризация объекта item создает локальные переменные.
+      const {id, url, description} = item;
+      const className = `${
+        isVisible ? 'card-show' : ''
+      } ${
+        isFinished ? 'card-finished' : ''
+      }`;
+
+      const handleClick = () => {
+        onCardClick(id);
+      };
+
+      return (
+        <li onClick={handleClick} className={`card ${className}`}>
+          <img
+            width="204" height="144"
+            src={url}
+            alt={description}
+          />
+        </li>
+      );
+    }
+  </script>
+</body>
+</html>

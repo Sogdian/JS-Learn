@@ -874,6 +874,8 @@ div {
             background-size: contain; /* сделает так, чтобы вся картинка уместилась */
             background-size: 220px 400px; /* первое значение — ширина, второе — высота */
     fill: red; /* заливка */
+      fill: none; /* заливки нет */
+      fill: transparent; /* заливка есть, но она прозрачная. Лучше использовать transparent вместо none */
 }
 
 .data-image {
