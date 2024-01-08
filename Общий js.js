@@ -48,6 +48,25 @@ let pages = 0;
     pages++; //Увеличит число на 1. Значение переменной: 1
     pages--; //Уменьшит число на 1. Значение переменной: 0
 
+//Date
+  //Если параметры метода не указаны, то он использует настройки браузера для локализации даты.
+  //getDay() - выяснить день недели для указанной даты в виде целого числа от 0 до 6.
+    //У метода есть одна особенность началом недели он считает воскресенье, то есть число 0 соответствует воскресенью, 1 — это понедельник, 2 — вторник, 6 — суббота
+  const date = new Date('2023-03-05');
+  const options = { day: "numeric", month: "short" }; //вывести день числом, а месяц в сокращённом формате
+    const options2 = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; //В консоли отобразится "воскресенье, 5 марта 2023 г."
+    //Для форматирования даты на русском языке используется локаль «ru».
+  new Date(date).toLocaleDateString('ru-RU', options); //date - объект класса Date
+
+  const formatDate = (date) => new Date(date).toLocaleDateString("ru", {
+    day: "numeric",
+    month: "short",
+  }); //Функция formatDate вернёт дату в виде 5 мар.
+  const getWeekday = (date) => new Date(date).toLocaleDateString("ru", {
+    weekday: "short"
+  }); //Функция getWeekday вернёт дату в виде первых двух букв для недели — вс.
+
+
 //операторы
     //оператор строгого равенства, тут нет приведения типов. https://htmlacademy.ru/courses/209/run/5
       'a' === 'a'; // Результат: true
@@ -62,6 +81,41 @@ let pages = 0;
       <div> { isFinished && <Modal /> } </div> //если isFinished = true, то вызовется <Modal />, Если же isFinished равно false, то выражение вернёт false и <Modal /> не вызовется
     //логическое ИЛИ
      //true || true - возвращает true, если хотя бы один из операндов равен true.
+  //Сравнение чисел - сравнивает два объекта по полю economy. Если значение поля economy у объекта a меньше, чем у объекта b, то функция возвращает отрицательное число (-1) и т.д.
+  function compareTicketsByEconomyPrice(ticket1, ticket2) {
+    if (ticket1.economy < ticket2.economy) {
+      return -1;
+    } else if (ticket1.economy > ticket2.economy) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
+    //Или тоже самое в более лаконичной форме:
+      [...tickets].sort((a, b) => a.date > b.date ? 1 : -1); //Отсортируйте данные по возрастанию даты. Перед тем как сортировать данные, нужно создать их копию через [...tickets]
+  //Сравнение строк - сравнение будет производиться в соответствии с лексикографическим порядком символов (сравниваются символьные коды)
+  function compareStrings(a, b) {
+    const stringA = a.toLowerCase();
+    const stringB = b.toLowerCase();
+
+    if (stringA < stringB) {
+      return -1;
+    }
+    if (stringA > stringB) {
+      return 1;
+    }
+    return 0;
+  }
+    //Прямое сравнение для строк, которые содержат символы кириллицы, может дать неправильный результат. Универсальный способ сравнения строк — метод localeCompare(). Метод localeCompare() сравнивает две строки в соответствии с локалью (языком), учитывая правила сортировки этого языка, и возвращает целое число, которое указывает, какая строка должна быть отсортирована перед другой строкой. Пример сортировки массива строк по алфавиту:
+    const fruits = ['яблоко', 'банан', 'арбуз', 'груша'];
+    fruits.sort((a, b) => a.localeCompare(b));
+    console.log(fruits); // ["арбуз", "банан", "груша", "яблоко"]
+    //Добавим строки со «сложными» символами в массив:
+    const fruits = ['яблоко', 'банан', 'арбуз', 'груша', 'ёжик', 'йогурт'];
+    fruits.sort((a, b) => a.localeCompare(b));
+    console.log(fruits); // ['арбуз', 'банан', 'груша', 'ёжик', 'йогурт', 'яблоко']
+    fruits.sort((a, b) => a > b ? 1 : -1);
+    console.log(fruits); // ['арбуз', 'банан', 'груша', 'йогурт', 'яблоко', 'ёжик']
 
 /* массивы
   в массиве можно хранить любые данные: строки, булевы значения, числа и даже другие массивы.
@@ -134,7 +188,7 @@ let pages = 0;
   const filteredFruits = fruits.filter((item) => item !== itemToRemove); //filter можно использовать и для удаления элемента из массива
   console.log(filteredFruits);
 
-  //find Метод find ищет элементы в массиве.
+  //find - используется для поиска первого элемента в массиве, который удовлетворяет заданному условию в виде колбэк-функции
     const numbers = [1, 2, 3, 4, 5, 6, 7];
     const result = numbers.find((item) => item > 3);
     console.log(result); // 4. Метод find находит первый элемент массива, удовлетворяющий условию, и возвращает его. В нашем случае это элемент 4.
@@ -145,6 +199,12 @@ let pages = 0;
       ];
       const resultByName = persons.find((item) => item.name === 'Bob'); //Метод find можно использовать для поиска объекта в массиве по значению одного из его полей.
       console.log(resultByName); // { id: 2, name: 'Bob' }
+
+  //slice - извлекает подмассив из массива
+  const shownTickets = tickets.slice(0, 9); //выберутся первые 10 элементов в массиве
+
+  //findIndex() - нахождения индекса объекта в массиве, Этот метод работает аналогично indexOf
+    //Если элемент в массиве найден, findIndex вернёт его индекс, в противном случае метод вернёт значение -1.
 
 //объекты
   let user = {
@@ -158,6 +218,21 @@ let pages = 0;
   };
   console.log(user.getGreeting()); //Мария
   console.log(user.getGreeting2()); //Мария
+
+  //obj[propertyName]
+  const obj = {
+    firstName: 'John',
+    lastName: 'Doe',
+  };
+  const propertyName = 'firstName';
+  console.log(obj[propertyName]); // Выведет 'John'
+  //задания динамических свойств объектов
+  const propertyName = 'firstName';
+  const obj = {
+    [propertyName]: 'John',
+    lastName: 'Doe',
+  };
+  console.log(obj.firstName); // Выведет 'John'
 
 //словари
   let users = {
@@ -230,7 +305,9 @@ let pages = 0;
   //генерирует случайные числа в заданном промежутке, включая минимальное и максимальное значение.
   throwDice(min, max)
   //
-  price.toLocaleString(); //1500 -> 1 500 //преобразует число в строку и возвращает значение, используя указанный языковой стандарт. Если метод используется без параметров, то он использует язык по-умолчанию.
+  price.toLocaleString(); //1500 -> 1 500 //преобразует число в строку и возвращает значение, используя указанный языковой стандарт.
+    //Если метод используется без параметров, то он использует язык по-умолчанию.
+    //const formatPrice = (price) => `${price.toLocaleString()} ₽`; //1 500 ₽
 
 //Интерполяция шаблонной строки
   const formattedPrice = `${price.toLocaleString()} ₽/час`; // = price.toLocaleString() + " ₽/час"

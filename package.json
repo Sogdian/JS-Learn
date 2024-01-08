@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "main": "Общий js.js",
   "scripts": {
-    "debug": "NODE_OPTIONS='--inspect' next dev",
     "test": "echo 'Привет!'",
     "check": "prettier --check './**/*.{pug,html,scss,css,js}'",
     "format": "prettier --write './**/*.{pug,html,scss,css,js}'",

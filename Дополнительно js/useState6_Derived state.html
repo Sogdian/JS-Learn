@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>ChipTrip. Сервис поиска дешёвых билетов.</title>
+  <script src="data.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+  // <!--
+  const container = document.getElementById('root');
+  const root = ReactDOM.createRoot(container);
+  root.render(<App tickets={tickets} />);
+
+  const AppRoute = {
+    Calendar: "calendar",
+    Tariff: "tariff"
+  };
+
+  function App({tickets}) {
+    // Замените строковые значения "calendar" и "tariff" на константы AppRoute
+    const [activePage, setActivePage] = React.useState(AppRoute.Calendar);
+    const [selectedDate, setSelectedDate] = React.useState(null);
+    const selectedDateTickets = tickets.find(({ date }) => date === selectedDate);
+    const [selectedTariff, setSelectedTariff] = React.useState("economy");
+
+    const getContent = (activePage) => {
+      switch (activePage) {
+        case AppRoute.Calendar:
+          return (
+            <Calendar
+              tickets={tickets}
+              tariff={selectedTariff}
+              onSelectDate={setSelectedDate}
+              selectedDate={selectedDate}
+            />
+          );
+        case AppRoute.Tariff:
+          return (
+            <Tariff
+              selected={selectedDateTickets}
+              selectedTariff={selectedTariff}
+              onSelectTariff={setSelectedTariff}
+            />
+          );
+        default:
+          return null;
+      }
+    };
+
+    return (
+      <Wrapper>
+        <ul className="tabs">
+          <li className="tab">
+            <button
+              onClick={() => setActivePage(AppRoute.Calendar)}
+              className={`tab-button ${activePage === AppRoute.Calendar ? "tab-button-active" : ""}`}
+              type="button">
+              Таблица цен
+            </button>
+          </li>
+          <li className="tab">
+            <button
+              onClick={() => setActivePage(AppRoute.Tariff)}
+              className={`tab-button ${activePage === AppRoute.Tariff ? "tab-button-active" : ""}`}
+              disabled={!selectedDateTickets}
+              type="button">
+              Сравнение билетов
+            </button>
+          </li>
+        </ul>
+        {getContent(activePage)}
+      </Wrapper>
+    )
+  }
+
+  function Calendar({ tickets, selectedDate, onSelectDate, tariff = "economy" }) {
+    const sortedTickets = [...tickets].sort((a, b) => {
+      return a.date > b.date ? 1 : -1;
+    });
+    const DAYS_SHOWN = 5;
+    const maxShift = tickets.length - DAYS_SHOWN;
+    const getInitialShift = () => {
+      const selectedIndex = sortedTickets.findIndex(
+        ({ date }) => date === selectedDate
+      );
+      return Math.max(selectedIndex + 1 - DAYS_SHOWN, 0);
+    };
+    const [shift, setShift] = React.useState(getInitialShift);
+    const shownTickets = sortedTickets
+      .slice(shift, shift + DAYS_SHOWN)
+      .map((item) => ({ ...item, price: item[tariff] }));
+
+    const formatDate = (date) =>
+      new Date(date).toLocaleDateString("ru", {
+        day: "numeric",
+        month: "short",
+      });
+
+    const getWeekday = (date) =>
+      new Date(date).toLocaleDateString("ru", {
+        weekday: "short"
+      });
+
+    const isWeekEnd = (date) => {
+      const weekDay = new Date(date).getDay();
+      return weekDay === 0 || weekDay === 6;
+    };
+
+    const formatPrice = (price) => `${price.toLocaleString()} ₽`;
+
+    return (
+      <div className="page">
+        <div className="buttons">
+          <button
+            onClick={() => setShift(shift - 1)}
+            disabled={shift === 0}
+            className="button-prev" type="button"
+          ></button>
+          <button
+            onClick={() => setShift(shift + 1)}
+            disabled={shift === maxShift}
+            className="button-next" type="button"
+          ></button>
+        </div>
+        <table className="price-table">
+          <tr>
+            {shownTickets.map(({ date }) => (
+              <th key={date} className={isWeekEnd(date) && "weekend"}>
+                <span>{getWeekday(date)}</span>
+                <span>{formatDate(date)}</span>
+              </th>
+            ))}
+          </tr>
+          <tr>
+            {shownTickets.map(({ price, date }) => (
+              <td
+                key={date}
+                onClick={() => onSelectDate(date)}
+                className={date === selectedDate && "active"}
+              >
+                {formatPrice(price)}
+              </td>
+            ))}
+          </tr>
+        </table>
+      </div>
+    );
+  }
+
+  function Tariff({ selected, selectedTariff, onSelectTariff }) {
+    const formatPrice = (price) => `${price.toLocaleString()} ₽`;
+    const formatDate = (date) =>
+      new Date(date).toLocaleDateString("ru", {
+        day: "numeric",
+        month: "long",
+        weekday: "short"
+      });
+    return (
+      <ul className="ticket-list">
+        <li
+          onClick={() => onSelectTariff("economy")}
+          className="ticket-list-item"
+        >
+          <article
+            className={`ticket ${selectedTariff === "economy" ? "active" : ""}`}
+          >
+            <div className="ticket-short">
+              <div className="ticket-class">Эконом</div>
+              <p className="ticket-price">
+                {formatPrice(selected.economy)}
+              </p>
+              <button className="ticket-button" type="button">Выбрать</button>
+            </div>
+            <div className="ticket-full">
+              <div className="ticket-departure">
+                <span className="departure-time">11:55</span>
+                <span className="departure-city">Санкт-Петербург</span>
+                <span className="departure-day">{formatDate(selected.date)}</span>
+              </div>
+              <div className="ticket-trip">
+                <span className="ticket-start">LED</span>
+                <span className="ticket-length">В пути: 3ч 15м</span>
+                <span className="ticket-end">BUS</span>
+              </div>
+              <div className="ticket-arrival">
+                <span className="arrival-time">15:10</span>
+                <span className="arrival-city">Батуми</span>
+                <span className="arrival-day">{formatDate(selected.date)}</span>
+              </div>
+              <ul className="ticket-features">
+                <li className="ticket-feature">Страховка</li>
+              </ul>
+            </div>
+          </article>
+        </li>
+        <li
+          onClick={() => onSelectTariff("business")}
+          className="ticket-list-item"
+        >
+          <article
+            className={`ticket ${selectedTariff === "business" ? "active" : ""}`}
+          >
+            <div className="ticket-short">
+              <div className="ticket-class">Бизнес</div>
+              <p className="ticket-price">
+                {formatPrice(selected.business)}
+              </p>
+              <button className="ticket-button" type="button">Выбрать</button>
+            </div>
+            <div className="ticket-full">
+              <div className="ticket-departure">
+                <span className="departure-time">11:55</span>
+                <span className="departure-city">Санкт-Петербург</span>
+                <span className="departure-day">{formatDate(selected.date)}</span>
+              </div>
+              <div className="ticket-trip">
+                <span className="ticket-start">LED</span>
+                <span className="ticket-length">В пути: 3ч 15м</span>
+                <span className="ticket-end">BUS</span>
+              </div>
+              <div className="ticket-arrival">
+                <span className="arrival-time">15:10</span>
+                <span className="arrival-city">Батуми</span>
+                <span className="arrival-day">{formatDate(selected.date)}</span>
+              </div>
+              <ul className="ticket-features">
+                <li className="ticket-feature">Страховка</li>
+                <li className="ticket-feature">Питание</li>
+                <li className="ticket-feature">Багаж</li>
+              </ul>
+            </div>
+          </article>
+        </li>
+      </ul>
+    );
+  }
+
+  function Wrapper({children}) {
+    return (
+      <>
+        <header className="main-header">
+          <div className="main-header-content container">
+            <a className="logo" href="#">
+              <img src="img/logo.svg" width="110" height="35" alt="ChipTrip"/>
+            </a>
+            <a className="profile" href="#">Профиль</a>
+          </div>
+        </header>
+        <main>
+          <section className="choose-ticket">
+            <h1 className="trip-name">
+              <span className="trip-cation">Маршрут:</span> <span
+              className="trip-start">Санкт-Петербург <span>(LED)</span></span> <span className="dash"></span> <span
+              className="trip-end">Батуми <span>(BUS)</span></span>
+            </h1>
+            {children}
+          </section>
+        </main>
+        <footer className="main-footer">
+          <div className="main-footer-content container">
+            <p className="copyright">ChipTrip ©2023 Все права защищены</p>
+          </div>
+        </footer>
+      </>
+    )
+  }
+  // -->
+</script>
+</body>
+</html>

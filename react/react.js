@@ -164,10 +164,14 @@ const className = `card ${ isSelected ? 'selected' : ''} ${ isFinished ? 'disabl
   return (
     <div>
       <p>Вы нажали {count} раз</p> //разметка, которая зависит от состояния
-      <button onClick={() => setCount(count + 1)}>
+      <button
+        onClick={() => setCount(count + 1)}>
         Нажми меня
       </button>
-      <button onClick={handleClick} className="more" type="button">
+      <button
+        onClick={handleClick} className="more" type="button"
+        onClick={() => setOpen(true)} //можно сразу так
+      >
         {isOpen ? 'Закрыть' : 'Открыть'}
       </button>
     </div>
@@ -214,6 +218,9 @@ const className = `card ${ isSelected ? 'selected' : ''} ${ isFinished ? 'disabl
 
   //«Подъем состояния»
     //Вынести состояние в родительский компонент и передавать его в качестве параметра для дочерних компонентов
+    //При смене компонентов с Calendar на Tariff и обратно локальное состояние этих компонентов сбрасывается.
+      //И если пользователь решит вернуться на предыдущую страницу, он не увидит выбранные им данные. Для этого из компонента Calendar и Tariff используем «подъем состояния» в компонент App
+  //Derived state(или производное состояние) в React — это состояние, которое вычисляется на основе других состояний или свойств компонента.
 
   //Деструктуризация в React.js
     function UserCard({ name, email, phone, phone2 = ""  }) { //мы получаем объект props и обращаемся к его свойствам напрямую, используя имена свойств
