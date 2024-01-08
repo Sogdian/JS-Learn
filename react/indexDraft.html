@@ -5,68 +5,11 @@
   </head>
   <body>
     <script>
-      function App() {
-        const [openedArticles, setOpened] = React.useState(null); //openedArticle - идентификатор открытой статьи
-        const handleArticleOpen = (id) => {
-          if (openedArticles.includes(id)) {
-            //проверить, находится ли идентификатор статьи, на которой произошло событие в списке открытых
-            setOpened(openedArticles.filter((i) => i !== id)); //если да, то удаляем элемент из списка открытых статьей
-          } else {
-            setOpened([...openedArticles, id]); //создать копию списка открытых статьей и добавить в него новый элемент
-          }
-        };
-        const [firstArticle, secondArticle] = articlesData; //из data.js
-
-        return (
-          <section>
-            <Article
-              onOpen={handleArticleOpen} //колбек функция
-              content={firstArticle} //контекнт из data.js
-              isOpen={openedArticles === firstArticle.id} //если openedArticles === id открытой статья, то это true
-            />
-            <Article
-              onOpen={handleArticleOpen} //колбек функция
-              content={secondArticle}
-              isOpen={openedArticles === secondArticle.id} //если openedArticles != id открытой статья, то это false
-            />
-          </section>
-        );
+      function Hi(str) {
+        console.log(str);
       }
 
-      function Article({ content, isOpen, onOpen }) {
-        const { id, title } = content;
-        const toggleOpen = () => {
-          onOpen(id); //колбек функция
-        };
-        const articleClassName = `${isOpen ? '' : 'short'}`;
-
-        return (
-          <article className={articleClassName}>
-            <div>
-              <h3>{title}</h3>
-              <button onClick={toggleOpen} type="button">
-                {isOpen ? 'Свернуть' : 'Читать дальше'}
-              </button>
-            </div>
-          </article>
-        );
-      }
+      Hi("Hi");
     </script>
   </body>
 </html>
-
-<!-- data.js
-
-const articlesData = [
-  {
-    id: '1',
-    title: 'Стань частью команды',
-  },
-  {
-    id: '2',
-    title: 'Рожденные в воде',
-  },
-];
-
-window.articlesData = articlesData;
--->
