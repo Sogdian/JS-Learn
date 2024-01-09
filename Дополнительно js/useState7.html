@@ -28,13 +28,20 @@
       setPage(AppRoute.Game);
     };
     const getPage = (route) => {
-      if (route === AppRoute.Game) {
-        return <GamePage words={words} onShowResults={showResults}/>;
+      switch (route) {
+        case AppRoute.Game:
+          return <GamePage words={words} onShowResults={showResults} />;
+        case AppRoute.Results:
+          return (
+            <ResultsPage
+              current={result}
+              onResetGame={handleReset}
+              results={results}
+            />
+          );
+        default:
+          return null;
       }
-      if (route === AppRoute.Results) {
-        return <ResultsPage current={result} results={results} onResetGame={handleReset}/>;
-      }
-      return null;
     };
     return getPage(page);
   }
@@ -45,7 +52,7 @@
       {name: 'Ваш результат', steps: current}
     ].sort((a, b) => b.steps - a.steps);
     const resultsRows = sortedResults.map(({ name, steps }, index) => (
-      <tr className={`result-table-row ${steps === current ? 'active' : ''}`}>
+      <tr key={name} className={`result-table-row ${steps === current ? 'active' : ''}`}>
         <td>{index + 1}</td>
         <td>{name}</td>
         <td>{steps}</td>
