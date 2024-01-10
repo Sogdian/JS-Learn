@@ -159,6 +159,13 @@ const className = `card ${ isSelected ? 'selected' : ''} ${ isFinished ? 'disabl
       //Они вызываются, когда пользователь совершает определённое действие, например, кликает на элемент.
       //обработчик события используется для изменения состояния компонентов приложения (через setOpen / setCount)
       setOpen(!isOpen); //setOpen((state) => !state); - можно и через эту функцию обновления, state - универсальный параметр
+
+      const Words = {
+        german,
+        italian
+      };
+      const getWords = (type) => [...Words[type]];
+      const [words, setWords] = React.useState(() => getWords('german')); //функция будет возвращать нужный набор данных по его имени.
     };
 
   return (

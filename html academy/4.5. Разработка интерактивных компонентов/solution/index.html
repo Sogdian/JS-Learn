@@ -15,32 +15,40 @@
   <script type="text/babel">
     const container = document.getElementById('root');
     const root = ReactDOM.createRoot(container);
+    // Передадим приложению таблицу результатов из файла data.js.
     root.render(<App images={images} results={results}/>);
 
     function App({images = [], results = []}) {
-      // TODO: добавьте состояние для хранения текущего результата
-      // TODO: добавьте состояние для хранения страницы приложения
-      // TODO: добавьте логику переключения страницы приложения
+      // В состояние приложения поместим текущую страницу.
+      // При старте покажем страницу игры.
+      // Название страниц храним в константах для наглядности.
       const [page, setPage] = React.useState(AppRoute.Game);
+      // Чтобы сохранить результат при смене страниц,
+      // поместим его в состояние приложения.
+      // Для передачи данных между компонентами одного уровня
+      // состояние определили в общем родителе.
       const [result, setResult] = React.useState(0);
-      // return (
-      //   <GamePage images={images}/>
-      // );
-      const showResults = (wordsCount) => {
-        setResult(wordsCount);
+      const showResults = (stepsCount) => {
+        // При смене страницы обновим состояние результата.
+        // Новое значение stepsCount игра передаст в параметре колбэка.
+        setResult(stepsCount);
         setPage(AppRoute.Results);
       };
       const handleReset = () => {
+        // Компонент страницы результатов вызывает колбэк и
+        // приложение переключает страницу.
         setPage(AppRoute.Game);
       };
       const getPage = (route) => {
+        // Функция переключает страницы приложения и
+        // по условию возвращает разные компоненты.
         switch (route) {
           case AppRoute.Game:
             return <GamePage images={images} onShowResults={showResults} />;
           case AppRoute.Results:
             return (
               <ResultsPage
-                current={result}
+                stepsCount={result}
                 onResetGame={handleReset}
                 results={results}
               />
@@ -49,8 +57,10 @@
             return null;
         }
       };
+      // Приложение отрисовывает текущую страницу.
       return getPage(page);
     }
+
     const useGame = (images) => {
       const [finishedItems, setFinishedItems] = React.useState([]);
       const [stepsCount, setStepsCount] = React.useState(0);
@@ -82,8 +92,12 @@
         isWin
       } = useGame(images);
 
+      // Сброс состояние игры в отдельной функции больше не требуется.
+      // При смене страниц приложения будет создан новый экземпляр компонента,
+      // который получит начальное состояние при создании.
+      // Текущий результат мы должны передать родителю в колбэке onShowResults,
+      // чтобы сохранить его при смене компонентов страницы.
       const handleResultsClick = () => {
-        // TODO: передайте сообщение родительскому компоненту
         onShowResults(stepsCount);
       };
 
@@ -190,36 +204,56 @@
       );
     }
 
-    function ResultsPage({results, current, onResetGame}) {
-      const sortedResults = [
-        ...results,
-        {name: 'Ваш результат', stepsCount: current}
-      ].sort((a, b) => b.stepsCount - a.stepsCount);
-      const resultsRows = sortedResults.map(({ name, stepsCount }, index) => (
-        <tr key={name} className={`result-table-row ${stepsCount === current ? 'active' : ''}`}>
-          <td>{index + 1}</td>
-          <td>{name}</td>
-          <td>{stepsCount}</td>
-        </tr>
-      ));
+    function ResultsPage({results, stepsCount, onResetGame}) {
+      // Компонент результатов игры получает колбэк onResetGame для переключения страницы.
+      // Также в параметрах получаем список результатов других игроков и текущий результат.
+      // Таблица результатов выделена в компонент ResultsTable.
       return (
         <section className="result container">
-          <h2>Лучшие результаты</h2>
-          <table className="result-table">
-            <thead>
+          <h2>Лучшие результаты:</h2>
+          <p>Вы завершили игру за <b>{stepsCount} шагов</b>, так держать!</p>
+          <ResultsTable current={stepsCount} results={results} />
+          <p>Хотите попробовать ещё раз?</p>
+          <button onClick={onResetGame} className="button result-button" type="button">Новая игра</button>
+        </section>
+      );
+    }
+
+    function ResultsTable({ current, results }) {
+      // Компонент принимает два параметра: текущий результат и список других результатов.
+      // Создает новый массив результатов, копируя параметр results и добавляя текущий.
+      // Текущий результат помещает в объект той же формы, что и остальные объекты списка,
+      // затем сортирует созданный массив из объединенных результатов по свойству stepsCount.
+      const sortedResults = [...results, {name: 'Ваш результат', stepsCount: current}]
+        // Создаем новый массив, чтобы при сортировке не изменять исходный список результатов.
+        .sort((a, b) => a.stepsCount - b.stepsCount);
+      // Компонент отрисовывает таблицу со статичным заголовком.
+      // Строки таблицы создаются динамически из сортированного массива результатов.
+      // При создании строки результат сравнивается с результатом текущей игры current.
+      // Класс "active" добавляется к строкам равным текущему результату.
+
+      // В колбэке метода "map" объявлены два параметра: элемент списка и счетчик.
+      // Для получения значений из объекта в первом параметре использована деструктуризация,
+      // чтобы более компактно указать переменные в шаблоне.
+      return (
+        <table className="result-table">
+          <thead>
             <tr className="result-table-row">
               <th>Место</th>
               <th>Имя</th>
               <th>Шаги</th>
             </tr>
-            </thead>
-            <tbody>
-            {resultsRows}
-            </tbody>
-          </table>
-          <p>Хотите попробовать ещё раз?</p>
-          <button onClick={onResetGame} className="button" type="button">Новая игра</button>
-        </section>
+          </thead>
+          <tbody>
+            {sortedResults.map(({name, stepsCount}, i) => (
+              <tr key={name} className={`result-table-row ${stepsCount === current ? 'active' : ''}`}>
+                <td>{i + 1}</td>
+                <td>{name}</td>
+                <td>{stepsCount}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       );
     }
   </script>

@@ -53,6 +53,3 @@ const results = [
   { name: 'Вася', stepsCount: 12 },
   { name: 'Петя', stepsCount: 19 }
 ];
-
-window.images = images;
-window.results = results;
