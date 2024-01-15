@@ -1,17 +1,16 @@
 <!--
 Форматирование кода CTRL + ALT + L (Prettier)
-    В терминале:
-        prettier --check './**/*.{html,css,js}' — команда запустит проверку форматирования, после её выполнения в терминале будут сообщения о найденных ошибках форматирования
-            npm run check
-        prettier --write './**/*.{html,css,js}' — команда, которая сразу исправит все ошибки, которые сможет
-            npm run format
-        stylelint '**/*.css' — выведет в терминал все ошибки в коде с указанием файлов и строк, где ошибки возникли
-            npm run lint
-        stylelint '**/*.css' --fix — попробует исправить те ошибки, которые сможет
-            npm run lintfix
-        npm run checkAll = npm run check + npm run lint
-        npm run fixAll = npm run format + npm run lintfix
-        npm run fixAndBuild = npm run fixAll && npm run build //сначала исправлять ваши исходники, а потом собирать проект
+    В терминале npm run check:
+        "check": "prettier --check './**/*.{pug,html,scss,css,js}'" — команда запустит проверку форматирования, после её выполнения в терминале будут сообщения о найденных ошибках форматирования
+          починить, prettier@3.0.0 --save-dev
+        "format": "prettier --write './**/*.{pug,html,scss,css,js}'" — команда, которая сразу исправит все ошибки, которые сможет
+        "lint": "stylelint \"./**/*.{scss,css}\" --formatter verbose" — выведет в терминал все ошибки в коде с указанием файлов и строк, где ошибки возникли
+        "lintfix": "stylelint \"./**/*.{scss,css}\" --fix" — попробует исправить те ошибки, которые сможет
+        "checkAll": "npm run check && npm run lint"
+        "fixAll": "npm run format && npm run lintfix"
+        "build": "gulp build" — build
+        "dev": "gulp" — сам "gulp" = build + Отслеживание изменений в файлах + запуск сервера
+        "fixAndBuild": "npm run fixAll && npm run build
 
         //сборка проекта, см. gulpfile.js
         gulp watchapp (или просто gulp) объединяет
@@ -87,26 +86,28 @@
         sizes="any" Этот атрибут чинит неправильное поведение некоторых браузеров, когда они выбирают ICO-файл вместо SVG, хотя умеют работать и с последним -->
         <link rel="icon" href="icon.svg" type="image/svg+xml">
         <link rel="apple-touch-icon" href="apple-touch-icon.png"> <!-- на случай, если пользователь захочет добавить сайт в виде иконки на смартфоне или планшете. На iPhone и iPad это можно сделать, выбрав пункт «Добавить на экран Домой» -->
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"> <!-- подключение нестандартных шрифтов https://fonts.google.com/share?selection.family=Bricolage%2BGrotesque:opsz,wght@12..96,200%7CRoboto:wght@400;700
+            подключайте ссылку на файл стилей через <link> в HTML, а не через @import в CSS. Так скорость загрузки будет выше.
+            Для вариативных шрифтов https://wakamaifondue.com/ -->
+        <link rel="stylesheet" href="./normalize.css"> <!-- элементы вели себя одинаково в разных браузерах Сначала normalize.css https://necolas.github.io/normalize.css/  можно не использовать целиком. Он разделён на блоки: стили текста собраны в одну группу, стили форм — в другую. Можно удалить стили для элементов, которых нет и не будет в проекте, и сайт будет загружаться быстрее. -->
+        <link rel="stylesheet" href="./fonts/fonts.css">
+        <link rel="stylesheet" href="./style.css" />
+          <!--Значение stylesheet сообщает браузеру, что передаются именно стили -->
+          <!--link содержит ссылку на внешний файл и назначение подключаемого файла. даёт возможность подключить не только иконку, но и файлы других типов и другого назначения, например — таблицы стилей-->
+          <!--rel предназначение подключаемого файла, назначение (от англ. relation, отношение)-->
+          <!--href адрес файла-->
+        <style> h1 { width: 31px; } </style> <!-- Стиль, заданный внутри тега, называется встроенным или инлайновым. Стили подключатся либо внутри тега <style>,
+          либо прописываются в значении атрибута style самих HTML-элементов, пример, <div style="width: 50%;"></div>
+          Cтили в атрибуте style окажутся «сильнее» стилей в файле style.css -->
+
     <meta property="og:title" content="4 правила вёрстки"> <!-- для работы с соц сетями при шеринге ссылок
-        og - OpenGraph
-        content="4 правила вёрстки" = title вкладки -->
-        <meta property="og:description" content="Урок HTML разметки">
-        <meta property="og:url" content="https://maybesofter.com/"> <!--
-        content="https://maybesofter.com/" - url страницы -->
-        <meta property="og:image" content="/images/og.jpg"> <!--
-        content="/images/og.jpg" - путь до картинки, которая будет обложкой карточки предпросмотра -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"> <!-- подключение нестандартных шрифтов https://fonts.google.com/share?selection.family=Bricolage%2BGrotesque:opsz,wght@12..96,200%7CRoboto:wght@400;700
-        подключайте ссылку на файл стилей через <link> в HTML, а не через @import в CSS. Так скорость загрузки будет выше.
-        Для вариативных шрифтов https://wakamaifondue.com/ -->
-    <link rel="stylesheet" href="./normalize.css"> <!-- элементы вели себя одинаково в разных браузерах Сначала normalize.css https://necolas.github.io/normalize.css/  можно не использовать целиком. Он разделён на блоки: стили текста собраны в одну группу, стили форм — в другую. Можно удалить стили для элементов, которых нет и не будет в проекте, и сайт будет загружаться быстрее. -->
-    <link rel="stylesheet" href="./fonts/fonts.css">
-    <link rel="stylesheet" href="./style.css" /> <!--или через тег style--> <!--Значение stylesheet сообщает браузеру, что передаются именно стили -->
-    <!--link содержит ссылку на внешний файл и назначение подключаемого файла. даёт возможность подключить не только иконку, но и файлы других типов и другого назначения, например — таблицы стилей-->
-    <!--rel предназначение подключаемого файла, назначение (от англ. relation, отношение)-->
-    <!--href адрес файла-->
-    <style> h1 { width: 31px; } </style> <!-- Стиль, заданный внутри тега, называется встроенным или инлайновым. Стили подключатся либо внутри тега <style>,
-    либо прописываются в значении атрибута style самих HTML-элементов, пример, <div style="width: 50%;"></div>
-    Cтили в атрибуте style окажутся «сильнее» стилей в файле style.css -->
+      og - OpenGraph
+      content="4 правила вёрстки" = title вкладки -->
+      <meta property="og:description" content="Урок HTML разметки">
+      <meta property="og:url" content="https://maybesofter.com/"> <!--
+      content="https://maybesofter.com/" - url страницы -->
+      <meta property="og:image" content="/images/og.jpg"> <!--
+      content="/images/og.jpg" - путь до картинки, которая будет обложкой карточки предпросмотра -->
 
     <link rel="stylesheet" media="(resolution >= 2x)" href="retina.css"> <!-- для media запроса, к примеру, для ретина-дисплеев -->
     <style media="(resolution >= 2x)"></style> <!-- для media запроса, к примеру, для ретина-дисплеев -->
@@ -226,8 +227,9 @@
                   <style></style>
                 </svg>
                 <svg viewBox="0 0 24 24">
-                  <use href="svg/apple.svg#apple-2"> <!-- самое оптимальное решение для SVG-иконки. #apple-2 искать в <symbol id="apple-2" в "apple.svg" > -->
-                    <!-- в @media или вместо root - path -->
+                  <use href="svg/apple.svg#apple-2"> <!-- самое оптимальное решение для SVG-иконки. #apple-2 искать в <symbol id="apple-2" в "apple.svg" >
+                    use - используют, чтобы ссылаться на SVG, который лежит где-то в другом месте разметки или даже в другой папке проекта 
+                    в @media или вместо root - path -->
                     <style>
                     @media (prefers-color-scheme: dark) {
                       :root { fill: white; }

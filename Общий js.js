@@ -396,7 +396,7 @@ document
 
 element = document.querySelector('.class'); //Метод ищет по селектору, который указан в скобках. Словом document обозначается веб-страница, к которой подключили скрипт.
     elementBody = document.body;  //элемент body
-    element2 = element.querySelector('class'); //искать черз querySelector внутри element, который ищем тоже через querySelector
+    element2 = element.querySelector('.class'); //искать черз querySelector внутри element, который ищем тоже через querySelector
     element.href; //вывести значение атрибута элемента
     element = document.querySelector('.slider-preview-item .active'); //поиск по селектору (двум классам)
         element = document.querySelector('li:last-child');

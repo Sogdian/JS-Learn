@@ -14,7 +14,7 @@ const postcss = require('gulp-postcss'); //постпроцессинг
 const gulpPug = require('gulp-pug'); /* препроцессинг с Pug */
 const sass = require('gulp-sass')(require('sass')); /* препроцессинг для scss */
 
-function serve() {//для browserSync. запуск Сервер
+function serve() {//для browserSync. запуск сервера
   browserSync.init({
     server: {
       baseDir: './dist'
@@ -22,21 +22,22 @@ function serve() {//для browserSync. запуск Сервер
   });
 }
 
+////ПРЕПРОЦЕССИНГ
 //препроцессинг с html
 function pug() {
   return gulp.src('gulp-scss/src/**/*.pug') //Gulp находит все файлы с расширением .pug внутри папки src/pages/.
     .pipe(gulpPug({
       pretty: true
-    })) //Затем включается преобразование кода на языке Pug в HTML.
+    })) //Затем включается преобразование кода на языке pug (пример, index.pug) в HTML.
     .pipe(gulp.dest('dist/')) //преобразованный код отправляется в папку dist/
     .pipe(browserSync.reload({stream: true})); //Сервер перезагружается, чтобы показать результаты в браузере
 }
-//препроцессинг с scss
+//препроцессинг с scss (для папки layouts)
 function layoutScss() {
   const plugins = [
     autoprefixer(),
     mediaquery(),
-    // cssnano() //минификация
+    // cssnano() //для минификации
   ];
   return gulp.src('gulp-scss/src/layouts/**/*.scss') // ищет все файлы с расширением .scss внутри папки с исходниками
     //вместо gulp.src('gulp-scss/src/**/*.scss')
@@ -47,12 +48,12 @@ function layoutScss() {
     .pipe(browserSync.reload({stream: true})); //Сервер перезагружается, чтобы показать результаты в браузере
 }
 
-//препроцессинг с scss
+//препроцессинг с scs (для папки pages)
 function pagesScss() {
   const plugins = [
     autoprefixer(),
     mediaquery(),
-    // cssnano() //минификация
+    // cssnano() //для минификации
   ];
   return gulp.src('gulp-scss/src/pages/**/*.scss') // ищет все файлы с расширением .scss внутри папки с исходниками
     //вместо gulp.src('gulp-scss/src/**/*.scss')
@@ -62,6 +63,7 @@ function pagesScss() {
     .pipe(browserSync.reload({stream: true})); //Сервер перезагружается, чтобы показать результаты в браузере
 }
 
+////ПОСТПРОЦЕССИНГ
 //постпроцессинг с html
 function html() { //для gulp. все HTML-файлы скопируются
   const options = {
@@ -75,14 +77,14 @@ function html() { //для gulp. все HTML-файлы скопируются
     minifyCSS: true,
     keepClosingSlash: true
   };
-  return gulp.src('gulp-scss/src/**/*.html')//сказать Gulp, откуда брать HTML-файлы. мы указали путь до всех файлов с расширением HTML внутри папки src/
+  return gulp.src('gulp-scss/src/**/*.html') //сказать Gulp, откуда брать HTML-файлы. мы указали путь до всех файлов с расширением HTML внутри папки src/
     .pipe(plumber()) //Чтобы избежать ошибок при сборке, перед пайпом dest полезно разместить пайп plumber, чтобы в случае ошибок сборка не падала.
     .on('data', function(file) { //для htmlMinify
       const buferFile = Buffer.from(htmlMinify.minify(file.contents.toString(), options))
       return file.contents = buferFile
     })
-    .pipe(gulp.dest('dist/'))
-    .pipe(browserSync.reload({stream: true}));//метод отвечает за отправку файла в точку назначения (папку dist/)
+    .pipe(gulp.dest('dist/')) //метод отвечает за отправку файла в точку назначения (папку dist/)
+    .pipe(browserSync.reload({stream: true})); //Сервер перезагружается, чтобы показать результаты в браузере
 }
 
 //постпроцессинг с css
@@ -96,20 +98,21 @@ function css() { //для concat. CSS-файлы склеятся и уедут 
     .pipe(plumber()) //потом вызвали plumber, чтобы ничего не ломалось
     .pipe(concat('bundle.css')) //использовали concat для склеивания CSS в один файл с именем bundle.css
     .pipe(postcss(plugins))//постпроцессинг через postcss
-    .pipe(gulp.dest('dist/'))
-    .pipe(browserSync.reload({stream: true}));//отправили результат в папку dist/.
+    .pipe(gulp.dest('dist/')) //отправили результат в папку dist/.
+    .pipe(browserSync.reload({stream: true})); //Сервер перезагружается, чтобы показать результаты в браузере
 }
 
 function images() { //для gulp. перенесём в соответствующие им папки внутри dist/
   return gulp.src('gulp-scss/src/images/**/*.{jpg,png,svg,gif,ico,webp,avif}') //Перечисление форматов изображений в фигурных скобках.
       //Отсутствие пайпа plumber (когда файлы не меняются, ничего не создаст ошибок)
     .pipe(gulp.dest('dist/images'))
-    .pipe(browserSync.reload({stream: true}));
+    .pipe(browserSync.reload({stream: true})); //Сервер перезагружается, чтобы показать результаты в браузере
 }
 
 function clean() {//del. Очистка папки dist/
   return del('dist');
 }
+
 
 function watchFiles() {//Отслеживание изменений в файлах
   //Запуск задачи watchapp следит за файлами в src/ и делает пересборку после каждого изменения этих файлов.
@@ -122,7 +125,7 @@ function watchFiles() {//Отслеживание изменений в файл
   gulp.watch(['gulp-scss/src/**/*.{jpg,png,svg,gif,ico,webp,avif}'], images);
 }
 
-// const build = gulp.series(clean, gulp.parallel(pug, html, css, images)); //для css
+//const build = gulp.series(clean, gulp.parallel(pug, html, css, images)); //для css
 const build = gulp.series(clean, gulp.parallel(pug, html, layoutScss, pagesScss, images)); //для scss
 const watchapp = gulp.parallel(build, watchFiles, serve); //build + Отслеживание изменений в файлах + запуск сервера
 
@@ -136,13 +139,13 @@ exports.clean = clean;
 exports.pug = pug; //Чтобы заработала команда gulp-pug, нужно настроить экспорт получившейся функции.
 
 
-exports.build = build;
-exports.watchapp = watchapp;
-exports.default = watchapp; //просто вызвать gulp в терминале
+exports.build = build; //build
+exports.watchapp = watchapp; //build + Отслеживание изменений в файлах + запуск сервера
+exports.default = watchapp; //просто вызвать gulp в терминале = build + Отслеживание изменений в файлах + запуск сервера
 
 //Сборка одной командой
-//series() — выполняет задачи по очереди
-//parallel() — выполняет задачи параллельно
+  //series() — выполняет задачи по очереди
+  //parallel() — выполняет задачи параллельно
 
 
 

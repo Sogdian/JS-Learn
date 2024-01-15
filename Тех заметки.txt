@@ -1,0 +1,13 @@
+//запуск js файла
+  cd путь до файла
+  node scriptDraft.js
+
+//Конфиг .vscode\launch.json
+"configurations": [
+    {
+      "type": "chrome",
+      "name": "Open html",
+      "request": "launch",
+      "file": "E:/Work/JS/react/indexDraft.html"
+    },
+  ]

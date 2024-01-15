@@ -157,25 +157,6 @@ sogdian
     768
     320
 
-//запуск js файла
-  cd путь до файла
-  node scriptDraft.js
 
-//Конфиг .vscode\launch.json
-"configurations": [
-    {
-      "type": "chrome",
-      "name": "Open html",
-      "request": "launch",
-      "file": "E:/Work/JS/react/indexDraft.html"
-    },
-  ]
 
-//Вопросы
-- как поместить красный фон ::after на задний фон текста "old idea", ширина ::after должна быть = ширине текста "old idea"
-см. https://codepen.io/Sogdian/pen/rNPyQBy
-- как получить отрицательное значение в расчете calc?
 
-//6
-ПОВТОРИТЬ в vs.code
-https://practicum.yandex.ru/learn/frontend-developer/courses/4f5191d5-2bc3-4234-be24-967e3d31d2df/sprints/195469/topics/1f7cb4e0-5cea-4e5f-9d5c-68cfbd9126b7/lessons/de78ace9-13e1-4f6c-a1c1-056c902d3bde/
