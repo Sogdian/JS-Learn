@@ -1,0 +1,4 @@
+.margin-bottom(@unit, @sub) { //название миксина, для установки отступа снизу (margin-bottom)
+  @margin: unit((@unit * @spacing-unit-size - @spacing-unit-size / 2), px); //unit(), которая преобразует значение в пиксели (px).
+  margin-bottom: @margin; //устанавливает свойство margin-bottom с использованием рассчитанного значения @margin.
+}

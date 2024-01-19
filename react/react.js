@@ -5,6 +5,9 @@
   состояние может измениться в любой момент.
   Состояние обычно используется для управления поведением компонента, а параметры — для настройки его внешнего вида. */
 
+import React from "react";
+import ReactDOM from "react-dom/client";
+
 //Создаем элемненты
 function HelloWorld(props) { //или HelloWorld({date})
     //Все данные, передаваемые в компонент, обязательно являются свойствами объекта props. Их нельзя делать отдельными параметрами функции
@@ -133,19 +136,20 @@ const className = `card ${ isSelected ? 'selected' : ''} ${ isFinished ? 'disabl
 
 
 /* Хуки. Хук — это функция. Её необходимо импортировать из пакета React, например, import {useState} from "react"
-//1. хук useState - для работы с состоянием, позволяет использовать состояние в функциональных компонентах. Состояния позволяют делать интерактивные интерфейсы, которые реагируют на действия пользователя.
-    Он принимает начальное состояние и возвращает массив. Первый элемент массива представляет собой текущее состояние, а второй элемент — функцию для изменения этого состояния.
-    useState можно вызывать только внутри компонента, useState нельзя вызывать в инструкциях ветвления if, for и так далее.
-    state не приходит извне, а является частью самого компонента и находится внутри него. Изменение состояния — это реакция на внешние действия: клики пользователя
-    Для каждого экземпляра компонента будет создано своё собственное значение состояния [..., ...] = React.useState(..)
-    Компоненты, которые расположенны на одном уровне, не могут влиять и не могут учитывать состояние друг друга.
-      Чтобы пользователь мог открыть только одну статью одновременно, вы должны управлять этим состоянием в вышестоящем компоненте.
-       Родительский компонент управляет состоянием, а потомки получают его в качестве параметра.
+  перехват функций в чужих процессах. Т.е. мы выполняем действия автоматически в зависимости от того, что было выполнено в другом процессе
+//1. хук useState - для работы с состоянием, позволяет использовать состояние в функциональных компонентах.
+  Он принимает начальное состояние и возвращает массив. Первый элемент массива представляет собой текущее состояние, а второй элемент — функцию для изменения этого состояния.
+  useState можно вызывать только внутри компонента, useState нельзя вызывать в инструкциях ветвления if, for и так далее.
+  state не приходит извне, а является частью самого компонента и находится внутри него. Изменение состояния — это реакция на внешние действия: клики пользователя
+  Для каждого экземпляра компонента будет создано своё собственное значение состояния [..., ...] = React.useState(..)
+  Компоненты, которые расположены на одном уровне, не могут влиять и не могут учитывать состояние друг друга.
+    Чтобы пользователь мог открыть только одну статью одновременно, вы должны управлять этим состоянием в вышестоящем компоненте.
+    Родительский компонент управляет состоянием, а потомки получают его в качестве параметра.
 
-    В коде мы объявили переменную count и функцию setCount и использовали для этого деструктуризацию массива.
-    Затем используем count для отображения количества нажатий кнопки и setCount (функция «сеттер», которая позволяет изменять состояние) для обновления состояния count.
-    useState() — это функция, которая принимает один аргумент. В нём необходимо передать начальное состояние.
-    Каждый раз при изменениях, React перерисовывает элементы так, чтобы они соответствовали новому состоянию компонента. */
+  В коде мы объявили переменную count и функцию setCount и использовали для этого деструктуризацию массива.
+  Затем используем count для отображения количества нажатий кнопки и setCount (функция «сеттер», которая позволяет изменять состояние) для обновления состояния count.
+  useState() — это функция, которая принимает один аргумент. В нём необходимо передать начальное состояние.
+  Каждый раз при изменениях, React перерисовывает элементы так, чтобы они соответствовали новому состоянию компонента. */
   function Example() {
     const [count, setCount] = React.useState(0);
       //const [count, setCount] = React.useState(0) - это состояние
@@ -169,23 +173,34 @@ const className = `card ${ isSelected ? 'selected' : ''} ${ isFinished ? 'disabl
       const getWords = (type) => [...Words[type]];
       const [words, setWords] = React.useState(() => getWords('german')); //функция будет возвращать нужный набор данных по его имени.
     };
+    return (
+      <div>
+        <p>Вы нажали {count} раз</p> //разметка, которая зависит от состояния
+        <button
+          onClick={() => setCount(count + 1)}>
+          Нажми меня
+        </button>
+        <button
+          onClick={handleClick} className="more" type="button"
+          onClick={() => setOpen(true)} //можно сразу так
+        >
+          {isOpen ? 'Закрыть' : 'Открыть'}
+        </button>
+      </div>
+    );
+  }
+  //пример 2
+    const Button = (props) => {
+      const [click, setClick] = React.useState(0)
+      const handleClick = () => {
+        setClick(click + 1)
+      }
+        return (
+          <button onClick={handleClick}>{props.text}</button>
+          <button onClick={() => setClick(click + 1)}>{click}</button> //или через анонимную функцию
+      )
+    }
 
-  return (
-    <div>
-      <p>Вы нажали {count} раз</p> //разметка, которая зависит от состояния
-      <button
-        onClick={() => setCount(count + 1)}>
-        Нажми меня
-      </button>
-      <button
-        onClick={handleClick} className="more" type="button"
-        onClick={() => setOpen(true)} //можно сразу так
-      >
-        {isOpen ? 'Закрыть' : 'Открыть'}
-      </button>
-    </div>
-  );
-}
 
   //типовые команды для работы с массивом в состоянии (state)
     //Добавление элемента в массив-состояние
@@ -198,8 +213,9 @@ const className = `card ${ isSelected ? 'selected' : ''} ${ isFinished ? 'disabl
     //Сброс массива-состояния
       //setItems([]);
 
-/* Хуки.
-//2. хук useEffect - позволяет компоненту совершать какую-либо побочную операцию после отрисовки компонента. Это может быть запрос данных с сервера, обработка медиазапросов или управление таймерами.
+/* Хуки
+//2. хук useEffect - позволяет компоненту совершать какую-либо побочную операцию после отрисовки компонента.
+  Это может быть запрос данных с сервера, обработка медиазапросов или управление таймерами.
   Хук useEffect не возвращает значения, как это делают другие хуки, такие как useState.
   Он используется для регистрации «эффекта», который будет вызван после рендеринга компонента, и может останавливаться при его удалении.
   useEffect принимает на вход два аргумента:
@@ -221,6 +237,19 @@ const className = `card ${ isSelected ? 'selected' : ''} ${ isFinished ? 'disabl
 
     return <div>Компонент с таймером</div>;
   }
+  //пример 2 (без setTimeout)
+    const Button = (props) => {
+      const [click, setClick] = React.useState(0)
+      const handleClick = () => {
+        setClick(click + 1)
+      }
+      React.useEffect(() => { //после каждого вызова setClick (это "эффект" - первый аргумент) (т.е. после смены любого состояния) будет меняться заголовок документа
+        document.title = `Вы нажали ${click}`;
+      })
+        return (
+          <button onClick={handleClick}>{props.text}</button>
+      )
+    }
 
 //Паттерны
   //«Композиция» - один реакт компонент вызывает (содержит в себе) другой
@@ -242,9 +271,6 @@ const className = `card ${ isSelected ? 'selected' : ''} ${ isFinished ? 'disabl
       );}
     //Еще пример деструктуризации
     const [firstCardData, secondCardData] = cards;
-
-
-
 
 /* Особенности синтаксиса JSX:
   компонент может вернуть только один корневой элемент;
@@ -273,7 +299,7 @@ HTML to JSX:
 
 //Импорт и экспорт
   //1. Именованное импортирование. Именованных значений можно экспортировать сколько угодно
-  // module1.js
+  //module1.js
   //Чтобы переменную или другую сущность из одного модуля (module1.js) можно было использовать в другом (module2.js), перед ней нужно указать ключевое слово export:
   export const variable = 0;
   // module2.js
@@ -285,8 +311,97 @@ HTML to JSX:
   //2. Экспорт по умолчанию. Экспорт по умолчанию внутри модуля может быть только один
   const variable = 3.14; //при импортировании по умолчанию тут без export
   export default variable; //экспорт по умолчанию
-  // module2.js
+  //module2.js
   //random - можно указывать любое название
   import random from ’./module1.js’;
 
+//Наследование
+  import logo from "./img/logo.jpg" //импорт картинок
+  export class Header extends React.Component { //extends - наследование
+    helpText = "Help Text";
+    render() { //render() функция, но писать function необязательно
+      return (
+        <h1>{this.helpText}</h1> //this - для обращения к переменной в этом же классе (используется только в классах)
+        <Header2 className="headers" title="Header2" /> //для использования стилей для .headers из styles.css
+        <Header2 title="HeaderNew" />
+        <Image image={logo} />
+        <img src={logo} /> //или так
+      )
+    }
+  }
+  export class Header2 extends React.Component {
+    render() {
+      return (
+        <h1>{this.props.title}</h1> //props.title - обращение (режим чтения) к тому, что передается в title, см. в title="Header2" в компоненте Header
+      )
+    }
+  }
+  export class Image extends React.Component {
+    render() {
+      return (
+        <img src={this.props.image} /> //при вызове Image возвращается в img то, что мы передали
+      )
+    }
+  }
 
+//Конструктор constructor
+  export class ApplicationError extends Error {
+    constructor(props) { //constructor - конструктор
+      super(props); //super - вызвать конструктор данного класса (класса ApplicationError)
+      this.name = this.constructor.name;
+    }
+  }
+  export class NotImplementedError extends ApplicationError {
+    constructor() {
+      super("Operation not implemented");
+    }
+  }
+
+//Состояния state
+  export class ErrorBoundary {
+    constructor(props) {
+      super(props)
+      this.state = {
+        hasError: false,
+        helpText: "Help Text",
+        helpText2: ""
+      }
+      this.onHandleClick = this.onHandleClick.bind(this); //bind - вызывает событие
+        //вся эта конструкция нужна для наших собственных (кастомных) методов onHandleClick
+        //для onChange (см. ниже) не надо
+    }
+    render() {
+      return (
+        <h1>{this.state.helpText}</h1>
+        <button onClick={this.onHandleClick}></button>
+
+        <h2>{this.state.helpText2}</h2>
+        <input onChange={ //onChange - срабатывает при изменении инпута (при вводе символов)
+          event => this.state({helpText2: event.target.value}) //через event можно получить значение, которое ввел пользователь в инпут
+            //в качестве значения helpText2 мы устанавливаем то, что ведет пользователь (event.target.value)
+        }></input>
+     )
+    }
+    onHandleClick() {
+      this.React.setState({
+        helpText: "Changed"
+      })
+    }
+  }
+
+//Дефолтные свойства defaultProps
+  const Button = (props) => { //в () мы должны указать, что мы принимаем props, из которого мы используем text
+    return (
+      <button>{props.text}</button>
+    )
+  }
+  Button.defaultProps = { //установка дефолтных свойств для, например, text
+    text: "DefaultText"
+  }
+  const Header = () => {
+    return (
+      <Button text="Text" />
+      <Button /> //вызов с дефолтным свойством text: "DefaultText"
+    )
+  }
+//

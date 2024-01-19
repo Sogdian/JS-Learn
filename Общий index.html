@@ -1,26 +1,29 @@
 <!--
 Форматирование кода CTRL + ALT + L (Prettier)
-    В терминале npm run check:
-        "check": "prettier --check './**/*.{pug,html,scss,css,js}'" — команда запустит проверку форматирования, после её выполнения в терминале будут сообщения о найденных ошибках форматирования
-          починить, prettier@3.0.0 --save-dev
-        "format": "prettier --write './**/*.{pug,html,scss,css,js}'" — команда, которая сразу исправит все ошибки, которые сможет
-        "lint": "stylelint \"./**/*.{scss,css}\" --formatter verbose" — выведет в терминал все ошибки в коде с указанием файлов и строк, где ошибки возникли
-        "lintfix": "stylelint \"./**/*.{scss,css}\" --fix" — попробует исправить те ошибки, которые сможет
-        "checkAll": "npm run check && npm run lint"
-        "fixAll": "npm run format && npm run lintfix"
-        "build": "gulp build" — build
-        "dev": "gulp" — сам "gulp" = build + Отслеживание изменений в файлах + запуск сервера
-        "fixAndBuild": "npm run fixAll && npm run build
 
-        //сборка проекта, см. gulpfile.js
-        gulp watchapp (или просто gulp) объединяет
-          gulp build объединяет
-            gulp html
-            gulp css
-            gulp images
-            gulp clean
-          watchFiles
-          serve
+В терминале npm run check:
+  "check": "prettier --check './**/*.{pug,html,scss,css,js}'" — команда запустит проверку форматирования, после её выполнения в терминале будут сообщения о найденных ошибках форматирования
+    починить, prettier@3.0.0 --save-dev
+  "format": "prettier --write './**/*.{pug,html,scss,css,js}'" — команда, которая сразу исправит все ошибки, которые сможет
+  "lint": "stylelint \"./**/*.{scss,css}\" --formatter verbose" — выведет в терминал все ошибки в коде с указанием файлов и строк, где ошибки возникли
+  "lintfix": "stylelint \"./**/*.{scss,css}\" --fix" — попробует исправить те ошибки, которые сможет
+  "checkAll": "npm run check && npm run lint"
+  "fixAll": "npm run format && npm run lintfix"
+  "build": "gulp build" — build
+  "dev": "gulp" — сам "gulp" = build + Отслеживание изменений в файлах + запуск сервера
+  "fixAndBuild": "npm run fixAll && npm run build
+Установка в devdependencies через флаг -D
+
+  //сборка проекта, см. gulpfile.js
+  gulp watchapp (или просто gulp) объединяет
+    gulp build объединяет
+      gulp html
+      gulp css
+      gulp images
+      gulp clean
+    watchFiles
+    serve
+
 
 Опубликовать ваш статический сайт бесплатно - Heroku, Netlify и Vercel.
 
@@ -228,7 +231,7 @@
                 </svg>
                 <svg viewBox="0 0 24 24">
                   <use href="svg/apple.svg#apple-2"> <!-- самое оптимальное решение для SVG-иконки. #apple-2 искать в <symbol id="apple-2" в "apple.svg" >
-                    use - используют, чтобы ссылаться на SVG, который лежит где-то в другом месте разметки или даже в другой папке проекта 
+                    use - используют, чтобы ссылаться на SVG, который лежит где-то в другом месте разметки или даже в другой папке проекта
                     в @media или вместо root - path -->
                     <style>
                     @media (prefers-color-scheme: dark) {

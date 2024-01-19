@@ -308,7 +308,7 @@ let pages = 0;
     //const formatPrice = (price) => `${price.toLocaleString()} ₽`; //1 500 ₽
 
 //Интерполяция шаблонной строки
-  const formattedPrice = `${price.toLocaleString()} ₽/час`; // = price.toLocaleString() + " ₽/час"
+  const formattedPrice = `Значение = ${price.toLocaleString()} ₽/час`; // = price.toLocaleString() + " ₽/час"
     const formattedPrice = {`cards ${!isShownByGrid ? 'list' : ''}`}; // "cards list" или "cards"
     className="{'button button-${firstSelectedOption}'}";
 
@@ -458,11 +458,14 @@ window.onscroll = function () {} //отслеживание скрола (мин
 window.pageYOffset //Вычисляет на какое кол-во пикселей была прокручена страница по Y
 //Величина горизонтальной прокрутки хранится в свойстве pageXOffset.
 window.scrollTo(100, 50); //Прокрутит страницу на 100px вправо и на 50px вниз. Если страница помещается в окно целиком и полосы прокрутки нет, то браузер проигнорирует эту инструкцию. По умолчанию автоматическая прокрутка в браузерах происходит очень быстро, скачком. Чтобы сделать её более плавной, мы использовали CSS свойство scroll-behavior со значением smooth. Подробнее об этом свойстве вы можете узнать из спецификации.
-filter.onchange = function() {} //обработчик срабатывает, когда пользователь выбирает новое значение из выпадающего списка. Обработчик событий onchange можно использовать с разными элементами. Например, он срабатывает, когда пользователь переключает чекбокс или радиокнопки.
+filter.onchange = function() {} //обработчик срабатывает, когда пользователь чтото меняет: выбирает новое значение из выпадающего списка, переключает чекбокс или радиокнопки, вбивает чтото в инпут
 element.style.color = 'green'; //изменить цвет текста. Стили, заданные с помощью свойства style, они имеют больший приоритет, чем CSS-правила из файла со стилями.
 window.getComputedStyle; //Получить стили, но только те стили, которые заданы в разметке в атрибуте style самого элемента. https://www.w3.org/TR/DOM-Level-2-Style/css.html#CSS-OverrideAndComputed-h3
 input.type = 'text'; //сменить тип на 'text'
 showPassword.checked; //свойство чекбокса true/false, включен ли он или выключен
+
+document.title //заголовок документа
+
 
 /*js в html, кнопка открытия dialog */
   // <button type="button" onClick="window['dialog-id'].show();" aria-controls="dialog-id">Открыть окно</button>
