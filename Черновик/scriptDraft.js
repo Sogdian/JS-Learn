@@ -1,24 +1,7 @@
-const acrostic = [
-  'Ангел лёг у края небосклона.',
-  'Наклонившись, удивлялся безднам.',
-  'Новый мир был синим и беззвездным.',
-  'Ад молчал, не слышалось ни стона.',
-  ' ',
-  'Алой крови робкое биенье,',
-  'Хрупких рук испуг и содроганье.',
-  'Миру лав досталось в обладанье',
-  'Ангела святое отраженье.',
-  'Тесно в мире! Пусть живёт, мечтая',
-  'О любви, о грусти и о тени,',
-  'В сумраке предвечном открывая',
-  'Азбуку своих же откровений.'
-];
-
-let annaAkhmatova = ''; // Объявляем переменную, в которой будет собрана итоговая строка
-
-for (let i = 0; i < acrostic.length; i += 1) {
-  let str1 = acrostic[i];
-  let str2 = acrostic[i][0];
-  annaAkhmatova = annaAkhmatova + acrostic[i][0];
+function getNormal(sys, dia) {
+  return ((sys >= 100 && sys <= 135) || (dia >= 60 && dia <= 85))
 }
-console.log(annaAkhmatova);
+
+console.log(getNormal(110, 70)); // true
+console.log(getNormal(140, 75)); // false
+console.log(getNormal(98, 80)); // false

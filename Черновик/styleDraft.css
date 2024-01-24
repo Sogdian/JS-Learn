@@ -1,134 +1,154 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
+html, body {
+  font-family: Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-.page {
-  min-width: 500px;
-  min-height: calc(100vh - 100px);
-  padding: 50px;
-  font-family: 'Open Sans', sans-serif;
-  font-size: 18px;
-  background-image: url(https://code.s3.yandex.net/web-code/images/dotted.svg);
-  accent-color: #000;
-}
-
-h1 {
-  width: fit-content;
-  margin: 0 auto 20px;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  max-width: 850px;
-  margin: 0 auto;
-  border: 1px solid #000;
-  padding: 45px;
-  background-color: #80d994;
-}
-
-button {
-  padding: 10px 65px;
-  font-family: inherit;
-  font-weight: 800;
-  font-size: inherit;
-  text-transform: uppercase;
-}
-
-button:hover {
-  cursor: pointer;
-}
-
-button[disabled] {
-  opacity: 0.6;
-}
-
-fieldset {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+input, button {
   border: none;
-  padding: 0;
 }
 
-label {
+.header {
+  max-width: 468px;
+  height: 80px;
+  margin: auto;
   display: flex;
   align-items: center;
-  gap: 15px;
-  color: #000;
-  cursor: pointer;
 }
 
-label span {
-  display: block;
-  font-weight: 800;
-  font-size: 12px;
-  text-transform: uppercase;
+.header__logo {
+  width: 150px;
 }
 
-input[type='text'] {
-  display: block;
-  width: 100%;
-  border: 1px solid #000;
-  padding: 10px 15px;
-  font-family: inherit;
-  font-size: inherit;
-  background-color: transparent;
+.header__logo-sub {
+  margin-left: 10px;
+  margin-bottom: 25px;
+  font-size: 0.6em;
 }
 
-select {
-  border: 1px solid #000;
-  padding: 10px 15px;
+.container {
+  max-width: 468px;
+  margin: auto;
 }
 
-input[type='checkbox'] {
-  width: 27px;
-  height: 27px;
+.cover {
+  display: flex;
+  align-items: center;
+  margin-top: 30px;
+  margin-bottom: 20px;
 }
 
-input[type='radio'] {
-  width: 27px;
-  height: 27px;
+.cover__image {
+  width: 110px;
+  min-width: 110px;
+  height: 110px;
+  background-image: url(https://code.s3.yandex.net/web-code/dom/cover.jpg);
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%;
 }
 
-input[type='range'] {
-  width: 100%;
+.cover__heading {
+  margin-left: 30px;
+  font-size: 2.5em;
+  line-height: 1;
 }
 
-input[type='range']::-webkit-slider-runnable-track {
-  width: 100%;
-  height: 10px;
-  border: none;
-  border-radius: 0;
-  cursor: pointer;
+.block {
+  margin-top: 60px;
+  border-radius: 3px;
 }
 
-input[type='range']::-webkit-slider-thumb {
-  width: 26px;
-  height: 16px;
-  margin-block-start: -3px;
-  border-radius: 0;
-  cursor: pointer;
+h3 {
+  font-weight: bold;
 }
 
-input[type='range']::-moz-range-track {
-  width: 100%;
-  height: 10px;
-  border: none;
-  border-radius: 0;
-  cursor: pointer;
+.input {
+  display: flex;
+  justify-content: space-between;
 }
 
-input[type='range']::-moz-range-thumb {
+.input__submit {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 30px;
+}
+
+.input__text {
+  font-size: 0.8em;
+  width: 150px;
+  height: 50px;
+  border-bottom: 1px solid #f1f1f1;
+  padding: 0 10px;
   box-sizing: border-box;
-  width: 26px;
-  height: 16px;
-  border-radius: 0;
+}
+
+.input__elem_text::placeholder {
+  color: #d3d3d3;
+}
+
+.input__btn {
+  font-size: 0.8em;
+  width: 150px;
+  height: 50px;
+  background-color: #ffdb4d;
+  border-radius: 2px;
   cursor: pointer;
 }
 
-input[type='range']:disabled::-webkit-slider-runnable-track {
-  opacity: 0.6;
+.input__btn_disabled {
+  background-color: #f1f1f1;
+  cursor: default;
+}
+
+.no-songs {
+  height: 70px;
+  display: flex;
+}
+
+.no-songs_hidden {
+  display: none;
+}
+
+.no-songs__text {
+  margin: auto;
+  text-align: center;
+  font-size: 1.2em;
+  color: #d3d3d3;
+}
+
+.song {
+  align-items: center;
+  display: flex;
+  position: relative;
+  margin-top: 5px;
+  border: 1px solid #f1f1f1;
+  border-radius: 5px;
+  font-size: 0.8em;
+  padding: 0 10px;
+}
+
+.song__artist {
+  margin-right: 10px;
+}
+
+.song__like {
+  border: none;
+  background: url(https://code.s3.yandex.net/web-code/dom/heart.svg) center no-repeat;
+  background-size: 100%;
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  position: absolute;
+  right: 10px;
+  opacity: 0.5;
+  transition: 0.3s;
+}
+
+.song__like:hover {
+  transform: scale(1.3);
+}
+
+.song__like_active {
+  opacity: 1;
+  background: url(https://code.s3.yandex.net/web-code/dom/heart-filled.svg) center no-repeat;
 }
