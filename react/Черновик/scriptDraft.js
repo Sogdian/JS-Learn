@@ -1,83 +1,28 @@
-const words = [
-  {
-    id: '1',
-    token: 'house',
-    word: 'Сasa',
-    type: 'word'
-  },
-  {
-    id: '2',
-    token: 'house',
-    url: 'img/photo-card-4.jpg',
-    type: 'image'
-  },
-  {
-    id: '3',
-    token: 'dog',
-    word: 'Сane',
-    type: 'word'
-  },
-  {
-    id: '4',
-    token: 'dog',
-    url: 'img/photo-card-6.jpg',
-    type: 'image'
-  },
-  {
-    id: '5',
-    token: 'teapot',
-    word: 'Teiera',
-    type: 'word'
-  },
-  {
-    id: '6',
-    token: 'teapot',
-    url: 'img/photo-card-5.jpg',
-    type: 'image'
-  },
-  {
-    id: '7',
-    token: 'bed',
-    word: 'Letto',
-    type: 'word'
-  },
-  {
-    id: '8',
-    token: 'bed',
-    url: 'img/photo-card-2.jpg',
-    type: 'image'
-  },
-  {
-    id: '9',
-    token: 'headphone',
-    word: 'Cuffia',
-    type: 'word'
-  },
-  {
-    id: '10',
-    token: 'headphone',
-    url: 'img/photo-card-1.jpg',
-    type: 'image'
-  },
-  {
-    id: '11',
-    token: 'laptop',
-    word: 'Portatile',
-    type: 'word'
-  },
-  {
-    id: '12',
-    token: 'laptop',
-    url: 'img/photo-card-3.jpg',
-    type: 'image'
+const placesList = document.querySelector('.places__list');
+
+function addCard(initialCard, removeCardCallback) {
+  const cardTemplate = document.querySelector('#card-template').content;
+  const placesItem = cardTemplate.querySelector('.places__item').cloneNode(true);
+  const cardDeleteButton = placesItem.querySelector('.card__delete-button');
+
+  placesItem.querySelector('.card__image').src = initialCard.link;
+  placesItem.querySelector('.card__image').alt = initialCard.name;
+
+  function removeCard() {
+    placesItem.remove();
+    // Вызывайте колбэк только после удаления карточки
+    removeCardCallback();
   }
-];
 
-const results = [
-  { name: 'Вася', steps: 1 },
-  { name: 'Аня', steps: 3 },
-  { name: 'Петя', steps: 5 }
-];
+  cardDeleteButton.addEventListener('click', removeCard);
 
-window.words = words;
-window.results = results;
+  placesList.append(placesItem);
+}
+
+function removeCard() {
+  this.parentNode.parentNode.remove(); // Мы используем this, чтобы получить кнопку, а затем поднимаемся на два уровня вверх, чтобы удалить соответствующий элемент placesItem
+}
+
+initialCards.forEach((item) => {
+  addCard(item, removeCard);
+});

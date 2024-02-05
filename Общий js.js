@@ -1032,7 +1032,7 @@ document
   //добавляет разметку и текст в документ и не затрагивают существующие элементы
   element.insertAdjacentText = "123"; //работает аналогичным образом, только вставляет текст, как и свойство textContent
 
-//заменить текстовое содержимое. Свойство innerText
+//Заменить текстовое содержимое. Свойство innerText
   //innerText, которое тоже предназначено для получения текстового содержимого.
   //Оно отличается от textContent тем, что innerText возвращает только видимое текстовое содержимое.
   //То есть innerText проигнорирует всё, что скрыто свойством display: none, а textContent — нет:
@@ -1040,7 +1040,7 @@ document
 
 //Реакция на действия пользователя. События
   button.addEventListener('click', function () {}); //addEventListener слушатели событий» //https://developer.mozilla.org/ru/docs/Web/Events
-  element.addEventListener('click', showClick); //showClick - обработчик событий (это колбек функция) (имя функции без скобок). Скобки не ставят, потому что мы не вызываем функцию, а просто передаём её как аргумент
+  element.addEventListener('click', showClick); //showClick - обработчик событий (это колбек функция) (имя функции без скобок). Скобки не ставят, потому что мы не вызываем функцию, а передаём её как аргумент
   //addEventListener, onclick, oninput - обработка событий в DOM-элементах без React. Сначала находим DOM-элемент, затем подписываемся на нужное событие.
   button.onclick = function() {}; //onclick - событие
   button.onclick = function(evt) {
@@ -1064,7 +1064,6 @@ document
     const eventTarget = evt.target;
     eventTarget.setAttribute('disabled', true);
   });
-
 
   checkbox.addEventListener('change', showClick); //change - событие изменения инпута
   form.addEventListener('submit', function () {}); //отправка формы, событие на теге <form>
@@ -1131,6 +1130,10 @@ document
   const listItems = list.children; //в свойстве children хранится псевдомассив дочерних элементов
   list.append(listItems[0]); //переместили первый элемент to do листа в конец
 
+  //Тег template
+  const userTemplate = document.querySelector('#user'); //например, #user это тег <template>
+  const userTemplate = document.querySelector('#user').content; //получить содержимое тега
+
 //Клонирование элементов
   //обработчики событий элемента не скопируются. Их придётся добавить заново
   //Метод cloneNode только копирует элемент, но не добавляет его в DOM. Для этого к копии используют append или другой метод добавления
@@ -1139,10 +1142,6 @@ document
 
   const songTemplate = document.querySelector('#song-template').content; //пример с <template>
   const songElement = songTemplate.querySelector('.song').cloneNode(true); //внутри <template> найти <div class="song">, который и надо склонировать, а не сам шаблон
-
-//Тег template
-  const userTemplate = document.querySelector('#user'); //например, #user это тег <template>
-  const userTemplate = document.querySelector('#user').content; //получить содержимое тега
 
 //Колбек функции
   //Аргумент 1. Текущий элемент массива item
