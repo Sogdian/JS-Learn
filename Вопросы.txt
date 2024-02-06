@@ -10,3 +10,7 @@
 //поизучать less
 
 //что значит @ts-ignore
+
+//
+https://learn.javascript.ru/first-steps
+3, 6, 12 можно не читать
