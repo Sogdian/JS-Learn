@@ -1,8 +1,37 @@
-function User(name) {
-  this.name = name;
-  this.sayHi = function() {
-    alert( "Меня зовут: " + this.name );
-  };
+(function () {
+const songsContainer = document.querySelector('.songs-container');
+const addButton = document.querySelector('.input__btn_action_add');
+const artistInput = document.querySelector('.input__text_type_artist');
+const titleInput = document.querySelector('.input__text_type_title');
+
+function addSong(artistValue, titleValue) {
+  const songTemplate = document.querySelector('#song-template').content;
+  const songElement = songTemplate.cloneNode(true);
+
+  songElement.querySelector('.song__artist').textContent = artistValue;
+  songElement.querySelector('.song__title').textContent = titleValue;
+
+  songsContainer.append(songElement);
+  artistInput.value = '';
+  titleInput.value = '';
 }
-let john = new User("John");
-john.sayHi();
+
+function keyHandler(evt) {
+  if (evt.key === 'Enter') {
+    addSong(artistInput.value, titleInput.value);
+  }
+}
+
+addButton.addEventListener('click', function () {
+  addSong(artistInput.value, titleInput.value);
+});
+
+artistInput.addEventListener('keydown', keyHandler);
+titleInput.addEventListener('keydown', keyHandler);
+
+songsContainer.addEventListener('click', function (evt) {
+  if (evt.target.classList.contains('song__like')) {
+    evt.target.classList.toggle('song__like_active');
+  }
+});
+})();

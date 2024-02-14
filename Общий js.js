@@ -184,11 +184,11 @@ console.log(21 + "2"); //"212"
   //Если среди условий есть ложные, && вернёт из них первое ложное:
   console.log(2 * 2 === 4 && undefined && 'Каждый может стать'); // undefined
 
-  //Оператор строгого равенства, тут нет приведения типов. https://htmlacademy.ru/courses/209/run/5
-  'a' === 'a'; // Результат: true
+  //Оператор строгого равенства, тут нет приведения типов (т.е. сравниваются типы (которые не меняются, не приводятся)). https://htmlacademy.ru/courses/209/run/5
+  2 === 'a'; // Результат: false
   'a' !== 'a'; // Результат: false
   //оператор нестрогого равенства, тут есть приведение типов
-  'a' == 'a'; // Результат: true
+  2 == 'a'; // Результат: true
   //оператор нестрогого неравенства
   'a' != 'a';
 
@@ -357,12 +357,34 @@ console.log(21 + "2"); //"212"
 
 
 
-/* Массивы
-  в массиве можно хранить любые данные: строки, булевы значения, числа и даже другие массивы.
-  если в массиве нет элемента под тем номером, под которым мы записываем, то этот элемент будет создан */
+//Массивы
+  //в массиве можно хранить любые данные: строки, булевы значения, числа и даже другие массивы
+  //если в массиве нет элемента под тем номером, под которым мы записываем, то этот элемент будет создан
+  //Массив — это объект со специальными методами (например, push и map) и свойством length.
+  //Числовые индексы — это ключи, а соответствующие им элементы — значения этих ключей
+  //Поскольку массивы — это объекты, они передаются и сравниваются по ссылке.
   let phrases = []; //пустой массив
   let numbers = [1, 2, 3, 4, 5];
-      numbers[numbers.length] = 7; //добавить новый элемент в конец массива
+  numbers[numbers.length] = 7; //добавить новый элемент в конец массива
+  console.log(numbers); //[ 1, 2, 3, 4, 5, 7 ]
+
+  numbers.four = 4;
+  console.log(numbers); // [ 1, 2, 3, 4, 5, 7, four: 4 ]
+
+  //Проверка на массив Array.isArray
+  const arr = [1, 2, 3];
+  const obj = {};
+  console.log(Array.isArray(arr)); // true
+  console.log(Array.isArray(obj)); // false
+
+  //Копирование массива
+  const boringTale = [
+    'У попа была собака, он её любил,'
+  ];
+  const boringTale2 = Object.assign([], boringTale); //в boringTale2 скопировалось boringTale
+  //метод slice, не передавая тому никаких аргументов
+  const boringTale2 = boringTale.slice();
+
   let aliExpress = [1, 2, 3].length //длина массиыв = 3 элемента
 
   let guest = "Jane";
@@ -487,6 +509,7 @@ console.log(21 + "2"); //"212"
   elements.forEach((item) => {
     item.classList.add('text_is-active');
   });
+  //если ключами в объекте оказались строки, которые можно привести к числам, большинство JS-движков упорядочит их сразу у себя
 
   //Создание одного массива из другого: метод map
   //Метод map создаёт новый массив на основе существующего.
@@ -655,7 +678,7 @@ console.log(21 + "2"); //"212"
   //Ключ — это уникальное имя этого значения. По ключу мы можем обратиться к значению
   //Пары «ключ — значение» делятся на два типа: свойства и методы.
   let user = {};  // синтаксис "литерал объекта", let user = new Object(); // синтаксис "конструктор объекта"
-  delete user.age; //Для удаления свойства
+
   let user = {
       nickname: 'Мария',
       getGreeting: function() {
@@ -664,32 +687,107 @@ console.log(21 + "2"); //"212"
       getGreeting2: function() {
           return this.nickname; //вернуть значение ключа этого же объекта
       },
-      "likes birds": true  // имя свойства из нескольких слов должно быть в кавычках. Обращение через [] скобки - user["likes birds"] = true;
+      "likes birds": true  //имя свойства из нескольких слов должно быть в кавычках. Обращение через [] скобки - user["likes birds"] = true;
   };
   console.log(user.nickname); //Мария
   console.log(user['nickname']); //Мария. Квадратные скобки также позволяют обратиться к свойству, имя которого может быть результатом выражения
   console.log(user.getGreeting()); //Мария
   console.log(user.getGreeting2()); //Мария
 
-  let admin = user; // копируется ссылка на user, но не сам объект
+  //Операторы: delete, in
+  let user = {
+    nickname: 'Мария'
+  };
+  delete user.nickname; //удаление свойства
+  console.log(user.nickname); //undefined
+  console.log(user); //{}. удалится и сам ключ
 
-  //obj[propertyName]
+  let admin = user; //копируется ссылка на user, но не сам объект
+
+  //Запись новых свойств
+  const obj = {
+    one: 1,
+  };
+  obj.two = 2;
+  console.log(obj.two); //2
+  //Если при записи нового свойства мы передаём значение ключа, которое не является строкой, оно автоматически преобразуется в строку
+  const obj = {};
+  obj[1] = 'единица';
+  obj[true] = 'истина';
+  console.log(obj['1']); // "единица"
+  console.log(obj['true']); // "истина"
+  //при доступе к свойству в квадратных скобках указать значение, не являющееся строкой, оно преобразуется в строку
+  console.log(obj[1]); // "единица"
+  console.log(obj[true]); // "истина"
+
+  //Запись (записать) в свойство - объект
+  const phonebook = {
+    'Тёма': {
+      mobile: '+79995164420',
+    }
+  };
+  function addPhoneNumber(name, numberType, number) {
+    if (!phonebook[name]) { //если свойства нет
+      phonebook[name] = {}; //записать в свойство пустой объект
+    }
+    phonebook: phonebook[name][numberType] = number; //в объект phonebook добавить объект Анастасия = { mobile: '+79111545616' }
+  }
+  addPhoneNumber('Анастасия', 'mobile', '+79111545616');
+
+  //Записать в свойство объекта значение переменной или функцию
+  function getCartoonName() {
+    return 'Трое из Простоквашино';
+  }
+  const cartoon = {
+    getCartoonName: getCartoonName //можно просто getCartoonName без дублирования
+  };
+  console.log(cartoon); //getCartoonName: f getCartoonName()
+
+  //Сравнение объектов
+  //Если в переменные записаны ссылки на объекты, движок проверяет, на один ли объект ведут ссылки.
+  //Если на один — возвращает true, если на разные — false.
+  const time = {};
+  const money = time;
+  console.log(time === money); // true. Ведь time и money — это две ссылки на один и тот же объект.
+
   //Объект, объявленный через const, может быть изменён. объявление const защищает от изменений только саму переменную obj, а не её содержимое
   const obj = {
     firstName: 'John',
     lastName: 'Doe',
+    'как хочу, так и называю': true,
+    '123anarchy!!!': true,
+    one: 1, //one это переменная
+    red: "#f00",
+    'добро пожаловать': 'или посторонним вход воспрещён', //имя ключа неизвестно на момент написания кода
+    birthday  : {
+      month: 'февраль',
+      day: 12
+    }
   };
   const propertyName = 'firstName';
-  console.log(obj[propertyName]); // Выведет 'John'
+    console.log(obj[propertyName]); // Выведет 'John'
+  obj['как хочу, так и называю']; // true
+    obj['123anarchy!!!']; // true
+  const key = 'one'; //one это переменная использованная потом
+    console.log(obj[key]); // 1
+  const key = prompt('red, green или blue?');
+    console.log(obj[key]); // "#f00"
+  const key = prompt('red, green или blue?');
+    console.log(obj.key); //undefined. мы попытались обратиться к свойству 'key', которого в объекте нет.
+  const part1 = 'добро'; //имя ключа неизвестно на момент написания кода
+    const part2 = 'пожаловать';
+    const key = `${part1} ${part2}`;
+    console.log(obj[key]); // "или посторонним вход воспрещён"
+  obj.birthday.month = 'февраль'; //эквивалентна birthday['anya']['month'].
+    obj['birthday']['month'] = 'февраль';
 
-  //задания динамических свойств объектов
+  //задание динамических свойств объектов
   const propertyName = 'firstName';
   const obj = {
     [propertyName]: 'John',
     lastName: 'Doe',
   };
   console.log(obj.firstName); // Выведет 'John'
-  obj.newName = "newName"; //добавление нового свойства в объект
 
   //Квадратные скобки также позволяют обратиться к свойству, имя которого может быть результатом выражения
   let user = {
@@ -697,14 +795,14 @@ console.log(21 + "2"); //"212"
   };
   let key = prompt("Что вы хотите узнать о пользователе?", "name");
   //доступ к свойству через переменную
-  alert( user[key] ); // John (если ввели "name"). Через alert( user.key ); //undefined
+  alert(user[key]); // John (если ввели "name"). Через alert( user.key ); //undefined
 
   //Вычисляемые свойства
   let fruit = prompt("Какой фрукт купить?", "apple");
   let bag = {
     [fruit]: 5, // имя свойства будет взято из переменной fruit
   };
-  alert( bag.apple ); // 5, если fruit="apple"
+  alert(bag.apple); // 5, если fruit="apple"
 
   //Свойство из переменной
   function makeUser(name, age) {
@@ -716,25 +814,48 @@ console.log(21 + "2"); //"212"
 
   //Проверка существования свойства, оператор «in»
   let user = { name: "John", age: 30 };
-  alert( "age" in user ); // true, user.age существует
-  alert( "blabla" in user ); // false, user.blabla не существует
+  alert("age" in user); // true, user.age существует
+  alert("blabla" in user ); // false, user.blabla не существует
 
-  //Цикл "for..in"
+  if ('name' in user) {
+    console.log(user.name); //John
+  } else ('age' in user) {
+    console.log(user.age); //30
+  }
+
+  //Цикл "for...in"
   let user = { name: "John", age: 30 };
   for (let key in user) {
     alert( key );  // ключи // name, age
     alert( user[key] ); // значения ключей // John, 30
   }
 
-  //Копирование объекта Object.assign
+  //Object.keys
+  let cat = { name: "Алан", surname: 'Кей' };
+  Object.keys({ name: 'Алан', surname: 'Кей' }); // ["name", "surname"]
+  Object.keys(cat).forEach(function (a) { //в "a" записываются ключи
+    console.log(a); //руп трёшку пятёрку десятку сотку
+  });
+
+  //Object.values
+  //Метод Object.values возвращает значения всех свойств и методов объекта
+  const paulMcCartney = {
+    yesterday: 'all my troubles seemed so far away'
+  };
+  console.log( Object.values(paulMcCartney) ); // ["all my troubles seemed so far away"]
+  //Object.entries
+  //Метод Object.entries возвращает все пары «ключ-значение».
+  console.log( Object.entries(paulMcCartney) ); // [["yesterday", "all my troubles seemed so far away"]]
+
+  //Копирование объекта Object.assign. Создать поверхностную копию объекта
   //Первый аргумент dest — целевой объект.
-  //Остальные аргументы src1, ..., srcN (может быть столько, сколько необходимо) являются исходными объектами
+  //Остальные аргументы src1, ..., srcN являются исходными объектами
   Object.assign(dest, [src1, src2, src3...])
 
   let user = { name: "John" };
   let permissions1 = { canView: true };
   let permissions2 = { canEdit: true };
-  Object.assign(user, permissions1, permissions2); // копируем все свойства из permissions1 и permissions2 в user
+  Object.assign(user, permissions1, permissions2); // копируем все свойства (первой вложенности, родительской, основной) из permissions1 и permissions2 в user
     //теперь user = { name: "John", canView: true, canEdit: true }
 
   //использовать Object.assign для замены цикла for..in для простого клонирования
@@ -800,12 +921,18 @@ console.log(21 + "2"); //"212"
       break; //Директива break нужна, когда дальнейшее выполнение цикла бессмысленно или может привести к неправильным результатам
     }
   //for of
-    for (let tooltipButton of tooltipButtons) { //элемент tooltipButton из коллекции tooltipButtons
-        console.log(tooltipButton);
-    }
+  //Метод обеспечивает удобный способ перебора значений, а не ключей или индексов
+  //for...of не работает со свойствами объектов, так как они не являются итерируемыми.
+  const arr = [1, 2, 3];
+  for (let value of arr) {
+    console.log(value); //1 2 3
+  }
   //for in
-  for (let tooltipButton in tooltipButtons) {
-    console.log(tooltipButton);
+  //for...in используется для перебора свойств объекта.
+  //Он проходит по всем перечисляемым свойствам объекта и его прототипу.
+  const obj = { a: 1, b: 2, c: 3 };
+  for (let key in obj) {
+    console.log(key, obj[key]); //a 1 b 2 c 3
   }
 
   //while
@@ -847,9 +974,9 @@ console.log(21 + "2"); //"212"
   }
   console.log(catName); // "Матроскин"
 
-//Функции
-  //При объявлении функции описывают её параметры. При вызове — передают аргументы.
-  //Объявление функции
+//Функции. При объявлении функции описывают её параметры. При вызове — передают аргументы.
+  //функции в JavaScript — это объекты с дополнительными методами. В них тоже можно добавлять свойства
+  //Объявление функции Function Declaration
   //Объявленную функцию можно вызвать до объявления, функциональное выражение — нельзя
   function makeHelloWorld() { //makeHelloWorld - Объявление функции
     function helloWorld() { //helloWorld - Объявление функции
@@ -861,7 +988,13 @@ console.log(21 + "2"); //"212"
   console.log(helloWorld); //[Function: helloWorld]
   helloWorld(); //"Hello world!"
 
-  //Функциональные выражения
+  //Самовызываемая функция IIFE
+  //Функция создаётся и сразу же вызывается
+  (function helloWorld(name) {
+    return console.log();
+  })("Hello world!")
+
+  //Функциональные выражения Function Expression
   //Объявленную функцию можно вызвать до объявления, функциональное выражение — нельзя
   let functionName = function (userName, bookName) { //Передавать аргументы надо в том же порядке, в котором объявлены параметры функции. Потому что порядок аргументов соответствует порядку параметров в функции. У нас параметры записаны в таком порядке: userName, bookName.
       console.log('Меня зовут ' + userName + '. Моя любимая книга: ' + bookName);
@@ -974,6 +1107,25 @@ console.log(21 + "2"); //"212"
 
   //confirm
   let res = confirm(question); //Функция confirm отображает модальное окно с текстом вопроса question и двумя кнопками: OK и Отмена
+
+  //Присвоение функции свойства
+  function multiply(a, b) {
+    return a * b;
+  }
+  multiply.someValue = 4; //Если обратиться к свойству функции с ключом someValue, вернётся 4
+
+  //Проверка на функцию
+  function multiply(a, b) {
+    return a * b;
+  }
+  console.log(typeof multiply); // "function"
+
+  //Передача по ссылке
+  function multiply(a, b) {
+    return a * b;
+  }
+  let multiplyRef = multiply;
+  console.log(multiply === multiplyRef); // true
 
 //js функции
   Math.ceil(number); //принимает на вход число и округляет его до целого в большую сторону

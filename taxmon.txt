@@ -4,3 +4,6 @@ PageTitle
 
 [data-tid='Header']
 [data-tid='ReasonTitle']
+
+//Проверка соответствия элемента
+const elementText = this.page.$eval('xpath=//span[text()="Налог на прибыль"]', element => element.textContent);

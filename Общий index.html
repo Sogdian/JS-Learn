@@ -1,7 +1,13 @@
 <!--
 Форматирование кода CTRL + ALT + L (Prettier)
+Поиск файла  CTRL + P в Source в девтулс
 
-В терминале npm run check:
+В терминале ввести
+  npm run check, к примеру
+  npm install - для установки всех Dependencies из package.json
+  npm config get registry - посмотреть к какому npm репозиторию подключен мой проект
+  "build": "webpack" - Так мы скомандовали Node.js найти в папке node_modules модуль webpack и запустить его.
+
   "check": "prettier --check './**/*.{pug,html,scss,css,js}'" — команда запустит проверку форматирования, после её выполнения в терминале будут сообщения о найденных ошибках форматирования
     починить, prettier@3.0.0 --save-dev
   "format": "prettier --write './**/*.{pug,html,scss,css,js}'" — команда, которая сразу исправит все ошибки, которые сможет
