@@ -312,6 +312,8 @@ console.log(21 + "2"); //"212"
 
 //Превращение строки в массив. Метод split
   //Метод split принимает на вход один аргумент — разделитель. Он показывает, где заканчивается один элемент массива и начинается следующий
+  //метод String.split ожидает, что какой-то элемент должен быть и до, и после разделителя
+  //Поэтому если ваша строка начинается с разделителя или заканчивается разделителем, в полученном массиве первым или последним элементом будет пустая строка
   'Пришёл. Увидел. Победил.'.split(' '); // ["Пришёл.", "Увидел.", "Победил."]
   'Пришёл. Увидел. Победил.'.split('. '); // ["Пришёл", "Увидел", "Победил."]
 
@@ -580,7 +582,8 @@ console.log(21 + "2"); //"212"
   //find - используется для поиска первого элемента в массиве, который удовлетворяет заданному условию в виде колбэк-функции
     const numbers = [1, 2, 3, 4, 5, 6, 7];
     const result = numbers.find((item) => item > 3);
-    console.log(result); // 4. Метод find находит первый элемент массива, удовлетворяющий условию, и возвращает его. В нашем случае это элемент 4.
+    console.log(result); // 4. Метод find находит первый элемент массива, удовлетворяющий условию, и возвращает его.
+      // В нашем случае это элемент 4. Иначе вернет undefined
     //пример с объектами
       const persons = [
         { id: 1, name: 'Alice' },
@@ -910,7 +913,10 @@ console.log(21 + "2"); //"212"
   //условие ? значение1 : значение2;
   const a = 5, b = 10;
   const max = (a > b) ? a : b;
-  //тернарный оператор в реакт
+  //пример 2
+  const someStorage = localStorage.getItem(LocalStorageKeys.SidebarMenuItemActive);
+  const someVariable = someStorage ? JSON.parse(someStorage) : true; //Если значение переменной someStorage истинно (не равно null, undefined, false, 0, '' или другим "ложным" значениям), то это выражение принимает значение true.
+  //тернарный оператор в реакте
   <div>{ condition ? <Component1 /> : <Component2 />; }</div>
 
 //циклы
@@ -1127,6 +1133,33 @@ console.log(21 + "2"); //"212"
   let multiplyRef = multiply;
   console.log(multiply === multiplyRef); // true
 
+  //Колбэк
+  //Синхронные. каждый блок кода здесь выполняется за другим и последовательность заранее определена
+  function handleError(tweet) {
+    const newTweetContainer = document.createElement('div');
+    newTweetContainer.textContent = tweet;
+    document.body.append(newTweetContainer);
+  }
+  function insertTweet(tweet, containerSelector, callback) {
+    const tweetContainer = document.querySelector(containerSelector);
+    if (!tweetContainer) {
+      callback(tweet);
+      return;
+    }
+    tweetContainer.textContent = tweet;
+  }
+  insertTweet('Твит, адресованный Илону Маску', '.tweets', handleError);
+  //Асинхронные
+  function imageLoadCallback(evt) { // колбэк, который нужно выполнить после того как изображение загрузится
+    document.body.append(evt.target);
+  }
+  function loadImage(imageUrl, loadCallback) {
+    const img = document.createElement('img');
+    img.src = imageUrl;
+    img.onload = loadCallback;
+  }
+  loadImage('https://yastatic.net/q/logoaas/v1/Практикум.svg', imageLoadCallback); // Теперь картинка появится в разметке только после загрузки
+
 //js функции
   Math.ceil(number); //принимает на вход число и округляет его до целого в большую сторону
   Math.floor(number) //делает то же самое, только округляет в меньшую сторону
@@ -1140,6 +1173,10 @@ console.log(21 + "2"); //"212"
   price.toLocaleString(); //1500 -> 1 500 //преобразует число в строку и возвращает значение, используя указанный языковой стандарт.
     //Если метод используется без параметров, то он использует язык по-умолчанию.
     //const formatPrice = (price) => `${price.toLocaleString()} ₽`; //1 500 ₽
+
+  //У img есть свойства onload и onerror
+  //onload сработает, когда изображение загружено,
+  //onerror сработает если произошла ошибка
 
 //Интерполяция шаблонной строки
   const formattedPrice = `Значение = ${price.toLocaleString()} ₽/час`; // = price.toLocaleString() + " ₽/час"
@@ -1270,30 +1307,498 @@ console.log(21 + "2"); //"212"
   }
   showMenu(); // Menu 100 200
 
-//Таймеры
-//setTimeout - Она принимает два аргумента: функцию, которую нужно запустить, и время в миллисекундах, через которое эта функция должна быть вызвана
+//Таймеры setTimeout, setInterval
+  //setTimeout - принимает: функцию колбэк, которую нужно запустить, время в миллисекундах, через которое эта функция должна быть вызвана, аргументы, которые нужно передать колбэку на вход.
   //для установки в таймер отложенного выполнения кода нужно передать функцию, а не вызывать её.
-  function tellMeLater() {
-    console.log("Hello from timer!");
+  function tellMeLater(name) {
+    console.log(name);
   }
-  setTimeout(tellMeLater, 1000);
-//clearTimeout - отменяет таймер, созданный функцией setTimeout.
-  //На вход функциям подаётся таймер ID — идентификатор таймера. Его возвращают setTimeout и setInterval, которые создают этот таймер.
-  //timerId
-  const timerId = setTimeout(() => console.log({ timerId }), 1000);
-  //пример, программа, которая будет выводить сообщение «Hello, world!» в консоль каждые две секунды. После 10 секунд выполнение программы должно завершиться
-  function sayHello() {
-    console.log('Hello, world!');
-  }
-  let timerId = setTimeout(function tick() {
-    sayHello();
-    timerId = setTimeout(tick, 2000);
-  }, 2000); //каждые 2 секунды выводится sayHello()
-  setTimeout(function() {
-    clearTimeout(timerId);
-    console.log('The program has stopped!');
-  }, 10000); //После 10 секунд выполнение программы должно завершиться
-
-//setInterval - функция запускается не один раз, а периодически через указанный интервал времени
+  setTimeout(tellMeLater, 1000, "Petr");
+  //clearTimeout - отменяет таймер, созданный функцией setTimeout
+  function logOut() {}
+  let timer = setTimeout(logOut, 300000);   // через 300 секунд выкинем пользователя
+  // если пользователь кликнул куда-то, сбросим таймер и будем ждать заново
+  window.addEventListener('click', function () {
+    clearTimeout(timer); //сбросим таймер
+    timer = setTimeout(logOut, 300000); //будем ждать заново
+  });
+  //setInterval - устанавливает циклический таймер. Он позволяет вызывать колбэк много раз, через заданные промежутки времени
   setInterval(tellMeLater, 1000); //команда tellMeLater будет повторяться каждые 1000 миллисекунд
-//clearInterval - отменяет таймер, созданный функцией setInterval
+  //clearInterval - отменяет таймер, созданный функцией setInterval
+  let interval = setInterval(checkEmail, 10000);
+  window.addEventListener('blur', function () {   // Если пользователь переключил вкладку,
+    clearInterval(interval); // удаляем таймер.
+  })
+  // Если пользователь вернулся на вкладку,
+  window.addEventListener('focus', function() {
+    interval = setInterval(checkEmail, 10000); // снова запускаем таймер.
+  })
+
+//Promise часть отдельного API, специально сделанного для работы с асинхронным кодом
+  //Промисы позволяют добавлять задачи в асинхронную очередь.
+  //Для этого нужно дописать в коде ещё один then или catch.
+  //Первые then и catch на странице получат те значения, которые мы передавали на вход функциям resolve и reject.
+  //Все последующие — то, что возвращали предыдущие методы then и catch.
+  const newPromise = new Promise(function (resolve, reject) { //можно и без reject
+    const rand = Math.random() > 0.5 ? true : false;
+    if (rand) {
+      resolve('Запрос обработан успешно'); //метод resolve вернет просто строку "Запрос обработан успешно"
+    } else {
+      reject('Запрос отклонён'); //метод reject вернет просто строку "Запрос отклонён"
+    }
+  });
+  newPromise
+    .then(function (value) { // Если промис был обработан. (Первые then и catch)
+      /* Параметр value хранит значение, переданное методу resolve при создании промиса, то есть просто строку "Запрос обработан успешно" */
+      console.log(value);
+    })
+    .catch(function (value) { // Если промис был отклонён. (Первые then и catch)
+      /* Здесь параметр value будет хранить то значение, которое было передано методу reject, то есть просто строку "Запрос отклонён" */
+      console.log(value + ', нам жаль :(');
+    })
+    .finally(function () { // В любом случае
+      console.log('Как бы там ни было — запрос мы в глаза видели');
+    });
+  //Все последующие — то, что возвращали предыдущие методы then и catch.
+  //then(thirdAction) = then(secondAction) = then(firstAction)
+  newPromise.then(firstAction).then(secondAction).then(thirdAction);
+  //Если вы сразу хотите создать исполненный или отклонённый промис
+  Promise.resolve('Этот промис исполнен')
+    .then(function (value) {
+      console.log(value); // "Этот промис исполнен"
+    });
+  Promise.reject('Этот промис отклонён')
+    .catch(function (value) {
+      console.log(value); // "Этот промис отклонён"
+    });
+  //Promise.all
+  //принимает на вход массив с промисами и выполняет записанный в then код, только когда все промисы вернулись со статусом «исполнен»
+  const promises = [firstPromise, secondPromise] //Создаём массив с промисами
+  Promise.all(promises) //Передаём массив с промисами методу Promise.all
+    .then((results) => {
+      console.log(results); // ["Первый промис", "Второй промис"]
+    });
+
+//Валидация ValidityState и слущатель input
+  //свойство validity — объект из 11 свойств с булевыми значениями:
+  //valueMissing — принимает true, когда обязательное поле пустое;
+  //typeMismatch — принимает true, когда ввели неправильные значения данных для атрибута type. Это круто работает в связке с type="email" и type="url";
+  //tooLong — всегда false, потому что в современных браузерах невозможно ввести больше символов, чем указано в maxlength;
+  //tooShort — принимает true, когда количество символов не превышает значение атрибута minlength.
+  //patternMismatch - отвечает за проверку ввода регулярным выражением. Если поле равно true, значит, введённый текст не прошёл проверку
+  //valid - В нём находится итоговое решение проверки данных. Если во всех других 10 свойствах значения корректны, поле ввода валидно и свойство valid приобретает значение true
+  const formElement = document.querySelector('.form');
+  const formInput = formElement.querySelector('.form__input');
+  formInput.addEventListener('input', function (evt) { // Слушатель события input - «Живая» проверка данных происходит одновременно с тем, как пользователь вводит в поле данные
+    console.log(evt.target.validity.valid); //Выведем в консоль значение свойства validity.valid поля ввода,
+    // на котором слушаем событие input
+  });
+
+  //Изменение сообщения об ошибке validationMessage
+  const formElement = document.querySelector('.form');
+  const formInput = formElement.querySelector('.form__input');
+  const formError = formElement.querySelector(`.${formInput.id}-error`);
+  const showInputError = (element, errorMessage) => { // Передадим текст ошибки вторым параметром
+    element.classList.add('form__input_type_error'); //стили для класса невалидного input
+    formError.textContent = errorMessage; // Заменим содержимое span с ошибкой на переданный параметр
+    formError.classList.add('form__input-error_active');
+  };
+  const hideInputError = (element) => {
+    element.classList.remove('form__input_type_error');
+    formError.classList.remove('form__input-error_active');
+    formError.textContent = ''; // Очистим ошибку
+  };
+  const isValid = () => {
+    if (!formInput.validity.valid) {
+      showInputError(formInput, formInput.validationMessage); // Передадим сообщение об ошибке вторым аргументом
+    } else {
+      hideInputError(formInput);
+    }
+  };
+  formInput.addEventListener('input', isValid);
+
+//Запросы
+  //Метод fetch
+  //Первый — обязательный — URL запрашиваемого ресурса
+  //Второй аргумент — необязательный. Это объект опций, method, headers и body — они отвечают за метод запроса, его заголовки и тело
+  fetch('https://example.com')   //по умолчанию это GET
+    .then((res) => {
+      console.log(res); // если всё хорошо, получили ответ
+    })
+    .catch((err) => {
+      console.log('Ошибка. Запрос не выполнен');
+    });
+  //POST
+  fetch('https://example.com/users', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      username: 'ivan'
+    })
+  });
+
+  //Как передать данные на сервер
+    //1. В теле запроса
+    //2. В параметрах запроса
+    //Их перечисляют прямо в URL после вопросительного знака
+    //Имя параметра и его значение указывают друг за другом через знак равенства: name=value. Такие пары имя атрибута=значение разделяют амперсандами &:
+    fetch('https://example.com/images/random?type=portrait&name=DorianGrey', {
+      method: 'GET'
+    });
+    //3. Прямо в URL
+    //Например, если картинке присвоен идентификатор, можно запросить его в URL и получить картинку
+    fetch('https://example.com/images/ewfh23d832jnf2903', { // ewfh23d832jnf2903 — идентификатор картинки
+      method: 'GET'
+    });
+
+//Методы JSON.stringify
+  //делает из объекта строку JSON
+  const songs = [
+    {
+      title: 'Вектора',
+      artist: 'OZORA'
+    }
+  ];
+  const songsJSON = JSON.stringify(songs);
+  console.log(songsJSON);
+  console.log(typeof songsJSON); // "string"
+
+  //Метод JSON.parse
+  //Преобразовывает JSON-строку (Строка должна быть JSON-совместимой) в объект JavaScript
+  const songs = [
+    {
+      title: 'Вектора',
+      artist: 'OZORA'
+    }
+  ];
+  const songsJSON = JSON.stringify(songs);
+  const songsObject = JSON.parse(songsJSON);
+  console.log(typeof songsObject); // "object"
+  console.log(songsObject[0].title); // "Вектора"
+
+  //Метод res.json — асинхронный метод.
+  //Метод json читает ответ от сервера в формате json и возвращает промис
+  fetch('https://praktikum.yandex.ru')
+    .then((res) => {
+      return res.json(); // возвращаем результат работы метода и идём в следующий then
+    })
+    .then((data) => {
+      console.log(data); // если мы попали в этот then, data — это объект
+    })
+    .catch((err) => {
+      console.log('Ошибка. Запрос не выполнен');
+    });
+
+  //Ответ на запрос
+  //2 — значит, запрос прошёл успешно; 200 OK;
+  // 3 — запрос был перенаправлен;
+  // 4 — с запросом что-то не так: ресурс не найден или у вас нет к нему доступа; 401 Unauthorized; 403 Forbidden; 404 Not Found;
+  // 5 — на сервере произошла какая-то ошибка. 500 Internal Server Error.
+
+  //res.status - статус
+  //res.statusText - сообщение статуса
+  fetch('https://api.kanye.rest')
+    .then(res => {
+      console.log(res.status, res.statusText); // 200 OK
+    });
+
+  //res.ok
+  //хранит в себе true, если ответ успешный (начинается с 2), и false — в любом другом случае
+  fetch('https://api.kanye.rest')
+    .then(res => {
+      console.log(res.ok); // true
+    });
+  //пример 2
+  const quoteElement = document.querySelector('div.quote');
+  fetch('https://api.kanye.rest')
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Что-то пошло не так: ${res.status}`); //отклоняем промис, чтобы перейти в блок catch, если сервер вернул ошибку
+    })
+    .then((data) => {
+      quoteElement.textContent = data.quote;
+    })
+    .catch((err) => {
+      console.log(err); // "Что-то пошло не так: ..."
+    });
+
+  //Заголовки ответа, headers.get
+  fetch('https://api.kanye.rest')
+    .then((res) => {
+      if (res.headers.get('Content-Type').contains('application/json')) {
+        return res.json();
+      }
+    });
+
+  //Тело ответа
+  // res.json — разбирает JSON в объект, этот метод вы уже знаете;
+  // res.text — разбирает тело как текст;
+  // res.blob — разбирает тело ответа как бинарные данные: это нужно при получении файлов (изображений, видео, pdf-документов).
+  fetch('https://api.kanye.rest')
+    .then(res => res.text())
+    .then((result) => {
+      console.log(result);
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Регулярные выражения
+  const userList = 'Маша, Петя, Катя, Лёша, Лера, Иннокентий, Влад';
+  const innokentiy = /Иннокентий/g; // /.../ - литерал регулярного выражения
+  userList.match(innokentiy);  //[ "Иннокентий" ]
+
+  //Методы строк String.match
+  //Нужен для поиска совпадений: им вы можете проверить, есть ли слово в тексте, и посчитать, сколько раз оно встречается
+  //Если найти строку удалось, String.match вернёт массив с тем, что нашёл
+  //Если символ найти не удалось, String.match вернёт null
+  //Метод String.match можно настроить: например, заставить его считать все совпадения в тексте, а не только первое. Для такой настройки и нужны флаги
+  const regex = /л/;
+  const word = 'солнце';
+  word.match(regex); // [ "л" ] — метод нашёл символ в строке
+  //Если передать методу String.match регулярное выражение без флага g, полученному массиву будут определены дополнительные свойства
+  const str = 'тро-ло-ло';
+  const result = str.match(/ло/);
+  result[0]; // "ло"
+  result.index; // 4. индекс первого совпадения в строке
+  result.input; // "тро-ло-ло". input содержит исходную строку
+
+  //Методы регулярных выражений RegExp.test
+  //Если совпадение найти удалось, RegExp.test вернёт true, иначе false
+  const regex = /т/;
+  const word = 'лестница';
+  regex.test(word); // true — метод подтвердил, что в строке есть совпадение
+  //Если установить флаг g, метод вернёт первое совпадение, а затем — запишет в свойство lastIndex регулярного выражения номер символа в тексте, на котором это совпадение произошло
+  //Если запустить метод RegExp.test снова, он будет искать не с начала строки, а с того символа, на котором остановился в прошлый раз. То есть с записанного в свойство lastIndex:
+  //RegExp.test обновляет свойство lastIndex после каждого вызова.
+  const regex = /\w+@\w+\.\w+/g;
+  const str = 'Stas Basov: stas-basov@yandex.ru, Telegramm: basov-stas';
+  regex.test(str); // true
+  regex.lastIndex; // 32 - номер символа, где было найдено совпадение
+  // Вызовем метод RegExp.test ещё раз:
+  regex.test(str); // false - поиск начался с 32 символа, поэтому совпадения найдены не были
+  regex.lastIndex; // 0. предыдущий поиск не дал результатов, поэтому свойство lastIndex было сброшено до нуля
+
+  //String.replace
+  //Метод ищет в тексте совпадение с регуляркой, составляет какую-то новую строку из полученной и возвращает её нам
+  const strObj = 'Пробел всегда нужно ставить после запятой ,а не до неё.';
+  const regex = /\s,/g;
+  strObj.replace(regex, ', '); // "Пробел всегда нужно ставить после запятой, а не до неё."
+
+  //String.split
+  const regex = /\n/im;
+  `Мой дядя самых честных правил,
+  И лучше выдумать не мог.`.split(regex);  //"Мой дядя самых честных правил,", "И лучше выдумать не мог."
+
+  //Флаги
+  //Флаг — символ, который стоит в регулярном выражении в самом конце (после слеша) и задаёт настройки поиска.
+  //Всего их шесть: g, i, m, u, y, s.
+  //В регулярном выражении флагов может быть несколько, и они могут идти в любом порядке.
+    //Флаг g
+    //Если установить флаг g, мы будем искать все совпадения, а не только первое
+    const regex = /с/;
+    const regexGlobal = /с/g;
+    const word = 'искусство';
+    word.match(regex); // [ "с" ]
+    word.match(regexGlobal); // [ "с", "с", "с" ];
+
+    //Флаг i
+    //Если поставить флаг i, поиск не будет различать строчных и прописных букв
+    const str = 'Вильгельм Конрад Рентген стал лауреатом Нобелевской премии в 1901 году.'
+    const regex = /рентген/;
+    const regexIgnore = /рентген/i;
+    str.match(regex); // null
+    str.match(regexIgnore); //[ "Рентген" ]
+
+    //Флаг m
+    //движок будет считать каждый перенос концом одной строки и началом другой
+    const str = `Эта личность мне знакома! Знак допроса вместо тела.
+    Многоточие шинели. Вместо мозга — запятая.`;
+    const regex = /[А-Я]*\.$/gim;
+    str.match(regex); // [ "тела.", "запятая." ]
+    //Это работает и с шаблонными строками, и с обычными: в них движок будет считать началом и концом строки комбинации \n
+    const regex = /^I got/gm;
+    const str = 'I got, I got, I got, I got\n' +
+      'I got power, poison, pain and joy\n' +
+      'I got hustle, though, ambition, flow\n' +
+    str.match(regex); // [ "I got", "I got", "I got" ]
+
+  //Точка в выражении. В шаблоне регулярного выражения точка заменяет любой символ
+  //Но у точки есть одна слабость: она не найдёт перенос строки.
+  const str = `
+    Не помню, как именно его зовут:
+    то ли Сортини, то ли Сордини.
+    Быть может, и Сардини, через «а».`;
+  const regex = /С.р.ини/g; // Точки в регулярном выражении заменяют любой символ.
+  str.match(regex); // [ "Сортини", "Сордини", "Сардини" ]
+
+  //Спецсимволы https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/RegExp
+  const str1 = 'yandex.ru/maps/';
+  const regex1 = /\.ru/; // экранировали точку, движок будет искать только точки, а не любые символы
+  const regex2 = /\/maps/; // экранировали слеш перед словом maps
+  str1.match(regex1); // [ ".ru" ]
+  str1.match(regex2); // [ "/maps" ]
+  const str2 = 'C:\\'; // Чтобы найти обратный слеш, его тоже нужно экранировать
+  const regex3 = /\\/; // экранировали слеш
+  str2.match(regex3); // [ "\" ]
+
+  //Спецсимвол \w
+  //спецсимвол говорит движку искать любую цифру, латинскую букву или нижнее подчёркивание
+  const str = 'Простите, я отправил старую версию файла диплом_финал_2_копия_3.docx. Не смотрите не неё. Высылаю вам актуальную диплом_финал_2_копия_4.docx';
+  const regex = /диплом\wфинал\w\w\wкопия\w\w.docx/g;
+  str.match(regex); // [ "диплом_финал_2_копия_3.docx", "диплом_финал_2_копия_4.docx" ]
+  //Обратный класс: \W
+  //\W - ищет всё что угодно: знаки вопроса, пробелы, слеши, кириллические символы, — но только не цифры, буквы базовой латиницы и нижние подчёркивания
+  const str = `
+    Даты основания некоторых IT-компаний:
+    Yandex: 23.09.1997
+    Apple: 01/04/1976
+    IBM: 16-06-1911`;
+  const regex = /\w\w\W\w\w\W\w\w\w\w/g; /* цифры в дате мы обозначили строчной \w, а разделители —
+    заглавной \W. Разделитель это НЕ цифра, НЕ латинская буква и НЕ нижнее подчёркивание. */
+  str.match(regex); // [ "23.09.1997", "01/04/1976", "16-06-1911" ]
+
+  //Спецсимвол \d
+  //Спецсимвол \d совпадает с любой цифрой
+  const str = 'Владивосток 2000';
+  const regex = /\d\d\d\d/g;
+  str.match(regex); // [ "2000" ]
+  //Обратный класс: \D
+  //\D - ищет все не-цифры: буквы, пробелы, спецсимволы
+  const someSimbol = /\D/g;
+  const string = 'I was born in 1987';
+  string.match(someSimbol);   // ["I", " ", "w", "a", "s", " ", "b", "o", "r", "n", " ", "i", "n", " "]
+
+  //Спецсимвол \s
+  //Спецсимвол \s ищет «пустоты» в тексте: пробелы, в том числе неразрывные, переносы строк и табуляции
+  const str = 'Сдают паспорта,\n' +
+    '              и я' +
+    '                сдаю';
+  const regex = /\s/g;
+  str.match(regex).length; // 32 — Маяковский любил пробелы
+  //Обратный класс: \S
+  //ищет любые символы, только не пробелы, табуляции и переносы
+  const str = 'Сдают паспорта,\n' +
+    '              и я' +
+    '                сдаю';
+  const regex = /\S/g;
+  str.match(regex).length; // 22 (буквы с запятыми)
+
+  //Спецсимвол \b
+  //Возвращаемся к спецсимволам. \b означает границу слова. Движок считает границей слова:
+    // начало строки;
+    // конец строки;
+    // любой символ, кроме цифр, латинских букв и нижнего подчёркивания
+  const string = 'sadness';
+  string.match(/\bs/).index; // 0 — это первая буква s. спецсимвол указал границу левее неё, т. е. начало
+  string.match(/s\b/).index; // 6 - а это последняя. спецсимвол указал границу правее неё, т. е. конец
+  //Обратите внимание: любая нелатинская буква прочитывается движком как отдельное слово. Поэтому с кириллицей спецсимвол \b не работает.
+  'A333HP99'.match(/\d\d\b/); //["99", index: 6, input: "A333HP99", groups: undefined]
+  //Обратный класс: \S
+  //ищет не конец слова: цифру, латинскую букву или нижнее подчёркивание. Таким образом, \B делает то же самое, что \w
+
+  //Начало строки ^
+  const regex = /^\d+/g;
+  const newReg = /\d+/g;
+  const str = '2001 год: Космическая одиссея, вышел в 1968 году';
+  str.match(regex); // [ "2001" ];
+  str.match(newReg); // [ "2001", "1968" ];
+  //Конец строки $
+  const regex = /\d+$/;
+  const str = 'https://praktikum.yandex.ru/trainer/frontend-developer/lesson/45';
+  str.match(regex); // ( ["45"] )
+  //Перенос строки \n
+  const str2 = 'Это утро, радость эта,\nЭта мощь и дня и света,'
+
+  //Наборы
+  //Чтобы создать набор, нужно перечислить подходящие символы в квадратных скобках
+  //ищем все символы «а» и «б»:
+  'барабан'.match(/[аб]/g); // [ "б", "а", "а", "б", "а" ]
+  //шаблон ищет все дни весны
+  const str = '14/03/2018';
+  const regex = /\d\d\W0[345]\W2018/g; // этот шаблон ищет все дни весны
+  str.match(regex);
+
+  //Диапазоны
+  //Диапазон — часть набора. Это два символа, разделённых дефисом
+  const regex = /[м-р]/gi;
+  'Марсианин'.match(regex); // [ "М", "р", "н", "н" ]
+  //шаблон ищет все дни первого полугодия
+  const str = '20/04/2019';
+  const regex = /\d\d\W0[1-6]\W2019/g;
+  str.match(regex); // [ "20/04/2019" ]
+
+  //Наборы + Диапазоны
+  const regex = /[a-z0-9\-]/gi; // все латинские буквы, все цифры и дефис
+  const str = 'В Берлин я летал на boeing 737-800';
+  str.match(regex).join(''); // "boeing737-800"
+
+  //Кириллица
+  //Ищем всю латиницу и всю кириллицу, а от знаков препинания избавляемся
+  //в таблице символов "ё" стоит обособленно от других кириллических букв. Поэтому, чтобы не терять «ё», дописывайте её в набор:
+  const regex = /[\wа-я\sё]/gi;
+  const str = 'Yandex 2020. Ещё не вечер!';
+  str.match(regex).join(''); // "Yandex 2020 Ещё не вечер"
+
+  //Исключающие наборы и диапазоны
+  //Чтобы сделать набор или диапазон исключающим, перед ним нужно поставить «шляпку» ^ (карет)
+  const str = 'Оценки за четверть: 2 3 3 5 2 4 2 3 5';
+  const regex = /[^1-3]/g;
+  str.match(regex).join(''); // "Оценки за четверть:    5  4   5"
+  //пусть шаблон выловит любые символы, кроме нижнего подчёркивания и заглавных латинских букв
+  const cardholder = 'VASSiliy_PUPK1N';
+  const forbidden = /[^A-Z\_]/g
+  console.log(cardholder.match(forbidden));
+
+  //Квантификаторы
+  //От одного до бесконечности повторений — квантификатор +
+  const str = 'Правильно писать «свиной», с одной «н»';
+  const regex = /свин+ой/; // такое регулярное выражение найдёт оба варианта: и с «н», и с «нн»
+  str.match(regex); // [ "свиной" ]
+
+  //От нуля до бесконечности повторений — квантификатор *
+  const exc = 'экскаватор';
+  const esc = 'эскалатор';
+  const regex = /эк*ска[вл]атор/; // буква "к" может встречаться, а может и не встречаться
+  exc.match(regex); // [ "экскаватор" ]
+  esc.match(regex); // [ "эскалатор" ]
+
+  //Необязательный символ — квантификатор ?
+  const regex = /favou?rite/g; // делает букву "u" необязательной и будет искать оба варинта написания favourite и favorite
+  const str = 'favourite for favorite';
+  str.match(regex); // ["favourite", "favorite"]
+
+  //Контроль повторов — квантификатор {}
+  const regionCode = /\d{3}/;
+  const phoneNumber = 'Мой номер телефона: +7(999)123-12-21';
+  phoneNumber.match(regionCode); // [ "999" ]
+  //Можно также указывать не точное количество повторений, а диапазон
+  const str = 'столько, стооолько и вот стооооооооолько';
+  const regex = /сто{2,5}лько/;
+  str.match(regex); // [ "стооолько" ]. в слове "стооооооооолько" повторов "о" больше 5
+  //Верхнюю границу числа повторений можно не указывать
+  const someSymbol = /a{1,}/g;
+  const    str = 'alohaa';
+  console.log(str.match(someSymbol)); // ["a", "aa"]
+

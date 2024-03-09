@@ -49,28 +49,36 @@
       <fieldset class="form__set">
         <button class="text-button form__previous">&larr; Назад</button>
         <label class="form__field">
-          <input type="text" class="form__input" id="name-input" required minlength="2">
+          <input type="text" class="form__input" id="name-input" required minlength="2"
+                 pattern="^[a-zA-Z]+$"
+                 data-error-message="Разрешены только латинские буквы">
           <span class="form__placeholder name-input-placeholder">
             Как вас зовут?
           </span>
           <span class="form__input-error name-input-error"></span>
         </label>
         <label class="form__field">
-          <input type="text" class="form__input" id="happiness-input" required minlength="4">
+          <input type="text" class="form__input" id="happiness-input" required minlength="4"
+                 pattern="^[a-zA-Z]+$"
+                 data-error-message="Разрешены только латинские буквы">
           <span class="form__placeholder happiness-input-placeholder">
             Как ваше настроение?
           </span>
           <span class="form__input-error happiness-input-error"></span>
         </label>
         <label class="form__field">
-          <input type="text" class="form__input" id="javascript-rating-input" required minlength="5">
+          <input type="text" class="form__input" id="javascript-rating-input" required minlength="5"
+                 pattern="^[a-zA-Z]+$"
+                 data-error-message="Разрешены только латинские буквы">
           <span class="form__placeholder javascript-rating-input-placeholder">
             Настолько ли сложен JavaScript?
           </span>
           <span class="form__input-error javascript-rating-input-error"></span>
         </label>
         <label class="form__field">
-          <input type="text" class="form__input" id="suggestion-input" required minlength="5">
+          <input type="text" class="form__input" id="suggestion-input" required minlength="5"
+                 pattern="^[a-zA-Z]+$"
+                 data-error-message="Разрешены только латинские буквы">
           <span class="form__placeholder suggestion-input-placeholder">
             Поленились ли мы сделать еще один Fieldset?
           </span>

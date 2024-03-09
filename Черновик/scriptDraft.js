@@ -1,37 +1,30 @@
-(function () {
-const songsContainer = document.querySelector('.songs-container');
-const addButton = document.querySelector('.input__btn_action_add');
-const artistInput = document.querySelector('.input__text_type_artist');
-const titleInput = document.querySelector('.input__text_type_title');
-
-function addSong(artistValue, titleValue) {
-  const songTemplate = document.querySelector('#song-template').content;
-  const songElement = songTemplate.cloneNode(true);
-
-  songElement.querySelector('.song__artist').textContent = artistValue;
-  songElement.querySelector('.song__title').textContent = titleValue;
-
-  songsContainer.append(songElement);
-  artistInput.value = '';
-  titleInput.value = '';
+// создаёт разметку для поста
+function createPostMarkup(post) {
+  return `
+    <div class="post">
+      <p class="post__title">${post.title}</p>
+      <p class="post__text">${post.body}</p>
+    </div>
+  `;
 }
 
-function keyHandler(evt) {
-  if (evt.key === 'Enter') {
-    addSong(artistInput.value, titleInput.value);
-  }
+// вставляет разметку в DOM
+function addPostToDOM(container, markup) {
+  container.insertAdjacentHTML('afterbegin', markup);
 }
 
-addButton.addEventListener('click', function () {
-  addSong(artistInput.value, titleInput.value);
-});
+function getPosts() {
+  return fetch('https://jsonplaceholder.typicode.com/posts')   //по умолчанию это GET
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => {
+      let container = document.querySelector('.container')
+      data.forEach((item) => {
+        // let markup = createPostMarkup(item);
+        addPostToDOM(container, createPostMarkup(item))
+      })
+    })
+}
 
-artistInput.addEventListener('keydown', keyHandler);
-titleInput.addEventListener('keydown', keyHandler);
-
-songsContainer.addEventListener('click', function (evt) {
-  if (evt.target.classList.contains('song__like')) {
-    evt.target.classList.toggle('song__like_active');
-  }
-});
-})();
+getPosts();

@@ -82,122 +82,292 @@ console.log(element.previousElementSibling); // <p>Ребёнок 1</p>
 console.log(element.nextElementSibling); // <p>Ребёнок 3</p>
 
 //Управление атрибутами через вызов специальных методов
-/* В действительности эти методы срабатывают не на самóм элементе, а на его представлении в DOM — объекте: */
-let a = document.querySelector('a'); //let а - это объект элемента <a href="https://ya.ru">Поиск</a>
-a.href; //= https://ya.ru — у объекта "a" появилось свойство href
-/* Чаще всего можно работать как с атрибутами тегов, так и со свойствами объектов: они хранят одни и те же значения.
-Но из этого правила есть исключения. Например, если в атрибут href записать неполную ссылку, в объекте она всё равно преобразуется в полную  */
-let a = document.querySelector('a'); //<a href="/search">Поиск</a> - Представьте, что на сайте ya.ru есть такая ссылка
-a.href; // https://ya.ru/search — ссылка в свойстве отличается от ссылки в атрибуте
+  /* В действительности эти методы срабатывают не на самóм элементе, а на его представлении в DOM — объекте: */
+  let a = document.querySelector('a'); //let а - это объект элемента <a href="https://ya.ru">Поиск</a>
+  a.href; //= https://ya.ru — у объекта "a" появилось свойство href
+  /* Чаще всего можно работать как с атрибутами тегов, так и со свойствами объектов: они хранят одни и те же значения.
+  Но из этого правила есть исключения. Например, если в атрибут href записать неполную ссылку, в объекте она всё равно преобразуется в полную  */
+  let a = document.querySelector('a'); //<a href="/search">Поиск</a> - Представьте, что на сайте ya.ru есть такая ссылка
+  a.href; // https://ya.ru/search — ссылка в свойстве отличается от ссылки в атрибуте
 
-//1. Получаем значение атрибута: метод getAttribute
-//Если атрибут задан, но не подразумевает значения, например, disabled, мы получим пустую строку
-let imageOnPage = document.querySelector('img');
-imageOnPage.getAttribute('src'); // вернётся ссылка, записанная в атрибуте src первого изображения, которое вернул метод querySelector
-//2. Проверяем, есть ли у тега атрибут: метод
-//который возвращает true, если атрибут задан, и false, если нет
-bigAndRed.hasAttribute('onclick'); // true
-//3. Задаём значение атрибута: метод setAttribute
-//принимает на вход два аргумента: имя атрибута, значение которого мы хотим задать, и само значение
-bigAndRed.setAttribute('lang', 'ru');
-disabledCheckbox.setAttribute('disabled', true); // Делаем чекбокс неактивным. Значение второго параметра вообще не важно
-resetButton.setAttribute('style', 'background-color: #f1f1f1');
-resetButton.style.backgroundColor = '#f1f1f1'; //или так
-resetButton.style.fontSize = '33px'; //менять размер шрифта
-//Стили, заданные с помощью свойства style, они имеют больший приоритет, чем CSS-правила из файла со стилями.
-//4. Удаляем атрибут: метод removeAttribute
-bigAndRed.removeAttribute('disabled'); // удаляем атрибут
+  //1. Получаем значение атрибута: метод getAttribute
+  //Если атрибут задан, но не подразумевает значения, например, disabled, мы получим пустую строку
+  let imageOnPage = document.querySelector('img');
+  imageOnPage.getAttribute('src'); // вернётся ссылка, записанная в атрибуте src первого изображения, которое вернул метод querySelector
+  //2. Проверяем, есть ли у тега атрибут: метод
+  //который возвращает true, если атрибут задан, и false, если нет
+  bigAndRed.hasAttribute('onclick'); // true
+  //3. Задаём значение атрибута: метод setAttribute
+  //принимает на вход два аргумента: имя атрибута, значение которого мы хотим задать, и само значение
+  bigAndRed.setAttribute('lang', 'ru');
+  disabledCheckbox.setAttribute('disabled', true); // Делаем чекбокс неактивным. Значение второго параметра вообще не важно
+  resetButton.setAttribute('style', 'background-color: #f1f1f1');
+  resetButton.style.backgroundColor = '#f1f1f1'; //или так
+  resetButton.style.fontSize = '33px'; //менять размер шрифта
+  //Стили, заданные с помощью свойства style, они имеют больший приоритет, чем CSS-правила из файла со стилями.
+  //4. Удаляем атрибут: метод removeAttribute
+  bigAndRed.removeAttribute('disabled'); // удаляем атрибут
 
 element.dataset.tooltipText; //dataset - получить значение дата атрибута data-tooltip-text (без data и без префикса, в camelCase)
 
 //Замене атрибута через свойство DOM-элемента.
-/* Когда мы хотим работать с элементом на странице, сначала нужно сделать из него объект: ведь JS умеет работать только с объектами.
-При этом атрибуты тега становятся свойствами объекта  */
-let a = document.querySelector('a'); //let а - это объект элемента <a href="https://ya.ru">Поиск</a> //это все элемент
-a.href; //= https://ya.ru — у объекта "a" появилось свойство href
-a.href = 'https://praktikum.yandex.ru/' //перезаписывать свойства объекта
+  /* Когда мы хотим работать с элементом на странице, сначала нужно сделать из него объект: ведь JS умеет работать только с объектами.
+  При этом атрибуты тега становятся свойствами объекта  */
+  let a = document.querySelector('a'); //let а - это объект элемента <a href="https://ya.ru">Поиск</a> //это все элемент
+  a.href; //= https://ya.ru — у объекта "a" появилось свойство href
+  a.href = 'https://praktikum.yandex.ru/' //перезаписывать свойства объекта
 
 //Получение имени класса. Свойство className
-// выбираем элемент c классом 'queen'
-let rank = document.querySelector('.queen');
-console.log(rank.className); //her majesty queen - Если у элемента несколько классов
+  //выбираем элемент c классом 'queen'
+  let rank = document.querySelector('.queen');
+  console.log(rank.className); //her majesty queen - Если у элемента несколько классов
 
 //Получение списка классов. Свойство classList
-element.classList.remove('class'); //Метод убирает с элемента тот класс, который указан в скобках
-element.classList.add('class'); //метод добавляет элементу класс (без точки), указанный в скобках.
-element.classList.toggle('class'); //добавление класса (add), когда этого класса нет и удаление класса (изначального), когда этот класс есть (remove).
-// Если класс у элемента есть, метод classList.toggle ведёт себя как classList.remove и класс у элемента убирает.
-//А если указанного класса у элемента нет, то classList.toggle, как и classList.add, добавляет элементу этот класс.
-element.classList.contains('class'); //проверить, есть ли у элемента класс. вернёт true (истина), если класс у элемента есть, и false (ложь), если класса нет.
+  element.classList.remove('class'); //Метод убирает с элемента тот класс, который указан в скобках
+  element.classList.add('class'); //метод добавляет элементу класс (без точки), указанный в скобках.
+  element.classList.toggle('class'); //добавление класса (add), когда этого класса нет и удаление класса (изначального), когда этот класс есть (remove).
+  // Если класс у элемента есть, метод classList.toggle ведёт себя как classList.remove и класс у элемента убирает.
+  //А если указанного класса у элемента нет, то classList.toggle, как и classList.add, добавляет элементу этот класс.
+  element.classList.contains('class'); //проверить, есть ли у элемента класс. вернёт true (истина), если класс у элемента есть, и false (ложь), если класса нет.
 
 //Содержимое элемента. Свойство innerHTML
-//Свойство innerHTML содержит в себе строку со всем наполнением элемента (в том числе и разметкой)
-//каждый раз, когда вы переопределяете свойства (innerHTML, textContent), всё DOM-дерево, вложенное в элемент, удаляется и пересоздаётся заново
-//и все значения свойств объектов удаляются
-document.body.innerHTML; //Если в документе нет разметки, вернёт пустую строку
-document.body.innerHTML = ''; //удалить всё содержимое элемента
-document.body.innerHTML = '<div>Добавим разметку</div>'; //перезаписывание
-list.innerHTML = list.innerHTML + '<div>Добавим разметку</div>'; //добавление разметки в конец списка (массива)
-//Содержимое элемента. Свойство insertAdjacentHTML
-//добавляет разметку и текст в документ и не затрагивают существующие элементы
-list.insertAdjacentHTML('beforeend', '<div class="tiger"></div>'); /*
-    beforeend - указывает, что мы вставили HTML-код перед закрывающим тегом элемента
-    afterbegin — вставка после открывающего тега
-    afterend — вставка после закрывающего тега  */
+  //Свойство innerHTML содержит в себе строку со всем наполнением элемента (в том числе и разметкой)
+  //каждый раз, когда вы переопределяете свойства (innerHTML, textContent), всё DOM-дерево, вложенное в элемент, удаляется и пересоздаётся заново
+  //и все значения свойств объектов удаляются
+  document.body.innerHTML; //Если в документе нет разметки, вернёт пустую строку
+  document.body.innerHTML = ''; //удалить всё содержимое элемента
+  document.body.innerHTML = '<div>Добавим разметку</div>'; //перезаписывание
+  list.innerHTML = list.innerHTML + '<div>Добавим разметку</div>'; //добавление разметки в конец списка (массива)
+  //Содержимое элемента. Свойство insertAdjacentHTML
+  //добавляет разметку и текст в документ и не затрагивают существующие элементы
+  list.insertAdjacentHTML('beforeend', '<div class="tiger"></div>'); /*
+      beforeend - указывает, что мы вставили HTML-код перед закрывающим тегом элемента
+      afterbegin — вставка после открывающего тега
+      afterend — вставка после закрывающего тега  */
 
 //Текстовое содержимое. Свойство textContent
-//textContent позволяет получить или перезаписать текстовое содержимое элемента. Обратите внимание: вёрстка при этом не затрагивается
-//Если в один элемент вложены другие, их текстовое содержимое склеится
-//каждый раз, когда вы переопределяете свойства (innerHTML, textContent), всё DOM-дерево, вложенное в элемент, удаляется и пересоздаётся заново
-//и все значения свойств объектов удаляются
-element.textContent = "123"; //<p>123</p>
-element.children[0].textContent = 1; //если element это div, то это строка создаст <span>1</span>
-//Содержимое элемента. Свойство insertAdjacentText
-//добавляет разметку и текст в документ и не затрагивают существующие элементы
-element.insertAdjacentText = "123"; //работает аналогичным образом, только вставляет текст, как и свойство textContent
+  //textContent позволяет получить или перезаписать текстовое содержимое элемента. Вёрстка при этом не затрагивается
+  //Если в один элемент вложены другие, их текстовое содержимое склеится
+  //каждый раз, когда вы переопределяете свойства (innerHTML, textContent), всё DOM-дерево, вложенное в элемент, удаляется и пересоздаётся заново
+  //и все значения свойств объектов удаляются
+  element.textContent = "123"; //<p>123</p>
+  element.children[0].textContent = 1; //если element это div, то это строка создаст <span>1</span>
+  //Содержимое элемента. Свойство insertAdjacentText
+  //добавляет разметку и текст в документ и не затрагивают существующие элементы
+  element.insertAdjacentText = "123"; //работает аналогичным образом, только вставляет текст, как и свойство textContent
 
 //Заменить текстовое содержимое. Свойство innerText
-//innerText, которое тоже предназначено для получения текстового содержимого.
-//Оно отличается от textContent тем, что innerText возвращает только видимое текстовое содержимое.
-//То есть innerText проигнорирует всё, что скрыто свойством display: none, а textContent — нет:
-element.innerText;
+  //innerText, которое тоже предназначено для получения текстового содержимого.
+  //Оно отличается от textContent тем, что innerText возвращает только видимое текстовое содержимое.
+  //То есть innerText проигнорирует всё, что скрыто свойством display: none, а textContent — нет:
+  element.innerText;
 
-//Реакция на действия пользователя. События
-button.addEventListener('click', function () {}); //addEventListener слушатели событий» //https://developer.mozilla.org/ru/docs/Web/Events
-element.addEventListener('click', showClick); //showClick - обработчик событий (это колбэк функция) (имя функции без скобок). Скобки не ставят, потому что мы не вызываем функцию, а передаём её как аргумент
-//addEventListener, onclick, oninput - обработка событий в DOM-элементах без React. Сначала находим DOM-элемент, затем подписываемся на нужное событие.
-button.onclick = function() {}; //onclick - событие
-button.onclick = function(evt) {
-  evt.preventDefault(); //отменить действие браузера по умолчанию (при наступлении события) - переход по ссылке
-};
+//События https://developer.mozilla.org/ru/docs/Web/Events
+  //addEventListener - слушатель событий, создается новый объект функции addEventListener, объект занимает память
+  //при каждом вызове функция (которую вызывает слушать, она не множится) имеет новый адрес, т.к. каждый раз создается новый объект (множится) слушателя
+  //слушатели (объекты) могут копиться (и не использоваться) и будет память утекать
 
-//Объект event
-document.addEventListener('keydown', function(evt) { // keydown - код выполнится при каждом нажатии любой клавиши
-  if (evt.keyCode === 27) {} //Код отсюда выполнится только при нажатии ESC
-  if (evt.keyCode === 13) {} //Код отсюда выполнится только при нажатии Enter
-  //коды клавиш KeyboardEvent: keyCode property https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
-  if (evt.key === 13) {} //вернет название клавиши в виде строки - «Escape» //https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
-  if (evt.code === 13) {} //вернет название клавиши в виде строки - «Escape», при этом на значение не влияет выбранный язык клавиатуры //https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
-});  //слушать это событие можно только на элементах, которые имеют состояние фокуса: поля ввода, кнопки, элементы с атрибутом tabindex, документ.
-//При нажатии фокус должен находиться на соответствующем элементе.
+
+  //Клавиатура
+  //keydown — «клавиша нажата». Сработает на любой клавише в тот момент, когда на неё нажмут. В таких случаях говорят, что клавиша «в нижнем положении»;
+  //keypress — «нажатие на клавишу». Тоже сработает при нажатии, но проигнорирует клавиши-модификаторы: alt, ctrl, shft и win — на Windows, и control, option, shift и command — на macOS.
+  //keyup — «клавиша не нажата». Сработает на любой клавише, но только когда её отпустят.
+  const input = document.querySelector('.text-field');
+  input.addEventListener('keydown', function () { //keydown - обработать нажатие клавиши
+    console.log('Я возникаю, когда печатают в текстовом поле.');
+  });
+  //Обработчик нажатия клавиши можно повесить и на весь документ
+  document.addEventListener('keydown', function () {
+    console.log('На что ни нажми — я появлюсь');
+  });
+
+  //Мышь
+  //mouseover — мышь появляется над элементом, на который установлен слушатель;
+  //mouseout — курсор мыши покидает элемент.
+  //mousedown — при щелчке мышью, когда кнопка в нижнем положении;
+  //mouseup — тоже при щелчке мышью, но когда кнопка отпущена.
+  //click — при щелчке левой кнопкой, но только если она нажата и отпущена на элементе
+  //contextmenu — при щелчке правой кнопкой, когда она в нижнем положении
+  //dblclick — при двойном щелчке левой кнопкой
+
+  //Координаты по горизонтали и вертикали от угла веб-страницы хранятся в свойствах event.pageX и event.pageY соответственно
+  button.addEventListener('dblclick', function (event) {
+    hint.setAttribute('style',
+    `top: ${event.pageY}px;
+          left: ${event.pageX}px; `);
+  });
+  //Координаты относительно угла окна просмотра хранятся в свойствах event.clientX и event.clientY.
+  map.addEventListener('click', function(event) {
+    whatIsThis.setAttribute('style',
+      `left: ${event.clientX}px;
+          top: ${event.clientY}px; `);
+  });
+  //Свойства event.screenX и event.screenY хранят координаты относительно угла монитора, на котором открыт сайт
+
+  element.addEventListener('click', showClick); //showClick - обработчик событий (это колбэк функция)
+
+  //Отмена стандартного поведения браузера
+  //Перечислим основные стандартные реакции браузера:
+  //клик правой кнопкой — браузер показывает контекстное меню,
+  //клик на ссылку — браузер перезагружает страницу и открывает её в той же вкладке,
+  //нажатие клавиши в текстовом поле — браузер добавляет в него символ нажатой клавиши,
+  //отправка формы и отправки данных — браузер перезагружает страницу.
+  button.addEventListener('click', function(evt) {
+    evt.preventDefault()
+  });
+
+  //addEventListener, onclick, oninput - обработка событий в DOM-элементах без React.
+  //Сначала находим DOM-элемент, затем подписываемся на нужное событие.
+  button.onclick = function(evt) {
+  };
+
+  //Объект event. У разных событий — разное содержимое объекта event, потому что у каждого из них своя специфика.
+  //key - название нажатой клавиши
+  //keyCode - порядковые номера клавиш
+  document.addEventListener('keydown', function(evt) {
+    if (evt.keyCode === 27) {} //Код отсюда выполнится только при нажатии ESC
+    if (evt.keyCode === 13) {} //Код отсюда выполнится только при нажатии Enter
+    //коды клавиш KeyboardEvent: keyCode property https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
+    if (evt.key === 13) {} //вернет название клавиши в виде строки - «Escape» //https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
+    if (evt.code === 13) {} //вернет название клавиши в виде строки - «Escape», при этом на значение не влияет выбранный язык клавиатуры //https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
+  });
+
+  //Снятие слушателя
+  function showmessage()   {
+    console.log('Объявили функцию заранее, используем её потом');
+  }
+  someElement.addEventListener('click', showmessage);
+  someElement.removeEventListener('click', showmessage); //чтобы больше нельзя было делать showmessage при click по someElement
+
+  //Много одно и того же обработчика на список элементов
+  //У каждого элемента свой обработчик, хотя логика постановки лайка одинакова.
+  //И каждый такой обработчик — отдельная функция, которая занимает память браузера
+  const songLikes = document.querySelectorAll('.song__like');
+  songLikes.forEach((songLike) => {
+    songLike.addEventListener('click', function (evt) {     // добавим каждой обработчик лайка
+      like(evt.target);
+    });
+  });
+
+  //Делегирование
+  //слушатель события добавляется не на сам элемент (а их может быть тысячи), а на ближайшего общего для множества элементов родителя
+  //делегировать событие — это переносить обработчик на родительский элемент, но при этом отслеживать дочерний.
+  //Если пользователь ставит лайк, кнопка сердечка будет в evt.target, даже если обработчик находится на родителе
+  const playlist = document.querySelector('.playlist');
+  playlist.addEventListener('click', function (evt) { // добавим обработчик лайка отдельной песни всему плейлисту
+    if (evt.target.classList.contains('song__like')) {
+      like(evt.target);
+    }
+  });
+
+  //Всплытие событий
+  //Если событие происходит на элементе, оно срабатывает ещё и на каждом элементе-родителе. Такой механизм называется «всплытие»
+  //Кроме тех блоков, на которые мы повесили обработчики, событие сработает и на body, html, document и window.
+  const parent = document.querySelector('#parent');
+  const firstChild = document.querySelector('#firstChild');
+  const secondChild = document.querySelector('#secondChild');
+  parent.addEventListener('click', callback);
+  firstChild.addEventListener('click', callback);
+  secondChild.addEventListener('click', callback); //callback сработает 3 раза, для secondChild, firstChild, parent, body, html, document, window, т.е. всплытие к родителю
+
+  //Свойство evt.currentTarget
+  //Элемент, на котором висит обработчик, хранится в свойстве evt.currentTarget
+
+  //Отмена всплытия
+  //Метод stopPropagation останавливает всплытие на элементе
+  //Метод stopImmediatePropagation ещё суровее: он отменяет не только всплытие событий,
+    //но и срабатывание всех других обработчиков того же события на этом элементе.
+    //Поэтому stopImmediatePropagation остановит только те обработчики, которые описаны после него
+
+//Формы <form>
+  /*
+   <form name="form1">
+    <h2>Форма ввода слова «Яндекс»</h2>
+    <input type="text" name="yandex" placeholder="Яндекс">
+    <input type="checkbox" name="myCheckbox">
+    <textarea name="myTextArea"></textarea>
+  </form>
+  <form name="form2">
+    <h2>Форма про вселенную</h2>
+    <input type="number" name="answer" placeholder="Ответ на главный вопрос жизни">
+    <select name="mySelect">
+      <option value="right">Направо</option>
+      <option value="left">Налево</option>
+      <option value="forward">Прямо</option>
+    </select>
+  </form> */
+  document.forms.form1; // первая форма
+  document.forms.form2; // вторая форма
+
+  //Элементов форм
+  document.forms.form1.elements.yandex;  // элементы первой формы
+  document.forms.form2.elements.answer; // <input type="number" name="answer" ...
+
+  //Значение текстового поля value
+  document.forms.form1.elements.yandex.value; //value в value
+  document.forms.form1.elements.textarea.value; //value в textarea
+
+    //Получить значения текстовых полей value
+    const str = new FormData(data.forms.form1);
+    str.entries() //
+    Object.fromEntries(str.entries()) //вернет ключ значения
+
+  //Значение чекбокса и радиокнопки
+  //Если чекбокс отмечен, в консоль попадёт true, если нет — false.
+  document.forms.form1.elements.myCheckbox.checked; //checked в myCheckbox
+
+  //Значение списка с вариантами ответов
+  document.forms.form1.elements.mySelect.value; //value в mySelect
+
+  //События change и input
+  textInput.addEventListener('input', callback);   //input — срабатывает при вводе или удалении каждого символа;
+  textInput.addEventListener('change', callback); //change — только когда поле изменилось и пользователь перешёл к другому элементу формы
+  textInput.addEventListener('submit', callback); //submit — событие появляется при отправке формы
+  textInput.addEventListener('invalid', callback); //invalid — событие появляется если validity = false
+
+  //Сброс всех полей формы
+  form.addEventListener('submit', function (evt) {
+    form.reset();
+  });
+
+  //Программный сабмит формы
+  form.addEventListener('input', function (evt) {
+    if (input.length === 4) {
+      form.submit();
+    }
+  });
+
+//Кнопки <button>
+  //submit - Отправка формы на сервер — при нажатии на кнопку
+  /*<button type="submit">Отправить</button>*/
+  //reset - Сброс полей ввода.
+  /*<button type="reset">Сбросить данные формы</button>*/
+  //Прочее — нет события по умолчанию, можно назначить на кнопку что угодно.
+  /*<button type="button">Что-то сделать</button>*/
+
+  //Событие по умолчанию submit
+  form.addEventListener('submit', function (evt) {
+    // проверяем данные пользователя
+  });
 
 //Цель события. Cвойство target
-//В target хранится элемент, на котором сработало событие:
-const button = document.querySelector('.button');
-button.addEventListener('click', function (evt) {
-  const eventTarget = evt.target;
-  eventTarget.setAttribute('disabled', true);
-});
+  //В target хранится элемент, на котором сработало событие:
+  const button = document.querySelector('.button');
+  button.addEventListener('click', function (evt) {
+    const eventTarget = evt.target;
+    eventTarget.setAttribute('disabled', true);
+  });
 
-checkbox.addEventListener('change', showClick); //change - событие изменения инпута
-form.addEventListener('submit', function () {}); //отправка формы, событие на теге <form>
-//при успешной отправке формы и отсутствующем атрибуте action страница перезагружается — это называется стандартным событием.
-//Чтобы такого поведения не происходило — передайте в функцию-обработчик параметр evt. В самом начале тела функции вызовите метод evt.preventDefault()
+  //change, submit
+  checkbox.addEventListener('change', showClick); //change - событие изменения инпута
+  form.addEventListener('submit', function () {}); //отправка формы, событие на теге <form>
+  //при успешной отправке формы и отсутствующем атрибуте action страница перезагружается — это называется стандартным событием.
+  //Чтобы такого поведения не происходило — передайте в функцию-обработчик параметр evt. В самом начале тела функции вызовите метод evt.preventDefault()
 
 //Свойства элементов
-//Значение поля ввода. Свойство value
-let inputs = document.querySelectorAll('input');
-console.log(inputs[0].value);
+  //Значение поля ввода. Свойство value
+  let inputs = document.querySelectorAll('input');
+  console.log(inputs[0].value);
 
 form.onsubmit = function() {}; //обработчик событий onsubmit добавляется на форму <form> (не на кнопку)
 input = document.querySelector('input').value; //value - это значение поля ввода (input), значение вернется только после того, как форма была отправлена.
@@ -289,6 +459,9 @@ const ivansIndexed = ivans.map(function(item, index, array) {
 });
 console.log(ivansIndexed); //[ "Иван I Калита (1 из 2)", "Иван II  Красный (2 из 2)" ]
 
+//onload
+  const image = document.createElement('img');
+  image.onload = () => {} //выполнить код после загрузки изображения
 
 //НЕРАЗОБРАННОЕ
 window.onscroll = function () {} //отслеживание скрола (мин на 1 px). window - окно (или вкладка) браузера. Обработчик событий onscroll можно добавлять не только окну браузера, но и отдельным элементам на странице. Чтобы обработчик сработал, у элемента должна быть своя полоса прокрутки. Управлять прокруткой элемента можно с помощью CSS свойства overflow https://www.w3.org/TR/css-overflow-3/#overflow-properties

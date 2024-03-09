@@ -1,4 +1,33 @@
 ////Вопросы
+//в таком коде при openModal создается element.addEventListener('click', closeModalOverlay);
+и при закрытии не через оверлей, слушатель останется и создастся опять при новом openModal?
+export function openModal(element) {
+	element.classList.add('popup_is-opened');
+
+	document.addEventListener('keydown', closeModalWithEsc);
+
+	element.addEventListener('click', closeModalOverlay);
+}
+
+export function closeModal(element) {
+	element.classList.remove('popup_is-opened');
+	document.removeEventListener('keydown', closeModalWithEsc);
+}
+
+function closeModalOverlay(evt) {
+	if(evt.target.classList.contains('popup_is-opened')) {
+		closeModal(evt.target);
+		evt.target.removeEventListener('click', closeModalOverlay);
+	}
+}
+
+function closeModalWithEsc(evt) {
+	if (evt.key === 'Escape') {
+		const popupIsOpened = document.querySelector('.popup_is-opened');
+		closeModal(popupIsOpened);
+	}
+}
+
 
 
 
@@ -7,10 +36,4 @@
 //про кастомный хук состояния
 см. useGame
 
-//поизучать less
 
-//что значит @ts-ignore
-
-//
-https://learn.javascript.ru/first-steps
-3, 6, 12 можно не читать
