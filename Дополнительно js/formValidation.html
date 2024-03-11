@@ -9,7 +9,6 @@
   <link rel="stylesheet" href="https://code.s3.yandex.net/web-code/normalize.css">
   <link rel="stylesheet" href="https://code.s3.yandex.net/web-code/form-validation/lesson-6/index.css">
 </head>
-
 <body class="page">
 <div class="page__content">
   <main class="page__section content">
@@ -22,14 +21,17 @@
     <form class="form" novalidate>
       <fieldset class="form__set">
         <label class="form__field">
-          <input type="email" class="form__input" id="email-input" required minlength="7">
+          <input type="email" class="form__input"
+                 id="email-input" required minlength="7"
+                 data-error-message="Разрешены только латинские буквы">
           <span class="form__placeholder email-input-placeholder">
             E-mail:
           </span>
           <span class="form__input-error email-input-error"></span>
         </label>
         <label class="form__field">
-          <input type="password" class="form__input" id="password-input" required minlength="7">
+          <input type="password" class="form__input" id="password-input" required minlength="7"
+                 data-error-message="Разрешены только латинские буквы">
           <span class="form__placeholder password-input-placeholder">
             Пароль:
           </span>
@@ -49,36 +51,28 @@
       <fieldset class="form__set">
         <button class="text-button form__previous">&larr; Назад</button>
         <label class="form__field">
-          <input type="text" class="form__input" id="name-input" required minlength="2"
-                 pattern="^[a-zA-Z]+$"
-                 data-error-message="Разрешены только латинские буквы">
+          <input type="text" class="form__input" id="name-input" required minlength="2" pattern="[а-яёА-ЯЁa-zA-Z\s\-]+">
           <span class="form__placeholder name-input-placeholder">
             Как вас зовут?
           </span>
           <span class="form__input-error name-input-error"></span>
         </label>
         <label class="form__field">
-          <input type="text" class="form__input" id="happiness-input" required minlength="4"
-                 pattern="^[a-zA-Z]+$"
-                 data-error-message="Разрешены только латинские буквы">
+          <input type="text" class="form__input" id="happiness-input" required minlength="4" pattern="[а-яёА-ЯЁa-zA-Z\s\-]+">
           <span class="form__placeholder happiness-input-placeholder">
             Как ваше настроение?
           </span>
           <span class="form__input-error happiness-input-error"></span>
         </label>
         <label class="form__field">
-          <input type="text" class="form__input" id="javascript-rating-input" required minlength="5"
-                 pattern="^[a-zA-Z]+$"
-                 data-error-message="Разрешены только латинские буквы">
+          <input type="text" class="form__input" id="javascript-rating-input" required minlength="5" pattern="[а-яёА-ЯЁa-zA-Z\s\-]+">
           <span class="form__placeholder javascript-rating-input-placeholder">
             Настолько ли сложен JavaScript?
           </span>
           <span class="form__input-error javascript-rating-input-error"></span>
         </label>
         <label class="form__field">
-          <input type="text" class="form__input" id="suggestion-input" required minlength="5"
-                 pattern="^[a-zA-Z]+$"
-                 data-error-message="Разрешены только латинские буквы">
+          <input type="text" class="form__input" id="suggestion-input" required minlength="5" pattern="[а-яёА-ЯЁa-zA-Z\s\-]+">
           <span class="form__placeholder suggestion-input-placeholder">
             Поленились ли мы сделать еще один Fieldset?
           </span>
@@ -101,6 +95,6 @@
   </main>
 </div>
 <script src="https://code.s3.yandex.net/web-code/form-validation/lesson-6/index.js"></script>
-<script src="script.js"></script>
+<script src="formValidation.js"></script>
 </body>
 </html>

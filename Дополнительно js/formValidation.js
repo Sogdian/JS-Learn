@@ -29,36 +29,6 @@ const checkInputValidity = (formElement, inputElement) => {
   }
 };
 
-const setEventListeners = (formElement) => {
-  const inputList = Array.from(formElement.querySelectorAll('.form__input'));
-  const buttonElement = formElement.querySelector('.form__submit');
-
-  toggleButtonState(inputList, buttonElement);
-
-  inputList.forEach((inputElement) => {
-    inputElement.addEventListener('input', function () {
-      checkInputValidity(formElement, inputElement);
-      toggleButtonState(inputList, buttonElement);
-    });
-  });
-};
-
-const enableValidation = () => {
-  const formList = Array.from(document.querySelectorAll('.form'));
-  formList.forEach((formElement) => {
-    formElement.addEventListener('submit', function (evt) {
-      evt.preventDefault();
-    });
-
-    const fieldsetList = Array.from(formElement.querySelectorAll('.form__set'))
-    fieldsetList.forEach((fieldset) => {
-      setEventListeners(fieldset)
-    });
-  });
-};
-
-enableValidation();
-
 const hasInvalidInput = (inputList) => {
   return inputList.some((inputElement) => {
     return !inputElement.validity.valid;
@@ -74,3 +44,33 @@ const toggleButtonState = (inputList, buttonElement) => {
     buttonElement.classList.remove('button_inactive');
   }
 };
+
+const setEventListeners = (fieldset) => {
+  const formInput = Array.from(fieldset.querySelectorAll('.form__input'));
+  const buttonElement = fieldset.querySelector('.form__submit');
+  toggleButtonState(formInput, buttonElement);
+
+  formInput.forEach((inputElement) => {
+    inputElement.addEventListener('input', function () {
+      checkInputValidity(fieldset, inputElement);
+      toggleButtonState(formInput, buttonElement);
+    });
+  });
+};
+
+const enableValidation = () => {
+  const form = Array.from(document.querySelectorAll('.form'));
+  form.forEach((formElement) => {
+    formElement.addEventListener('submit', function (evt) {
+      evt.preventDefault();
+    });
+
+    const formSet = Array.from(formElement.querySelectorAll('.form__set'))
+    formSet.forEach((fieldset) => {
+      setEventListeners(fieldset)
+    });
+  });
+};
+
+enableValidation();
+

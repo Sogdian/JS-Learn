@@ -1395,6 +1395,8 @@ console.log(21 + "2"); //"212"
   });
 
   //Изменение сообщения об ошибке validationMessage
+  //Свойство validationMessage есть у всех полей ввода. В нём записан стандартный текст сообщения об ошибке
+  //Браузер показывает его по умолчанию, когда вводят некорректные данные
   const formElement = document.querySelector('.form');
   const formInput = formElement.querySelector('.form__input');
   const formError = formElement.querySelector(`.${formInput.id}-error`);
@@ -1420,16 +1422,17 @@ console.log(21 + "2"); //"212"
 //Запросы
   //Метод fetch
   //Первый — обязательный — URL запрашиваемого ресурса
-  //Второй аргумент — необязательный. Это объект опций, method, headers и body — они отвечают за метод запроса, его заголовки и тело
+  //Второй аргумент — необязательный. Это объект options: method, headers и body — они отвечают за метод запроса, его заголовки и тело
   fetch('https://example.com')   //по умолчанию это GET
-    .then((res) => {
+    .then((res) => { //в then пишем колбэк, т.е. функцию: () => {}
       console.log(res); // если всё хорошо, получили ответ
     })
-    .catch((err) => {
-      console.log('Ошибка. Запрос не выполнен');
+    .catch((err) => { //в catch пишем колбэк
+      console.log('Ошибка. Запрос не выполнен'); //либо console.error
     });
-  //POST
-  fetch('https://example.com/users', {
+
+  //POST с options
+  fetch('https://example.com/users', { //options {}
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -1438,6 +1441,14 @@ console.log(21 + "2"); //"212"
       username: 'ivan'
     })
   });
+
+  //Promise.all
+  //Все запросы должны успешно выполнится
+  const promiseA = fetch('https://example.com/users');
+  const promiseB = fetch('https://example.com/users');
+  Promise.all([promiseA, promiseB])
+    .then(([resultA, resultB]) => console.log(resultA, resultB))
+    .catch(console.error);
 
   //Как передать данные на сервер
     //1. В теле запроса
@@ -1515,9 +1526,10 @@ console.log(21 + "2"); //"212"
   fetch('https://api.kanye.rest')
     .then((res) => {
       if (res.ok) {
-        return res.json();
+        return res.json(); //или Promise.resolve()
       }
       return Promise.reject(`Что-то пошло не так: ${res.status}`); //отклоняем промис, чтобы перейти в блок catch, если сервер вернул ошибку
+      //или Promise.reject()
     })
     .then((data) => {
       quoteElement.textContent = data.quote;
