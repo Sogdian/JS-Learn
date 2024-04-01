@@ -1,6 +1,6 @@
 //запуск js файла
   cd путь до файла
-  node scriptDraft.js
+  node script.js
 
 //Конфиг .vscode\launch.json
 "configurations": [

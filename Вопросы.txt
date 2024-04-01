@@ -1,33 +1,7 @@
 ////Вопросы
-//в таком коде при openModal создается element.addEventListener('click', closeModalOverlay);
-и при закрытии не через оверлей, слушатель останется и создастся опять при новом openModal?
-export function openModal(element) {
-	element.classList.add('popup_is-opened');
-
-	document.addEventListener('keydown', closeModalWithEsc);
-
-	element.addEventListener('click', closeModalOverlay);
-}
-
-export function closeModal(element) {
-	element.classList.remove('popup_is-opened');
-	document.removeEventListener('keydown', closeModalWithEsc);
-}
-
-function closeModalOverlay(evt) {
-	if(evt.target.classList.contains('popup_is-opened')) {
-		closeModal(evt.target);
-		evt.target.removeEventListener('click', closeModalOverlay);
-	}
-}
-
-function closeModalWithEsc(evt) {
-	if (evt.key === 'Escape') {
-		const popupIsOpened = document.querySelector('.popup_is-opened');
-		closeModal(popupIsOpened);
-	}
-}
-
+https://practicum.yandex.ru/learn/frontend-developer/courses/59432ab6-8519-4698-b563-3ac6a3b392f1/sprints/239550/topics/c872e4f6-b635-47bc-9ec0-37709a71779b/lessons/83c49f44-0543-47c6-a0b0-9014216ee87c/
+Что это значит?
+  Когда в исходных файлах проекта импортируется какая-то функциональность из установленного пакета, компилятор смотрит в папку node_modules. Там лежит уже скомпилированный код, а значит, вся типизация пакета исчезла.
 
 
 

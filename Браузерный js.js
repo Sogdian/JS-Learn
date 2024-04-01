@@ -346,8 +346,9 @@ element.dataset.tooltipText; //dataset - получить значение да�
   /*<button type="button">Что-то сделать</button>*/
 
   //Событие по умолчанию submit
+  //evt.submitter - кнопка сабмита
   form.addEventListener('submit', function (evt) {
-    // проверяем данные пользователя
+    evt.submitter.textContent = "Сохранение...";
   });
 
 //Цель события. Cвойство target
