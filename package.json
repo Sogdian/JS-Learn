@@ -14,7 +14,7 @@
     "dev": "gulp",
     "fixAndBuild": "npm run fixAll && npm run build",
 
-    "start tsc": "ts-node script.ts",
+    "start tsc": "ts-node Черновик/script.ts",
     "build tsc": "tsc",
     "build tsc sourceMap": "tsc --sourceMap --incremental",
 
