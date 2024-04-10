@@ -1,38 +1,16 @@
-class Component {
-  content: string;
-  protected _tag: string;
-  constructor(tag: string, content: string) {
-    this._tag = tag;
-    this.content = content;
-  }
-  render() {
-    return `<${this._tag}>${this.content}</${this._tag}>`
-  }
+interface Foo {
+  bar: number;
 }
 
-class Button extends Component {
-  constructor(content: string) {
-    super('button', content);
-  }
+function isFoo(obj: any): obj is Foo {
+  return typeof(obj?.bar) === 'number';
 }
 
-class Link extends Component {
-  href: string;
-  constructor(content: string, href: string) {
-    super('a', content);
-    this.href = href;
+function processFooObj(obj: any) {
+  if (isFoo(obj)) {
+    // Здесь obj имеет тип Foo
+    console.log(obj.bar);
+  } else {
+    console.log("Invalid foo data");
   }
-  render() { //полиморфизм, переопределение базового класса
-    return `<${this._tag} href="${this.href}">${this.content}</${this._tag}>`
-  }
-}
-
-const main = new Link('Главная', 'main.html');
-const order = new Button('Сделать заказ');
-const page = new Component('div', main.render() + order.render());
-
-const root = document.getElementById('root')
-
-if (root) {
-  root.innerHTML = page.render();
 }

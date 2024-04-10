@@ -31,7 +31,8 @@ const getFullName = (firstName, lastName) => {
   console.log(firstName + ' ' + lastName);
 }
 
-//instanceof. проверяет принадлежность объекта к определённому классу с помощью проверки цепочки прототипов
+//instanceof
+  //Проверяет принадлежность объекта к определённому классу с помощью проверки цепочки прототипов
   class Rabbit {}
   let rabbit = new Rabbit();
   // это объект класса Rabbit?
@@ -44,6 +45,23 @@ const getFullName = (firstName, lastName) => {
   //проверить, лежит ли в переменной объект
   const isObj = typeof Book === 'object'; //true
   const isObj1 = Book instanceof Object; //true
+
+  //Кастомные защитники типов
+  //Эта конструкция проверяет, что в объекте есть все необходимые свойства интерфейса и они имеют нужный тип
+  interface UserData {
+    id: number;
+  }
+  function processUserData1(data: any) {
+    if (isUserData(data)) {
+      console.log(`User ID: ${data.id}`); // Теперь TypeScript знает, что data имеет тип UserData
+    } else {
+      console.error("Invalid user data");
+    }
+  }
+  //Конструкция data is UserData убеждает TypeScript в том, что, если функция вернула true, значит, data точно соответствует UserData.
+  function isUserData(data: any): data is UserData {
+    return typeof data === "object" && "id" in data;
+  }
 
 //Структура проекта
   //.d.ts — расширение заголовочных (или декларативных) файлов. Они описывают структуру и свойства функций, но не их реализацию. Такие файлы нужны, чтобы компилятор смог работать с JavaScript как с TypeScript. Заголовочные файлы обычно генерируются автоматически и лежат рядом с файлами .js.
@@ -143,15 +161,34 @@ const getFullName = (firstName, lastName) => {
     return a * a;
   }
 
+  //Неявное приведение типов
+  let num: number = 42;
+  let str1: string = "Hello";
+  let result: string = num + str1; // JavaScript неявно преобразует число в строку
+
+//Явное приведение типов
   //as
-  //независимо ни от чего, TS будет считать значение в том типе, в котором мы написали
   const myArg: any = 1
   const myNumber = myArg as number;
   const summ = (a: number): number => a * a
   summ(myArg) // ошибка TS, потому что ожидается number, а передан any
   summ(myNumber) // всё ок
+  //пример 2
+  enum Color {
+    White = 'white',
+    Black = 'black',
+  }
+  const colorFromApi = 'white'; //тип переменной colorFromApi — string
+  const color: Color = colorFromApi as Color; //меняем тип colorFromApi на Color
 
-  //null или undefined
+  //Функции явного приведения типов
+  let numberValue: number = Number("42"); // Преобразование строки в число
+  let booleanValue: boolean = Boolean("true"); // Преобразование строки в логический тип
+    //Важно отметить, что Boolean() приведёт к true любую строку, даже такую: Boolean("false")
+  let parsedInt: number = parseInt("10"); // Парсинг строки в целое число
+  let parsedFloat: number = parseFloat("3.14"); // Парсинг строки в число с плавающей точкой (дробное)
+
+//null или undefined
   const myInt: number = 12
   const mayBeUndef: number | undefined = undefined
   const summ2 = myInt + mayBeUndef // ошибка TS: mayBeUndef может быть undefined, мы должны что-то сделать на этот случай, например дать фолбэк
@@ -477,4 +514,41 @@ const getFullName = (firstName, lastName) => {
   cat.beWeird(); // Кот Барсик. Могу поцарапать...
   dog.beWeird(); // Пёс Шарик. Веду себя хорошо, но шерсть устанете подметать...
 
-//Принципы ООП вместе
+//Приведение типов
+  //Типизация объекта
+  type TUser = {
+    name: string;
+    age: number;
+    address: TAddress;
+  }
+  type TAddress = {
+    city: string;
+  }
+  const user11: TUser = {
+    name: 'John',
+    age: 18,
+    address: {
+      city: 'Moscow',
+    },
+  };
+  //Типизация функции
+  type TUpdateUserDataFn = (user: TUser, field: string, newValue: string | number) => TUser
+  const updateUserData: TUpdateUserDataFn = (user, field, newValue) => {
+    const updatedUser = { ...user }
+    updatedUser[field] = newValue;
+    return updatedUser
+  }
+
+  //Типизация в запросе (пример)
+  interface IUserData {
+    userId: number;
+  }
+  fetch('https://some.ru/api/data')
+    .then((response) => response.json())
+    .then((data: object) => {
+      processUserData(data as IUserData);
+    });
+  function processUserData(data: IUserData) {
+    console.log(`User ID: ${data.userId}`);
+  }
+

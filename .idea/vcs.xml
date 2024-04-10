@@ -2,7 +2,6 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/mesto-project-ff" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/ono-tebe-nado" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/posmotri_v_okno" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/slozhno-sosredotochitsya" vcs="Git" />

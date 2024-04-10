@@ -122,6 +122,18 @@ console.log(21 + "2"); //"212"
   Boolean({}); // true
   Boolean([]); //true
 
+  //as, см. в Общий ts.ts
+
+  //isNaN()
+  //функция проверяет, является ли переданное значение «не числом» (Not-a-Number).
+  //Функция возвращает true, если переданное значение — не число, и false — если значение является числом или может быть преобразовано в число
+  console.log(isNaN(42)); // false, число
+  console.log(isNaN("42")); // false, строка, но может быть преобразована в число
+  console.log(isNaN("abc")); // true, не может быть преобразована в число
+  console.log(isNaN(true)); // false, true преобразуется в 1
+  console.log(isNaN(undefined)); // true, undefined не является числом
+  console.log(isNaN(null)); // false, null преобразуется в 0
+
 //Возвращает строку со значением типа переменной. Оператор typeof
   typeof 10; // "number"
   typeof 'Hello World!'; // "string"
@@ -1096,10 +1108,6 @@ console.log(21 + "2"); //"212"
   }
   const user3 = new User3('user1'); // Всё нормально
   const user4 = User3('user2'); // Теперь и так тоже можно!
-
-  //instanceof
-  //запоминает ту функцию-конструктор, которая его создала
-  user3 instanceof User3 //true
 
   //Задать нужный прототип при создании объекта
   function User(login) {
