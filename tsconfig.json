@@ -123,5 +123,10 @@
     //"include": ["src/**/*"] //если в папке src
   "exclude": [
     "node_modules" //+ "./src/**/*.spec.ts"
-  ]
+  ],
+  "ts-node": {
+    "esm": true, // Включает поддержку ES модулей
+    "transpileOnly": true, // Ускоряет компиляцию, отключая проверку типов
+    "project": "./tsconfig.json" // Указывает путь к вашему tsconfig.json
+  }
 }

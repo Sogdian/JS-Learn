@@ -1,6 +1,7 @@
 {
   "name": "js",
   "version": "1.0.0",
+  "type": "module",
   "main": "dist/index.js",
   "scripts": {
     "test": "echo 'Привет!'",
@@ -14,7 +15,7 @@
     "dev": "gulp",
     "fixAndBuild": "npm run fixAll && npm run build",
 
-    "start tsc": "ts-node Черновик/script.ts",
+    "start tsc": "ts-node script.ts",
     "build tsc": "tsc",
     "build tsc sourceMap": "tsc --sourceMap --incremental",
 
