@@ -477,4 +477,172 @@ const getFullName = (firstName, lastName) => {
   cat.beWeird(); // Кот Барсик. Могу поцарапать...
   dog.beWeird(); // Пёс Шарик. Веду себя хорошо, но шерсть устанете подметать...
 
-//Принципы ООП вместе
+//Типизация DOM-элементов
+  //https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API
+  //HTMLElement - общий тип любого DOM-элемента
+  //HTMLButtonElement - кнопка
+  //HTMLInputElement - инпут
+  //HTMLImageElement - изображение
+
+  //HTMLElement
+  //Типизация при поиске
+  const myElement: HTMLElement | null = document.querySelector('#my-element');
+  if (myElement) {
+    myElement.textContent = 'Найден элемент!'; //Теперь myElement имеет правильный тип HTMLElement
+  }
+
+  //HTMLImageElement
+  const myImage: HTMLImageElement | null = document.querySelector('#my-image');
+  if (myImage) {
+    myImage.src = 'new-image.jpg'; //TypeScript гарантирует, что у нас есть доступ к атрибуту src
+  }
+
+//Типизация событий
+  //MouseEvent - событие клика
+  //InputEvent - событие изменения в поле ввода
+
+  //MouseEvent
+  function handleClick(event: MouseEvent) {
+    // Теперь TypeScript знает, что event имеет тип MouseEvent
+    console.log(`Кликнуто по координатам ${event.clientX}, ${event.clientY}`); //у события MouseEvent есть свойства clientX и clientY
+  }
+  const myButton: HTMLButtonElement | null = document.querySelector('#my-button');
+  if (myButton) {
+    myButton.addEventListener('click', handleClick);
+  }
+
+  //InputEvent
+  function handleInputChange(event: InputEvent) {
+    if (event.target) { //проверку на то, что в event.target действительно инпут. ПОСМОТРЕТЬ В ДЕБАГЕ!!!!!!!!
+      console.log(`Data: ${event.data}`); //у события InputEvent есть свойство data
+    }
+  } 
+
+//Типизация стандартных объектов JS
+  //Примеры объетов в JS: Map, Set, Date, Promise
+
+  //Типизация Map
+  //Map — объект со структурой данных в формате «ключ-значение»
+  //Map предоставляет эффективные операции добавления, удаления и поиска элементов
+  //при этом ключи могут быть разных типов — не только строками, как в стандартных объектах
+  type KeyType = number; //Определяем типы ключей и значений
+  type ValueType = string; //Определяем типы ключей и значений
+  const userRoles = new Map<KeyType, ValueType>(); //Создание Map с указанием типов для ключей и значений
+  // Добавление элементов в Map
+  userRoles.set(1, 'Администратор');
+  // Получение значения по ключу
+  const role = userRoles.get(1); // role имеет тип string
+
+  //пример2
+  //создаём кэш, чтобы хранить данные. В качестве ключа будем использовать строку из инпута, которую получаем на вход, а значением будет результат работы функции
+  const cache = new Map<string, number>();
+  function cachedFunction(input: string): number {
+    if (cache.has(input)) { // проверяем, есть ли уже закэшированные данные по такому ключу
+      return cache.get(input); // если есть, то просто возвращаем результат из кэша
+    }
+    //если нет, то запускаем функцию и кладём результат в кэш
+    const result = expensiveCalculation(input);
+    cache.set(input, result);
+    return result;
+  }
+  const res = cachedFunction("1+2") //3
+
+  //Типизация Set
+  //Set — коллекция уникальных значений — каждое значение встречается только один раз
+  type ValueType = string; //Определяем тип значений
+  const stringSet: Set<ValueType> = new Set(); //Создаём типизированный Set
+  //Добавляем данные в Set
+  stringSet.add('banana');
+  stringSet.add('banana'); // второй раз строка 'banana' не добавится
+  //Проверка наличия элемента
+  const hasApple = stringSet.has('apple'); //false
+
+  //пример2
+  //Также Set используют для удаления дубликатов из массива
+  const originalArray = [1, 2, 2, 3, 4, 4, 5];
+  const uniqueValues = [...new Set(originalArray)]; // [1, 2, 3, 4, 5]
+
+  //пример3
+  //для управления выбором пользователей. 
+  //Когда пользователи веб-приложения выбирают элементы из списка, Set отслеживает эти элементы и гарантирует уникальность
+  const selectedItems: Set<string> = new Set();
+  function toggleSelection(item: string) {
+    if (selectedItems.has(item)) {
+      selectedItems.delete(item); // Элемент был выбран, снимаем выбор
+    } else {
+      selectedItems.add(item); // Элемент не был выбран, выбираем
+    }
+  }
+  
+  //Типизация Date
+  //Date — объект для работы с датой и временем
+  const currentDate: Date = new Date(); // Создание объекта Date с указанием типа Date
+  const currentYear: number = currentDate.getFullYear(); // Работа с датой и временем
+
+  //пример2
+  //отслеживание сроков
+  const taskDeadline: Date = new Date('2023-10-31');
+  const today: Date = new Date();
+  if (today > taskDeadline) {
+    console.log('Срок задачи истёк!');
+  } else {
+    console.log('У вас ещё есть время для выполнения задачи.');
+  }
+
+  //пример3
+  //вычислить разницу между датами
+  const eventStart: Date = new Date('2023-09-20T08:00:00Z');
+  const eventEnd: Date = new Date('2023-09-20T15:30:00Z');
+  const timeDifference: number = eventEnd.getTime() - eventStart.getTime();
+  const hours = Math.floor(timeDifference / (1000 * 60 * 60));
+  console.log(`Продолжительность события: ${hours} часов`);
+
+  //пример4
+  //форматирвоание даты с использованием библиотеки dayjs https://day.js.org/
+  import dayjs from 'dayjs';
+  const date = dayjs('2023-09-29'); // Создаём объект даты
+  const formattedDate = date.format('DD/MM/YYYY'); // Форматируем дату в строку с заданным форматом
+  console.log(formattedDate); // Вывод: '29/09/2023'
+
+  //Типизация Promise
+  //Promise — этот объект используется для асинхронных операций и обещает вернуть результат в будущем (либо успешный, либо ошибку)
+  //TypeScript позволяет создавать Promise с явной типизацией. Это особенно полезно при работе с асинхронными операциями, такими как HTTP-запросы
+  type TUser = { // выносим ожидаемые данные в отдельный тип
+    id: number;
+    name: string;
+  }
+  //Создание функции, которая возвращает Promise с типизированными данными
+  async function fetchUserData(): Promise<TUser> {
+    return fetch('https://ourverycoolapiserver.ru/api/v1/user')
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json() as TUser;
+      } else {
+        throw new Error('Ошибка при получении данных');
+      }
+    });
+  }
+  //Использование Promise и цепочки then
+  await fetchUserData()
+  .then((data) => { // data имеет тип TUser
+    processUserData(data);
+  })
+  .catch((error) => {
+    console.error('Произошла ошибка', error);
+  });
+  function processUserData(userData: TUser) {
+    console.log(`User ID: ${userData.id}`);
+    console.log(`User Name: ${userData.name}`);
+  }
+
+  //Тип Awaited<Type>
+  //тип который можно использовать для извлечения типа значения, возвращаемого из асинхронной функции с помощью оператора await
+  //Этот тип предоставляет информацию о типе значения, которое будет доступно после успешного выполнения асинхронной операции
+  async function fetchData(): Promise<string> {
+    return "Some data"; // Пример асинхронной функции, возвращающей строку
+  }
+  type ResultType = Awaited<ReturnType<fetchData>>; //или Awaited<ReturnType<typeof fetchData>>
+    //что означает «тип ожидаемого значения, которое возвращается из fetchData», т.е. Promise<string>, т.е. тип string
+    //ReturnType<fetchData> = ReturnType<typeof fetchData> = Promise<string> = string
+  const result: ResultType = await fetchData(); //тип result это string
+  console.log(result); //"Some data"
