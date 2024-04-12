@@ -691,7 +691,13 @@ const getFullName = (firstName, lastName) => {
     return fetch('https://ourverycoolapiserver.ru/api/v1/user')
       .then((response) => {
         if (response.status === 200) {
-          return response.json() as TUser;
+          return response.json() as Promise<TUser>;
+          //или
+          //const data = await response.json();
+          //return data as TUser;
+          //или
+          //const data = await response.json() as Promise<TUser>;
+          //return data as TUser;
         } else {
           throw new Error('Ошибка при получении данных');
         }
