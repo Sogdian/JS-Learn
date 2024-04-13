@@ -727,3 +727,38 @@ const getFullName = (firstName, lastName) => {
   //ReturnType<fetchData> = ReturnType<typeof fetchData> = Promise<string> = string
   const result: ResultType = await fetchData(); //тип result это string
   console.log(result); //"Some data"
+
+//Файлы деклараций d.ts
+  //Файлы декларации, или d.ts-файлы, содержат информацию о типах для библиотек и модулей JavaScript, которые не написаны на TypeScript.
+  //Они позволяют TypeScript обеспечивать статическую типизацию кода, написанного на JavaScript, предотвращая ошибки во время компиляции и написания.
+
+  //Установка готовых файлов декларации
+  //npm install @types/library-name --save-dev
+
+  //Создание собственных файлов декларации см. в my-module.d.ts
+
+  //Амбиентные модули
+  //используются, когда вы хотите добавить типы для библиотек и переменных, которые уже существуют в глобальной области видимости, но не имеют объявления типов
+
+  //Глобальные модули
+  //предоставляют типы для переменных и объектов, не связанных с конкретной библиотекой или модулем, и доступны на глобальном уровне.
+  //Например, для глобальных переменных в браузере или Node.js
+
+  //Создание пространства имён см. в my-module.d.ts
+
+  //Группировка и структурирование кода вместо Пространства имени MyNamespace
+  //Модуль person.ts
+  export interface Person {
+    name: string;
+    age: number;
+  }
+  //Модуль greeting.ts
+  import type { Person } from './person';
+  export function greet(person: Person): string {
+    return `Hello, ${person.name}!`;
+  }
+  //Использование модулей
+  import type { Person } from './person';
+  import { greet } from './greeting';
+  const person: Person = { name: 'John', age: 30 };
+  const greeting = greet(person);
