@@ -136,6 +136,9 @@ const getFullName = (firstName, lastName) => {
     }
   }
 
+  //Record<string, number>
+  const colorsMap: Record<string, number> = {};
+
   //Function Expression и стрелочные функции
   //Каждому параметру функции мы прописали тип данных через двоеточие - a: number
   //После круглых скобок, также через двоеточие, мы указали тип данных, который вернёт функция - (...): number
@@ -200,7 +203,8 @@ const getFullName = (firstName, lastName) => {
     throw new Error("Fancy error")
   }
 
-  //Именованные типы
+//Именованные типы !type
+  //Псевдонимы типов
   type MyType = string
   type ShoppingList = { coke: number }
   const age: MyType = "12"
@@ -217,15 +221,24 @@ const getFullName = (firstName, lastName) => {
   // limitedValue = "four" // ошибка типизации: переменная может принять только указанное значение
 
   //Объединение типов
+  //финальный тип, должен соответствовать хотя бы одному из исходных типов
   type StringOrNumber = string | number
   const value1: StringOrNumber = "HI"
   const value2: StringOrNumber = 12
 
   //Пересечение типов
+  //финальный тип, который соответствует обоим исходным, то есть содержит все их свойства
   type Favorit = 'red' | 'pink'; //тут типы перечислены через объединение
   type Available = 'red' | 'green' | 'blue'; //тут типы перечислены через объединение
   type Color = Favorit & Available; //а здесь используем пересечение
     //в результате получим те значения, которые есть в обоих типах: type Color = "red"
+  //пример2
+  type A = { a: number }
+  type B = { b: number }
+  const ab: A & B = {
+    a: 5,
+    b: 12,
+  }
 
   //Пересечение двух примитивных типов - получится пустое множество значений
   type Empty = string & number; //type Empty = never
@@ -250,6 +263,16 @@ const getFullName = (firstName, lastName) => {
   }
   const computer: Machine = {
     operationStatus: Status.STOPPED
+  }
+
+  //Имплементацию объединенного типа
+  type Foo = { one: number }
+  type Bar = { another: string }
+  type Union = Foo | Bar;
+  // TS2422: A class can only implement an object type or intersection of object types with statically known members.
+  class Baz implements Union {
+    one;
+    another;
   }
 
 //Классы
@@ -315,7 +338,7 @@ const getFullName = (firstName, lastName) => {
   user5.email = 'petr123@some.ru'; // Присвоение значения — сработает сеттер
   user5.email; //Чтение значения — сработает геттер //petr123@some.ru
 
-//Интерфейсы (тип объекта) - для типизации классов и объектов, без реализации
+//!Интерфейсы (тип объекта) - для типизации классов и объектов, без реализации
   //Типизация объекта
   interface User8 {
     login: string; // Описание свойства
@@ -367,14 +390,14 @@ const getFullName = (firstName, lastName) => {
   const debug = new DebugLogger(); //debug соответствует интерфейсу ILogger
   makeTrip2(debug); //makeTrip2 соответствует интерфейсу ILogger
 
-  //Типизация класса implements
+  //Типизация класса !implements (имплементация интерфейса классом)
   //Класс должен содержать все обязательные свойства интерфейса
   //Эти свойства и методы должны быть публичными
   interface IUser {
     login: string;
     password?: string;
     email: string | undefined;
-    auth(password: string): boolean;
+    auth(password: string): boolean; //без указания дефолтного значения
     new (login: string, password: string): IUser
   }
   class User9 implements IUser {
@@ -392,6 +415,64 @@ const getFullName = (firstName, lastName) => {
   }
   //объект petr соответствует и типу User, и типу IUser
   const petr9 = new User9('petr', '1234');
+
+  //Множественная имплементация
+  interface Foo { one: number }
+  interface Bar { another: string }
+  class Baz implements Foo, Bar {
+    one;
+    another;
+  }
+
+  //Декларативное слияние
+  interface Foo {
+    one: number;
+  }
+  interface Foo {
+    another: string;
+  }
+  //интерфейсы сольются в один
+  const obj: Foo = {
+    one: 1,
+    another: 'some'
+  }
+
+  //Расширение интерфейса через другой интерфейсов !extends
+  interface Foo {
+    one: number;
+  }
+  interface Bar extends Foo {
+    another: string;
+  }
+  const obj: Bar = {
+    one: 1,
+    another: 'some',
+  }
+
+  //Расширение класса через интерфейсов implements
+  interface Foo {
+    one: number;
+  }
+  class Baz implements Foo {
+    one;
+  }
+
+  //Объединение типов и интерфейса
+  //Интерфейсы преобразуются в псевдонимы типов
+  type A = { a: number }
+  interface B { b: number }
+  const ab: A & B = {
+    a: 5,
+    b: 12,
+  }
+  //Псевдонимы типов становятся интерфейсами при имплементации
+  type Foo = { one: number }
+  class Baz implements Foo {
+    one;
+    constructor(one: number) {
+      this.one = one;
+    }
+  }
 
 //В ООП выделяют три основных принципа:
   //Инкапсуляция — разделение публичного интерфейса и внутренней логики работы класса.
@@ -762,3 +843,120 @@ const getFullName = (firstName, lastName) => {
   import { greet } from './greeting';
   const person: Person = { name: 'John', age: 30 };
   const greeting = greet(person);
+
+//Статические поля и методы static
+  //Статические свойства — собственность самого класса, а не его экземпляров
+  //Чтобы воспользоваться такими свойствами, создавать экземпляр класса не нужно, т.к. они доступны прямо из самого класса
+  //Примеры статических свойств и методов: Math.abs(), Math.PI, Date.now(), Object.create()
+
+  class Example {
+    static field3: string;
+    protected static field4 = 'string';
+    static method2() {}
+  }
+  Example.field3;
+  Example.method2();
+
+  //Контекст this
+  //В статических методах this то объект до точки, а объект это не экхемпляо класса (как в нестатических метдах), а сам класс
+  //через this в статических методах можно воспользоваться другими статическими методами и свойствами.
+  class Car {
+    static count: number = 0;
+    static getLastCarId() {
+      // В статическом методе есть доступ к другим статическим полям и методам
+      return this.count ? this.count - 1 : undefined;
+    }
+  }
+
+  //Наследование
+  //производному классу доступны все статические свойства родительского
+  class Parent {
+    static staticParentField;
+    static staticParentMethod() {}
+    parentField;
+    parentMethod() {}
+  }
+  class Child extends Parent {
+    static staticChildField;
+    static staticChildMethod() {}
+    childField;
+    childMethod() {}
+  }
+  const obj1 = new Child();
+  //С помощью прототипа экземпляры класса Child имеют доступ к родительским (нестатическим) полям и методам
+  obj1.parentFiled;
+  obj1.parentMethod();
+  //Класс Child использует класс Parent как прототип и получает доступ к его статическим полям и методам
+  Child.staticParentField;
+  Child.staticParentMethod();
+
+//Нестатические поля и методы
+  //Поля класса становятся полями объектов-экземпляров этого класса
+  //Методы помещаются в специальный объект, который является прототипом для экземпляров этого класса
+    //Методы класса одни и те же для каждого экземпляра — им самое место в прототипе
+    //Т.е. методы хранятся не в экземплярах класса, а в прототипе класса Parent.prototype (из примера выше)
+  //Получается, что поля и методы, объявленные в классе, на самом деле принадлежат его экземплярам
+  //Нестатические свойства для каждого экземпляра разные, а значит, должны быть непосредственно в объектах-экземплярах
+
+//Абстрактные классы !abstract
+  //нельзя создать экземпляр абстрактного класса
+  //Абстрактный класс нельзя инстанцировать
+  //Абстрактный класс можно наследовать
+  //Нужны для вынесения логики в отдельный класс
+  abstract class Figure {
+    constructor(public name: string, public color: string = 'black') {};
+    print() {
+      console.log(this.name, 'цвета', this.color);
+    }
+  }
+  class Rectangle extends Figure {
+    constructor(public width: number, public height: number) {
+      super('Прямоугольник');
+    }
+  }
+  class Circle extends Figure {
+    constructor(public radius: number) {
+      super('Круг');
+    }
+  }
+  const circle = new Circle(15);
+  circle.print(); // Круг цвета black
+  const square = new Rectangle(12, 12);
+  square.print(); // Прямоугольник цвета black
+
+  //Абстрактные методы
+  abstract class Figure {
+    abstract getSquare(): number;
+  }
+  class Circle extends Figure {
+    getSquare() {
+      return Math.PI * Math.pow(this.radius, 2);
+    }
+  }
+  class Rectangle extends Figure {
+    getSquare() {
+      return this.width * this.height;
+    }
+  }
+  const square1 = new Rectangle(12, 12);
+  square1.getSquare() // 144
+
+  //Абстрактные свойства
+  abstract class Figure {
+    abstract isPerfect: boolean;
+  }
+  class Circle extends Figure {
+    isPerfect; //свойство как обычное свойство
+    constructor(isPerfect) {
+      this.isPerfect = true;
+    }
+  }
+  class Rectangle extends Figure {
+    get isPerfect() { //свойства через геттер
+      return this.width === this.height;
+    }
+  }
+  const circle2 = new Circle(15);
+  circle2.isPerfect // true
+  const square2 = new Rectangle(12, 12);
+  square2.isPerfect // truе
