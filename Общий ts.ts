@@ -960,3 +960,40 @@ const getFullName = (firstName, lastName) => {
   circle2.isPerfect // true
   const square2 = new Rectangle(12, 12);
   square2.isPerfect // truе
+
+//!Дженерики <T>. Обобщенный тип
+  //TypeScript определяет, какого типа аргументы переданы функции, и сам подставляет нужный тип на место обобщённого
+  function getFirst<T>(arr: T[]): T | undefined {
+    return arr[0]
+  }
+  getFirst(['qqwer', 'wert']); 
+
+
+  //Обобщённых типов может быть несколько
+  function main<T, K>(params: T, rest: K): [T, K] {
+    return [params, rest]
+  }
+  const one = main(1, '123');
+  const two = main<number, string>(1, '123');
+  const three = main(false, 2);
+
+  //Дженерик стрелочной функции
+  const identityArrow = <T, >(arg: T): T => {
+    return arg;
+   }
+
+  //Дженерик интерфейса
+  interface ApiResponse<T> {
+    status: number;
+    data: T;
+  }
+  type Optional<T> = T | undefined;
+  type Post = {
+    id: string;
+    name: string;
+  }
+  //Значение обобщённых типов в дженерике задано явно
+  function handlePosts(response: ApiResponse<Post>): Optional<Post> { ... }
+
+  //Дженерик псевдонима типов
+  type Optional1<T> = T | undefined;
