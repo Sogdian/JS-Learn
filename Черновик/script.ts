@@ -1,33 +1,15 @@
-type UserData = {
-  id: number;
-  name: string;
-};
+// TODO: реализуйте функцию concat
 
-async function fetchUserData(): Promise<UserData> {
-  try {
-    return fetch('https://ourverycoolapiserver.ru/api/v1/user')
-      .then((response) => {
-        if (response.status === 200) {
-          return response.json() as UserData;
-        } else {
-          throw new Error('Ошибка при получении данных');
-        }
-      });
-  }
-  catch (error) {
-    console.error('Ошибка при выполнении fetch:', error);
-  }
+function concat<T>(arr: T[]): T | undefined {
+
 }
 
-function processUserData(userData: UserData) {
-  console.log(`User ID: ${userData.id}`);
-  console.log(`User Name: ${userData.name}`);
-}
 
-await fetchUserData()
-  .then((data) => {
-    processUserData(data);
-  })
-  .catch((error) => {
-    console.error('Произошла ошибка', error);
-  });
+concat();
+// []
+
+concat(['qwerty'], ['asd']);
+// ['qwerty', 'asd']
+
+concat([1, 2, 3], [4, 5], [6, 7, 8]);
+// [1, 2, 3, 4, 5, 6, 7, 8]

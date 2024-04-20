@@ -9,6 +9,7 @@
 
  "start tsc": "ts-node script.ts", //запустить код в файле
  "build tsc": "tsc" //компиляция TypeScript в JavaScript
+ "build tsc sourceMap": "tsc --sourceMap --incremental", //чтобы в девтулс были нескомпилированные файлы
 
 */
 
@@ -197,10 +198,16 @@ const getFullName = (firstName, lastName) => {
   const summ2 = myInt + mayBeUndef // ошибка TS: mayBeUndef может быть undefined, мы должны что-то сделать на этот случай, например дать фолбэк
   const summ3 = myInt + (mayBeUndef || 12) // если в mayBeUndef нет значения, то вторым слагаемым будет 12
 
-  //never
-  //Такая функция не может вернуть данные
-  const neverReturn = () => {
-    throw new Error("Fancy error")
+  //!never
+  //never — это пустое множество доступных типов
+  function withInfiniteLoop(): never { // Бесконечный цикл внутри
+    while (true) {}
+  }
+  function withInfiniteRecursion(): never { // Бесконечная рекурсия
+    return withInfiniteRecursion();
+  }
+  function withError(message: string): never { // Прерывание и выброс ошибки
+    throw new Error(message);
   }
 
 //Именованные типы !type
@@ -901,7 +908,9 @@ const getFullName = (firstName, lastName) => {
 //Абстрактные классы !abstract
   //нельзя создать экземпляр абстрактного класса
   //Абстрактный класс нельзя инстанцировать
-  //Абстрактный класс можно наследовать
+  //Абстрактный класс можно наследовать через extends
+    //При этом нужно реализовать все абстрактные свойства и абстрактные методы
+    //В контсрукторе абстрактоного свойства могут инициализироваться неабстрактные свойтсва
   //Нужны для вынесения логики в отдельный класс
   abstract class Figure {
     constructor(public name: string, public color: string = 'black') {};
@@ -966,8 +975,7 @@ const getFullName = (firstName, lastName) => {
   function getFirst<T>(arr: T[]): T | undefined {
     return arr[0]
   }
-  getFirst(['qqwer', 'wert']); 
-
+  getFirst(['qqwer', 'wert']);
 
   //Обобщённых типов может быть несколько
   function main<T, K>(params: T, rest: K): [T, K] {
@@ -985,15 +993,205 @@ const getFullName = (firstName, lastName) => {
   //Дженерик интерфейса
   interface ApiResponse<T> {
     status: number;
-    data: T;
+    data: T; //data типа Post
   }
   type Optional<T> = T | undefined;
   type Post = {
     id: string;
     name: string;
   }
-  //Значение обобщённых типов в дженерике задано явно
-  function handlePosts(response: ApiResponse<Post>): Optional<Post> { ... }
+  //Для использования функции нужно явно указать значение дженерика
+  function handlePosts(response: ApiResponse<Post>): Optional<Post> { ... } //функция может возвращать либо объект типа Post, либо undefined.
 
   //Дженерик псевдонима типов
   type Optional1<T> = T | undefined;
+
+  //Дженерик класса
+  //Тип дженерика определяется автоматически или указывается явно в конструкторе
+  class GenericNumber<T> {
+    zeroValue: T;
+    add: (x: T, y: T) => T;
+  }
+  new GenericNumber(0);
+  new GenericNumber<number>(0);
+
+  //Ограничение типа через extends
+  //В этом примере ограничение: пусть оно принадлежит множеству строковых типов. Это может быть enum, конкретное подмножество строк, или, в крайнем случае, весь тип string.
+  type Image<ID extends string> = {
+    id: ID,
+    width: number,
+    height: number,
+  }
+  type ImageId = 'avatar' | 'stories' | 'post';
+  type SocialImage = Image<ImageId>;
+  type CustomImage = Image<string>;
+
+  //Ограничение на тип объекта
+  //Для примера ограничим параметр дженерика объектами, у которых есть свойство id
+  type Model = {
+    id: string;
+  }
+  function normalize<T extends Model>(data: T): T {
+    const normalizedId = data.id.toLowerCase();
+    return { ...data, id: normalizedId };
+  }
+
+  //Ограничить обобщённый тип определённым классом и его наследниками
+  class Parent { ... }
+  class Child extends Parent { ... }
+  //Т - может быть или объектом класса Parent, или любым его потомком
+  function same<T extends Parent>(arg: T) { //результат функции same будет также иметь тип Child
+    return arg;
+  }
+  const p = new Parent();
+  const c = new Child();
+  const parentClone = same(p);
+  const childClone = same(c);
+
+  function stupidSame(arg: Parent) { //вернёт тип Parent, несмотря на то, что передали ей Child
+    return arg;
+  }
+  const d = new Child();
+  const childClone2 = same(d); // childClone2 -> Child
+  const childStupidClone2 = stupidSame(d); // childStupidClone2 -> Parent
+
+  //Значения по умолчанию
+  function findElement<T extends HTMLElement = HTMLElement>(selector: string): T | undefined {...}
+  //Теперь тип дженерика можно явно не указывать
+  findElement('.my-class'); // HTMLElement | undefined
+
+  //keyof достаёт тип ключа из типа объекта
+  abstract class Utils {
+    static getObjectProperty<T extends object, K extends keyof T>(arg: T, key: K):T[K] {
+      return arg[key];
+    }
+  }
+  const str2 = Utils.getObjectProperty({ a: 15 }, 'a');
+  console.log(str2); //15
+  //пример2 https://practicum.yandex.ru/trainer/frontend-developer/lesson/2f1d762e-a30d-41cb-87d2-18a542aa7d72/task/369a8cc3-08cc-4148-9feb-7e76e436748e/
+  type FilterByProperty<Obj, Key extends keyof any> = {
+    [K in keyof Obj]: K extends Key ? Obj[K] : never;
+  }[keyof Obj];
+  type Administrator = {
+    name: string;
+  }
+  type Developer = {
+    name: string;
+    computer: 'MacOS' | 'Windows';
+  }
+  type TestingEngineer = {
+    name: string;
+    computer: 'MacOS' | 'Windows';
+  }
+  type Personal = Administrator | Developer | TestingEngineer;
+  type WithComputers = FilterByProperty<Personal, 'computer'>; // type WithComputers = Developer | TestingEngineer
+
+  //Условные типы
+  type Current extends type Base ? True : False //Если тип Current является подтипом Base, то результатом выражения будет тип True
+  //пример2
+  //type Flatten<T> - условный тип
+  type Flatten<T> = T extends any[] //Если T — массив
+    ? T[number] //достаём тип элемента (по индексу с типом number)
+    : T; //или сам T, если T не является массивом
+  type Str = Flatten<string[]>; //type Str = string, потому что string[] является массивом, и мы извлекаем тип элемента этого массива.
+  type Num = Flatten<number>; //type Num = number, потому что number не является массивом, и мы просто возвращаем number.
+  //пример3
+  type Secret<T> = T extends { length: number } ? 'Yes' : 'No';
+  type Result = Secret<[]>; //"Yes", т.к. У любого массива есть свойство length
+  //пример4
+  type Secret<T> = T extends undefined ? null : T;
+  type Result = Secret<number | undefined>; //number | null, т.к. Тип number после преобразования останется number, а undefined превратится в null — результатом также будет объединение типов.
+  //пример5
+  type Flatten<T> = T extends Array<infer U> ? Flatten<U> : T;
+  type Item = Flatten<[1, [2, [3, [4]]]]>; //type Item = 1 | 4 | 2 | 3
+
+//Утилитарные типы в TypeScript
+  //Exclude - убирает ненужные типы из объединения
+  type Colors = 'black' | 'white' | 'red';
+  type BlackAndWhite = Exclude<Colors, 'red'>; //type BlackAndWhite = 'black' | 'white'
+
+  //Extract - достаёт из объединения те типы, которые расширяют заданный
+  type Pass = 123 | 15 | 'pass' | 'token';
+  type PassNumbers = Extract<Pass, number>; //type PassNumbers = 123 | 15
+
+  //NonNullable - убирает из типа возможные null и undefined
+  type ApiResponse = string | undefined | null;
+  type ApiResponseValue = MyNonNullable<ApiResponse> // type ApiResponseValue = string
+
+  //Required - делает поля объектов обязательными
+  type Account = {
+    login: string;
+    password?: string;
+  }
+  type FullAccount = Required<Account>;
+  // type FullAccount = {
+  //    login: string;
+  //    password: string;
+  // }
+
+  //Partial - делает поля опциональными
+  //но только на первом уровне. Если поля содержат вложенные объекты, то на их поля опциональность не распространяется
+  type PartialAccount = Partial<Account>;
+  // type PartialAccount = {
+  //    login?: string | undefined;
+  //    password?: string | undefined;
+  // }
+
+  //Pick - создаёт новый тип, выбирая из объекта заданные поля
+  type OnlyLogin = Pick<Account, 'login'>;
+  // type OnlyLogin = {
+  //    login: string;
+  // }
+
+  //Omit - исключает заданные поля из объекта
+  type WithOutPassword = Omit<Account, 'password'>;
+  // type WithOutPassword = {
+  //    login: string;
+  // }
+
+  //Record - помогает типизировать ключи объекта и их значения:
+  type Trafficlights = 'green' | 'yellow' | 'red';
+  const descriptions: Record<Trafficlights, string> = {
+    'green': '🟢 Можно ехать!',
+    'yellow': '🟡 Ииии...',
+    'red': '🔴 Стоп!'
+  }
+
+  //Parameters - узнать, какие параметры принимает функция
+  function getHexString(color: 'black' | 'white' | 'red') {
+    switch (color) {
+      case 'black':
+        return '#000';
+      case 'white':
+        return '#fff';
+    }
+  }
+  type Color = Parameters<typeof getHexString>[0]; //type Color = "red" | "black" | "white"
+
+  //ReturnType - узнать, что возвращает функция
+  type Hex = ReturnType<typeof getHexString>; //type Hex = "#000" | "#fff" | "#f00"
+
+//Рекурсия
+  type DeepPartial<T> = T extends Function
+    ? T
+    : T extends object
+      ? T extends Array<infer U> //Array<infer U> позволяет сохранить фактический тип элемента массива в переменную U с помощью infer, чтобы использовать потом.
+        ? Array<DeepPartial<U>> // В массиве делаем опциональными все элементы
+        : T extends ReadonlyArray<infer U>
+          ? ReadonlyArray<DeepPartial<U>> // В массиве readonly делаем опциональными все элементы
+          : { [P in keyof T]?: DeepPartial<T[P]> } // В любом другом объекте делаем опциональными все ключи
+      : T; // Примитивное значение оставляем как есть
+  type Image = {
+    src: string;
+    size: {
+      height: number;
+    }
+  }
+  const stretchableImage: DeepPartial<Image> = {
+    size: {
+      height: 50,
+    }
+  }
+
+
+
