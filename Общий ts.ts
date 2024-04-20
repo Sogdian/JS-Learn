@@ -1193,5 +1193,215 @@ const getFullName = (firstName, lastName) => {
     }
   }
 
+//Хранение данных в браузере
+  //localStorage
+  //Время жизни данных - Данные хранятся долго и остаются доступными после закрытия браузера и перезагрузки страницы.
+  //Доступность и область видимости	- Данные доступны на уровне домена, а значит, могут быть прочитаны и записаны на всех страницах и поддоменах того же домена. И так же на всех окнах и вкладках браузера.
+  //Передача данных	- Данные можно передать между вкладками или окнами браузера с тем же доменом.
+  //Вид хранения данных -	Значения и ключи хранятся в виде строк. При записи любого другого типа данных тип будет приведён к строке
+  //Максимальный объём данных	- Можно хранить данные размером до 5MB
 
+  //sessionStorage
+  //Время жизни данных - Данные существуют в течение текущей сессии браузера. Они будут удалены при закрытии вкладки или окна браузера.
+  //Доступность и область видимости	- Данные доступны только на странице, которая сохраняла данные, и не доступны на других страницах или поддоменах. Их нельзя получить в других вкладках или окнах браузера.
+  //Передача данных	- Данные ограничены только текущей вкладкой.
+  //Вид хранения данных -	Значения и ключи хранятся в виде строк. При записи любого другого типа данных этот будет приведен к строке
+  //Максимальный объём данных	- Можно хранить данные размером до 5MB
 
+  //API хранилищ
+  //setItem(key, value) — для записи данных;
+  //getItem(key) — для получения данных по ключу;
+  //removeItem(key) — для удаления записи по ключу;
+  //clear() — для удаления всех данных из хранилища;
+  //key(index) — для получения ключа по индексу записи;
+  //length — для отображения числа записей.
+
+  //задача заполнения значений формы после перезагрузки страницы
+  /*<form class="form-login" />
+  <input name="name" type="text" id="name" placeholder="имя" />
+  <input name="surname" type="text" id="surname" placeholder="фамилия" />
+  <input name="email" type="email" id="email" placeholder="email" />
+  <input name="password" type="password" placeholder="пароль" />
+  <button id="clear-storage">Очистить local storage</button>
+  <button id="show-storage">Показать local storage</button>
+  </form>
+  <script>
+  // обрабатываем событие загрузки страницы, где мы и заполним форму
+  window.addEventListener("load", (event) => {
+    // вот так можно перебрать элементы хранилища
+    for(let i = 0; i < localStorage.length; i += 1) {
+      const key = localStorage.key(i); // получаем очередной ключ из хранилища
+      document.getElementsByName(key)[0].value = localStorage.getItem(key); // ставим значение из хранилища в нужное поле формы
+    }
+  });
+  window.addEventListener('input', function (e) {
+    localStorage.setItem(e.target.name, e.target.value); // записываем новое значение - ${e.target.value} в хранилище по ключу ${e.target.name}
+  }, false);
+  document.getElementById("clear-storage").addEventListener('click', function (e) {
+    e.preventDefault();
+    localStorage.clear(); // Обычно такой кнопки нет в форме, но тут для примера показано, как очистить хранилище. Не забывайте в нужный момент очищать хранилище в своём проекте.
+  }, false,);
+  document.getElementById("show-storage").addEventListener('click', function (e) {
+    e.preventDefault();
+    console.table(localStorage);
+  }, false,);
+  </script>*/
+
+//Работа с файлами
+  //Загрузка файлов
+    /*<input type="file" id="file-selector" multiple>
+    <script>
+    const fileSelector = document.getElementById('file-selector');
+    fileSelector.addEventListener('change', (event) => {
+      const fileList = event.target.files;
+      const oneFile = fileList[0];
+      console.log(oneFile.name); // Имя файла
+      console.log(oneFile.lastModified); // Число, определяющее дату и время последнего изменения файла в миллисекундах с эпохи UNIX (полночь 1 января 1970 г.).
+      console.log(oneFile.lastModifiedDate); // Объект Date, представляющий собой дату и время последнего изменения файла. Это устарело и не должно использоваться. Используйте LastModified.
+      console.log(oneFile.size); // Размеры файла в байтах
+      console.log(oneFile.type); // MIME type файла
+    });
+    </script>*/
+
+  //Drag-and-drop
+    //Для этого понадобится создать элемент, куда пользователи будут «бросать» файлы и прослушивать на нём два события:
+      //dragover вызывается, когда элемент находится над допустимой целью сброса.
+      //drop вызывается при сбросе элемента в допустимую зону.
+
+    /*<div id="drop_zone"
+    ondrop="dropHandler(event);"
+    ondragover="dragOverHandler(event);"
+      >
+      <p>Перенесите сюда один или несколько файлов</p>
+    </div>
+    <script>
+    function dragOverHandler(ev) {
+      console.log("Файл находится в дропзоне");
+      // Предотвращаем дефолтное поведение (не даём файлу открыться)
+      ev.preventDefault();
+    }
+    function dropHandler(ev) {
+      console.log("Файл положили в дропзону");
+      // Предотвращаем дефолтное поведение (не даём файлу открыться)
+      ev.preventDefault();
+      // Обратите внимание, что перетаскивание HTML определяет два разных API для поддержки перетаскивания файлов. Первый API — интерфейс DataTransfer,
+      а второй — интерфейсы DataTransferItem и DataTransferItemList. Этот пример иллюстрирует использование обоих API
+      if (ev.dataTransfer.items) {
+        // Используем DataTransferItemList-интерфейс для доступа к файлам
+        [...ev.dataTransfer.items].forEach((item, i) => {
+          // Обрабатываем только объекты, которые являются файлами
+          if (item.kind === "file") {
+            const file = item.getAsFile();
+            console.log(`… file[${i}].name = ${file.name}`);
+          }
+        });
+      } else {
+        // Используем DataTransfer-интерфейс для доступа к файлам
+        [...ev.dataTransfer.files].forEach((file, i) => {
+          console.log(`… file[${i}].name = ${file.name}`);
+        });
+      }
+    }
+    </script> */
+
+  //Чтение и отправка файлов на сервер
+    //FileReader - объект, который позволяет веб-приложениям асинхронно читать содержимое файлов
+    //способ1 отправки файла на сервер
+      //Чтобы отправить файл на сервер, достаточно включить тег <input type="file"> в тег формы.
+      //При сабмите формы, если вы отправляете её на сервер, файл отправится туда же.
+    //Методы
+      //readAsText() - читает содержимое файла в виде текста
+      //readAsDataURL() - возвращает содержимое файла в виде Data URL
+
+    const fileReader = new FileReader();
+    fileReader.readAsText(file); // Чтение файла в виде текста
+    fileReader.readAsDataURL(file); // Чтение файла в виде Data URL, по завершении чтения появится ссылка на файл
+    //Когда файл прочитан, вызывается обработчик события onload
+    fileReader.onload = function(e) {
+      const contents = e.target.result; //result - доступ к содержимому файла
+    };
+
+    //способ2 отправки файла на сервер
+    const formData = new FormData();
+    // Файл, выбранный пользователем
+    formData.append("userfile", fileInputElement.files[0]);
+    // Отправляем запрос с файлом, который нам передал пользователь
+    fetch('http://example.com/api/endpoint/', {
+      method: 'POST',
+      body: formData,
+    })
+
+  //Скачивание файлов
+    //<a href="/resources/report.pdf" download="latest-reports.pdf"> - Предоставить файл пользователю для скачивания
+
+    //Blob — это файлоподобный объект, который используется для представления необработанных неизменяемых данных.
+      //Он хранит информацию о типе и размере данных этих файлов, а значит, очень полезен для хранения динамического содержимого в браузере.
+
+    //Допустим, вы хотите сохранить ответ JSON, возвращаемый REST API, в виде файла внутри браузера:
+    fetch('https://reqres.in/api/users')
+      .then(res => res.json())
+      .then(json => {
+        const data = JSON.stringify(json); // Конвертируем JSON в строку
+        const blob = new Blob([data],{ type: 'application/json'}); //создать экземпляр Blob с помощью его конструктора
+        const url = URL.createObjectURL(blob); //преобразовать необработанные данные большого двоичного объекта или файла в URL-адрес объекта
+        const download = (url, filename) => {
+          const anchor = document.createElement('a'); // Создаём новый тег а
+          anchor.href = url;
+          anchor.download = filename;
+          document.body.appendChild(anchor); // Добавляем наш тег на страницу
+          anchor.click(); // Вызываем событие `click` на теге
+          document.body.removeChild(anchor); // Удаляем тег со страницы
+        };
+        download(url, 'my-file-name'); // вызываем метод для скачивания файла
+      })
+      .catch(err=> console.error(err));
+
+//Стандартные обзерверы
+  //IntersectionObserver - Это API отслеживает, когда элемент становится видимым или скрытым в пределах видимой области окна браузера или другого родительского элемента
+  //Когда элемент появляется или исчезает в видимой области - вызывается callback
+  let options = {
+    root: document.querySelector("#scrollArea"), //— элемент, который используется как окно просмотра для проверки видимости целевого объекта. Должен быть предком целевого объекта. По умолчанию применяют окно просмотра браузера, если значение не передано или передано null.
+    rootMargin: "0px", //— поле вокруг корня. Может иметь значения, аналогичные свойству CSS margin, например "10px 20px 30px 40px". Значениями могут быть проценты. С их помощью мы сдвигаем границы рамки корневого элемента. Например, если нужно, чтобы событие пересечения с объектом происходило также на 10 пикселей ниже, чем сам объект, то передадим "0 0 10px 0" (расстояния сверху, справа, снизу, слева). По умолчанию все значения равны нулю.
+    threshold: 1.0, //— число или массив чисел, которые указывают, при каком проценте видимости цели выполняется колбэк-функция. Значение по умолчанию — 0. То есть колбэк-функция выполнится, как только будет виден хотя бы один пиксель. Если нужно определить, когда видимость выше 50%, задают значение 0.5. При значении 1.0 колбэк-функция выполнится только когда будет виден каждый пиксель. Чтобы она выполнялась несколько раз, например при первом пикселе, затем когда в область видимости попадает половина объекта и весь объект, нужно передать массив[0, 0.5, 1].
+  };
+  let callback = (entries, observer) => {
+    //entries - список IntersectionObserverEntry объектов
+    //observer - объект обзервера
+    entries.forEach((entry) => {
+      // Каждый entry описывает изменение пересечения для текущего observer
+      //Каждый объект entry содержит несколько свойств. Самые полезные — это:
+        //isIntersecting — булево значение, которое показывает, пересекается элемент с наблюдаемой областью или нет.
+        //intersectionRatio — коэффициент пересечения элемента и наблюдаемой области. Принимает значения от 0 до 1. Чем больше часть элемента, которая находится в наблюдаемой области, тем выше коэффициент: если нет пересечения, то 0, если элемент полностью внутри области, то 1.
+        //target — собственно сам HTML-элемент, который пересёкся с наблюдаемой областью.
+    });
+  };
+  let observer = new IntersectionObserver(callback, options);
+  let target = document.querySelector("#listItem"); //целевой элемент для просмотра
+  observer.observe(target);
+
+  //пример
+  const catImages = document.querySelectorAll('.cat-image')
+  const callback1 = (entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('active');
+      } else {
+        entry.target.classList.remove('active');
+      }
+    })
+  }
+  const options2 = {
+    root: document.querySelector('.container'),
+    threshold: 1,
+  }
+  const observer2 = new IntersectionObserver(callback1, options2)
+  catImages.forEach((image) => observer2.observe(image))
+
+  //ResizeObserver
+  //API ResizeObserver позволяет отслеживать, когда меняется размер элементов на странице, и реагировать на изменения независимо от их причины
+  const resizeObserver = new ResizeObserver(entries => {
+    for (const entry of entries) {
+      entry.target.style.borderRadius = Math.max(0, 250 - entry.contentRect.width) + 'px';
+    }
+  });
+  resizeObserver.observe(document.querySelector('.box'));
