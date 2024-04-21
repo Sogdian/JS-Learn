@@ -1405,3 +1405,7 @@ const getFullName = (firstName, lastName) => {
     }
   });
   resizeObserver.observe(document.querySelector('.box'));
+
+//Selection - выделение текста https://www.w3.org/TR/selection-api/
+  //window.getSelection().toString() - олучить текст из этого объекта
+  //document.getSelection().toString() - олучить текст из этого объекта
