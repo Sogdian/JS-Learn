@@ -1239,7 +1239,7 @@ console.log(21 + "2"); //"212"
   //тернарный оператор в реакте
   <div>{ condition ? <Component1 /> : <Component2 />; }</div>
 
-//циклы
+//!циклы
   //for
     for (let i = 0; i <= 4; i = i + 1) {
         console.log(aliExpress[i]);
@@ -1262,11 +1262,11 @@ console.log(21 + "2"); //"212"
   }
 
   //while
-    let a = 1; let b = 0;
-    while (a >= b) {
-      console.log("do");
-      a +=1;
-    }
+  let a = 1; let b = 0;
+  while (a >= b) {
+    console.log("do");
+    a +=1;
+  }
 
   //do while. тело цикла выполнится хотя бы один раз
   do {

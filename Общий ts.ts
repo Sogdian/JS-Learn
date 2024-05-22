@@ -11,6 +11,11 @@
  "build tsc": "tsc" //компиляция TypeScript в JavaScript
  "build tsc sourceMap": "tsc --sourceMap --incremental", //чтобы в девтулс были нескомпилированные файлы
 
+//UML
+  + public
+  - private
+  # protected
+  _ static
 */
 
 //JSDoc предоставляет специальные теги, которые можно использовать для аннотации типов
@@ -1379,7 +1384,7 @@ const getFullName = (firstName, lastName) => {
   let target = document.querySelector("#listItem"); //целевой элемент для просмотра
   observer.observe(target);
 
-  //пример
+  //пример2
   const catImages = document.querySelectorAll('.cat-image')
   const callback1 = (entries, observer) => {
     entries.forEach((entry) => {
@@ -1409,3 +1414,24 @@ const getFullName = (firstName, lastName) => {
 //Selection - выделение текста https://www.w3.org/TR/selection-api/
   //window.getSelection().toString() - олучить текст из этого объекта
   //document.getSelection().toString() - олучить текст из этого объекта
+
+//Оператор "!"
+  //используется для утверждения, что результат вычислений не равен null или undefined
+  const items5 = new Map();
+  const str5 = items5.get(id)!; //get(id)! не равен null или undefined
+
+//EventEmitter
+  import EventEmitter from 'events';
+  const notifier = new EventEmitter();
+  notifier.on('message', (data) => { //Подписка на событие
+    console.log(`Received message: ${data.message}`);
+  });
+  notifier.emit('message', { message: 'Hello, world!' }); //Генерация события
+  const handler = (data) => { //Отписка от события
+    console.log(`Received message: ${data.message}`);
+  };
+
+  notifier.on('message', handler);
+  notifier.off('message', handler);
+
+

@@ -125,7 +125,7 @@ PostCSS Sorting: Run форматирование Css свойств
 
     dialog::backdrop появляется при открытии <dialog> через onclick="window['dialog-id'].showModal()"
 
-Как отцентровать элемент?
+Как отцентрировать элемент?
     Задать элементу ширину, которая меньше ширины родительского контейнера.
     Задать для внешних отступов справа и слева значение auto. (margin: 0 auto;)
 
@@ -160,6 +160,7 @@ PostCSS Sorting: Run форматирование Css свойств
             на github page - окажетесь по этому адресу https://sogdian.github.io/svg/subscribe.svg (если через /svg/subscribe.svg#subscribe)
                              сработает по этому адресу https://sogdian.github.io/zakrivayuschiy-teg-f/svg/subscribe.svg (если через ./svg/subscribe.svg#subscribe или svg/subscribe.svg#subscribe)
       Абсолютный путь:
+        пример, "C:/Projects/html_project/images/logo.png"
         на компьютере начиная от диска C:/
         в браузере начиная от корневого каталога браузера (file://)
           пример, href="/svg/subscribe.svg#subscribe" - не будет работать, т.к. в браузере — окажетесь в самом корне операционной системы или корневого каталога браузера
