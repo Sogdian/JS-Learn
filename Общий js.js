@@ -204,8 +204,6 @@ console.log(21 + "2"); //"212"
 
   //Оператор логическое И (&&)
   //true && true - возвращает значение true, если оба операнда равны true.
-  //сокращенное вычисление логического выражения в реакте
-  <div> { isFinished && <Modal /> } </div> //если isFinished = true, то вызовется <Modal />, Если же isFinished равно false, то выражение вернёт false и <Modal /> не вызовется
   //Если поставить && между правдивыми условиями, оператор вернёт последнее из них:
   console.log(2 * 2 === 4 && 5 < 6 && 'Каждый может стать'); // 'Каждый может стать'
   //Если среди условий есть ложные, && вернёт из них первое ложное:
@@ -1512,6 +1510,8 @@ console.log(21 + "2"); //"212"
   const formattedPrice = `Значение = ${price.toLocaleString()} ₽/час`; // = price.toLocaleString() + " ₽/час"
     const formattedPrice = `cards ${!isShownByGrid ? 'list' : ''}`; // "cards list" или "cards"
     className="{'button button-${firstSelectedOption}'}";
+
+  const className1 = `card ${ isSelected ? 'selected' : ''} ${ isFinished ? 'disabled' : '' }`; //card selected disabled или card или другие вариации
 
 //Опциональная цепочка ?. (value?.prop)
   //(value?.prop) работает как value.prop, если значение value существует,
