@@ -16,8 +16,9 @@
  * Потоки обычно обозначаются знаком $ после названия.
  */
 
-import React from "react";
+// import React from "react";
 import ReactDOM from "react-dom/client";
+import { ReactElement } from 'react';
 
 /* JSX — расширение языка JavaScript
   С помощью babel оно преобразуется в стандартный JavaScript
@@ -60,12 +61,15 @@ const child = React.createElement('span', { className: 'text-green' }, 'Hello Re
 const element = React.createElement('h1', { className: 'title', children: 'Hello world!' }); //Метод создаёт новый React-элемент
 const element2 = React.createElement('h1', { className: 'title'}, child);
 
-//Вывод в родителе дочернего элемента
+//!children Вывод в родителе дочернего элемента
+  //в children попадает всё, что расположено между открывающим и закрывающим тегами элемента
   function HelloWorld(props) {
     return (
-      <h1>Привет, Мир!!! {props.children}</h1>
-      <div style={{width: '33%'}}></div> //Первые внешние фигурные скобки означают, что внутри содержится JS-выражение. А вторые внутренние — объявление JS-объекта.
+      <>
+        <h1>Привет, Мир!!! {props.children}</h1>
+        <div style={{width: '33%'}}></div> //Первые внешние фигурные скобки означают, что внутри содержится JS-выражение. А вторые внутренние — объявление JS-объекта.
         //В HTML в атрибуте style записан набор CSS-правил. А style у DOM-элементов — это специальный объект, который содержит список всех свойств стилей для этого элемента.
+      </>
     )
   }
   <HelloWorld>
@@ -77,6 +81,58 @@ const element2 = React.createElement('h1', { className: 'title'}, child);
     </h1>
   </HelloWorld>
   //в итоге выведется: <h1>Привет, Мир!!! <span>Этот текст передан как дочерний элемент для HelloWorld</span></h1>
+
+  //пример 2
+  type FancyParagraphProps = {
+    children: ReactNode
+  }
+  const FancyParagraph = (props: FancyParagraphProps): ReactElement => (
+    <p className={"text-beautiful"}>
+      {props.children}
+    </p>
+  );
+  const CoolShinySwagText = (): ReactElement => (
+    <FancyParagraph>Это дочерний компонент</FancyParagraph> //'Это дочерний компонент' = children
+  );
+  //Если текст явно передать как props children
+  <FancyParagraph children={"Пицца с ананасами ужасна!"} /> // Будет выведено: Пицца с ананасами ужасна!
+  //Если текст явно передать как props children + передать текст в теге
+  <FancyParagraph children={"Пицца с ананасами ужасна!"}> // Будет выведено: Пицца с ананасами прекрасна!, т.к. children, описанный между тегами элемента, будет приоритетнее
+    Пицца с ананасами прекрасна!
+  </FancyParagraph>
+
+  //Children как функция
+  type NotificationProps = {
+    children: Function,
+    a: number,
+    b: number
+  }
+  const Notification = (props: NotificationProps): ReactElement => (
+    <div className="Notification">
+      <p>Сумма {props.a} и {props.b} равна {props.children(3, 5)}</p>
+    </div>
+  );
+  <Notification a={4} b={8}>
+    {(a:number, b:number) => a + b}
+  </Notification>
+
+  //React.cloneElement + spread
+  type ButtonProps = {
+    onClick: () => void;
+  }
+  // Пример: Использование React.cloneElement для добавления стилей к компоненту Button
+  const StyledButton = ({ children, ...props }: React.PropsWithChildren<ButtonProps>) => {
+    return React.cloneElement(
+      <Button>{children}</Button>,
+      props
+    );
+  };
+  const App = () => {
+    return (
+      <StyledButton onClick={() => console.log('Button clicked')}>Click me</StyledButton>
+    );
+  };
+
 
 //Выделение компонентов
   function Button (props) { //Button - общий компонент для Product() и Order()
@@ -98,11 +154,41 @@ const element2 = React.createElement('h1', { className: 'title'}, child);
       <Button name={"Оформить заказ"} onClick={createOrder} />
     )}
 
+//Рендер списков map
+  class ChatRoom extends React.Component {
+    state = {
+      messages: [{
+        id: 1,
+        user: 'Ольга',
+        text: 'Привет! Можешь помочь со списками в React?',
+      }, {
+        id: 2,
+        user: 'Николай',
+        text: 'Здравствуй! Конечно, это проще простого! Какой у тебя вопрос?',
+      }];
+    }
+    render(){
+      return (
+        <div className="ChatRoom">
+          {this.state.messages.map((message)=>(
+            <React.Fragment key={message.id}>
+              <img className="Avatar" src={message.user} alt="avatar" />
+              <div className="Message">
+                <span className="Message-user">{message.user}</span>
+                <span className="Message-text">{message.text}</span>
+              </div>
+            </React.Fragment>
+          ))}
+        </div>
+      );
+    }
+  }
+
 
 //Вызываем функции библиотеки React
-const containerElement = document.getElementById('root');
-const root = ReactDOM.createRoot(containerElement); //создать коревой элемент
-root.render(element); //Hello world! //Для отрисовки используем метод render у объекта ReactDOM
+  const containerElement = document.getElementById('root');
+  const root = ReactDOM.createRoot(containerElement); //создать коревой элемент
+  root.render(element); //Hello world! //Для отрисовки используем метод render у объекта ReactDOM
   root.render(element2); //Hello React!
   root.render(<HelloWorld date='13.02.23' />); //
   root.render(HelloWorld({date: '13.02.23'})); //<h1>Привет, Мир!!! Моё приложение создано: 13.02.23</h1>
@@ -148,6 +234,7 @@ root.render(element); //Hello world! //Для отрисовки использ�
   //Условная логика
   //?
   const root = ReactDOM.createRoot(document.querySelector('#root'));
+  const isDaylight, isFinished, isLunchTime = true;
   root.render(
     <div>
       {isDaylight ? (
@@ -169,36 +256,39 @@ root.render(element); //Hello world! //Для отрисовки использ�
     </div>
   );
 
-//Свойства элементов
+//!props свойства элементов
   /**
    * for = htmlFor
    *  class = className
    *  tabindex = tabIndex
    *  xlink:href = xlinkHref
    *  <img> = </img>
-   *  onclick = onClick
+   *  onclick = onClick - на элемент кликнули
    *  tabindex = tabIndex
    *  fill-rule = fillRule
    *  overline-thickness = overlineThickness
    *  stroke-width = strokeWidth
    *  onmouseover = onMouseOver
-   */
+   *  ... = onMouseEnter - мышка наводится на элемент
+   *  ... = onMouseLeave - мышка перестала наводиться на элемент
 
-  //onClick - пропс React-элементов
-  //пример 1
+   Как и аргумент, пропс может быть чем угодно: функцией, объектом, массивом, строкой, числом, другим компонентом, элементом.
+  Пропсы можно только читать
+  Значение пропсов по умолчанию равно true */
+
+  //пример 1 События мыши
   function Button() {
     function print() {
       console.log('Вы нажали на кнопку')
     }
     return <button type="button"
                    onClick={print}
-                   onClick="showMessage()"
                    onClick={() => alert('Hello world')}
-                   onMouseOver={() => console.log('Mouse detected!')}
-    >Нажми меня
-    </button> //onClick, onMouseOver - обработка событий в DOM-элементах c React
+                   onMouseOver={() => console.log('Mouse detected!')}></button>
   }
-  //пример 2 с объектом события, чтобы обратиться к объекту события (например, чтобы получить больше информации о событии или обратиться к DOM-элементу, на котором произошло событие)
+
+  //пример 2 События мыши
+  //чтобы обратиться к объекту события (например, чтобы получить больше информации о событии или обратиться к DOM-элементу, на котором произошло событие)
   //мы должны определить параметр (например, evt) в функции-обработчике события. В него будет подставлен объект события,
   //но это ненативный объект события, который устанавливается браузером. Вместо нативного объекта, React предоставляет экземпляр SyntheticEvent — синтетическое событие.+
   //В React обработчик события добавляется не напрямую к DOM-элементу, а к React-компоненту, который в свою очередь рендерит соответствующий элемент.
@@ -210,6 +300,18 @@ root.render(element); //Hello world! //Для отрисовки использ�
       </button>
     );
   }
+
+  //пример 3 События мыши
+  type TitleProps = {
+    title: string
+  }
+  function Title(props: TitleProps) {
+    const handleMouseEnter = (e: React.MouseEvent) => {
+      console.log(e.clientX, e.clientY); // будут выведены координаты курсора, где сработало событие
+    };
+    return <h1 onMouseEnter={handleMouseEnter}>{props.title}</h1>
+  }
+
   //пример 3. В этом примере мы рендерим список кнопок, каждая из которых выводит в консоль свой текст при клике.
   function ButtonList () {
     const buttons = ['Нажми меня', 'И меня', 'И меня']
@@ -222,7 +324,7 @@ root.render(element); //Hello world! //Для отрисовки использ�
     )
   }
 
-  //пример использования props
+  //пример 4
   export const App = () => {
     return (
       <Welcome
@@ -244,7 +346,95 @@ root.render(element); //Hello world! //Для отрисовки использ�
     );
   }
 
-//Стили
+  //пример 5
+  type ProductProps = {
+    name: string,
+    price: number
+  }
+  const Product = (props: ProductProps): ReactElement => (
+    <div>
+      <p>{props.name}</p> {/* Гидрокостюм для дайвинга */}
+      <span>{props.price}</span> {/* 14299 */}
+    </div>
+  );
+  const ShoppingCart = (): ReactElement => (
+    <>
+      <h1>Корзина товаров</h1>
+      <Product name="Гидрокостюм для дайвинга" price={14299}  />
+    </>
+  );
+
+  //пример 6
+  type CardProps = {
+    title: () => {};
+    body: () => {};
+  }
+  function Card(props: CardProps) {
+    return (
+      <div className="card">
+        <CardTitle />
+        <CardBody />
+        <button type="button">В корзину</button>
+      </div>
+    );
+  };
+  function CardTitle() {
+    return (
+      <h5 className="card-title">Звезда Сириус</h5>
+    );
+  };
+  function CardBody() {
+    return (
+      <div className="card-body">
+        <p>
+          Звезда созвездия Большого Пса. Звезда главной последовательности,
+        </p>
+        <div className="price">Цена: ооооочень много</div>
+      </div>
+    );
+  };
+  export const Apps = () => {
+    return (
+      <Card title={CardTitle} body={CardBody} />
+    );
+  };
+
+  //JavaScript-выражения как пропсы
+  //пример 1
+  <MusicGenreItem genre={'rock' + '&' + 'roll'} /> //props.genre равно rock&roll, потому что выражение 'rock' + '&' + 'roll' будет вычислено
+  //пример 2
+  function sayHi(name:string): string {
+    return `Привет, ${name}!`
+  }
+  <WelcomeComponent textToRender={sayHi('React')} />
+
+  //Строковые литералы как пропсы
+  <WelcomeComponent name="Екатерина" />
+  <WelcomeComponent name={'Екатерина'} />
+  <WelcomeComponent name={`Екатерина`} />
+  <WelcomeComponent name='Екатерина' />
+
+  //Атрибуты расширения
+  type CustomerPageProps = {
+  profileData: {
+    firstName: string,
+    lastName: string
+    }
+  }
+  function CustomerPage(props: CustomerPageProps): ReactElement {
+    return (
+      <ProfileInfo
+        firstName={props.profileData.firstName}
+    lastName={props.profileData.lastName}
+    />
+  );
+  }
+  //вар 2
+  function CustomerPage(props: CustomerPageProps): ReactElement {
+    return <ProfileInfo {...props.profileData} />; //деструктуризация
+  }
+
+//Стили scc
   const planet = 'Земля';
   const styles = {
     width: 6792,
@@ -253,7 +443,6 @@ root.render(element); //Hello world! //Для отрисовки использ�
     background: 'white',
     color: 'black',
   };
-  styles.background = planet === 'Земля' ? 'blue' : 'red';
   const root = ReactDOM.createRoot(document.querySelector('#root'));
   root.render(
     <div style={styles}>Какая я планета?</div>
@@ -264,14 +453,32 @@ root.render(element); //Hello world! //Для отрисовки использ�
   root.render(
     <div style={{
       width: 3475,
-      height: 3472,
-      borderRadius: '50%',
-      background: '#d0d5d2',
-      color: '#444444',
     }}>
       Я тоже хочу быть планетой!
     </div>
   );
+
+  //Библиотека clsx
+  const menuStyle = clsx({
+    [classes.root] : true, // будет добавлен всегда
+    [classes.menuOpen] : open // будет добавлен только когда open === true
+  })
+
+  function Menu(): ReactElement {
+    return (
+      <div className={menuStyle}>Пункты меню</div>
+    )
+  }
+
+//Подключение изображений
+  import logo from "./logo.jpg";
+  function Child(): ReactElement {
+    return (
+      <div>
+        <img src={logo} alt="логотип" />
+      </div>
+    );
+  }
 
 //Самозакрывающиеся теги
   //Если у элемента нет внутреннего содержимого, то тег должен быть самозакрывающимся
@@ -493,7 +700,9 @@ root.render(element); //Hello world! //Для отрисовки использ�
   import { array as arr, arrSquared as sq } from './data.js'
 
 //Наследование extends
-  import logo from "./img/logo.jpg" //импорт картинок
+  import logo from "./img/logo.jpg"
+import { ReactElement, ReactNode } from 'react';
+  //import { ReactElement } from 'react'; //импорт картинок
   export class Header extends React.Component { //extends - наследование
     helpText = "Help Text";
     render() { //render() функция, но писать function необязательно
