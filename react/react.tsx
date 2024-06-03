@@ -18,7 +18,7 @@
 
 // import React from "react";
 import ReactDOM from "react-dom/client";
-import { ChangeEvent, ReactElement, SyntheticEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, ReactElement, SyntheticEvent, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 /* JSX — расширение языка JavaScript
   С помощью babel оно преобразуется в стандартный JavaScript
@@ -858,6 +858,73 @@ const element2 = React.createElement('h1', { className: 'title'}, child);
       </ul>
     );
 
+  /* 4. хук useLayoutEffect
+  Выполняет свой колбэк синхронно, То есть сразу после того, как React выполнит все изменения в DOM, и до того, как эти изменения будут отрисованы
+  В колбэке хука useLayoutEffect мы можем изменить расположение или внешний вид DOM-элемента */
+  function SmoothScrolling() {
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    useLayoutEffect(() => {
+      const container = containerRef.current!;
+      const handleScroll = () => {
+        container.scrollTo({ // Плавная прокрутка содержимого контейнера вверх
+          top: 0,
+          behavior: "smooth",
+        });
+      };
+      handleScroll(); // Прокрутка содержимого контейнера вверх при монтировании компонента
+      // Добавляем обработчик для прокручивания содержимого контейнера вверх при прокрутки пользователем самой страницы
+      window.addEventListener("scroll", handleScroll);
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+      };
+    }, []);
+    return (
+      <div ref={containerRef}>
+        {/* Содержимое контейнера */}
+      </div>
+    );
+
+  /* 5. кастомные хуки */
+  //useLocalStorage - хук, который будет сохранять состояние компонента в локальном хранилище браузера
+  function useLocalStorage<T>(key: string, initialValue: T): [T, React.Dispatch<React.SetStateAction<T>>] {
+      const [value, setValue] = useState<T>(() => {
+          try {
+              const item = window.localStorage.getItem(key);
+              return item ? JSON.parse(item) : initialValue;
+                  } catch {
+            return initialValue;
+          }
+      });
+      useEffect(() => {
+          try {
+              const item = JSON.stringify(value);
+              window.localStorage.setItem(key, item);
+          } catch (error: Error) {
+            console.log(error.message);
+          }
+      }, [value]);
+      return [value, setValue];
+  }
+
+
+//Подъём состояния через пропсы
+  type TUser = {
+    name: string;
+  }
+  const App = () => {
+    const [user, setUser] = useState<TUser | null>(null);
+    const handleLogin = (user: TUser) => setUser(user);
+    return (
+      <div>
+        <Header />
+        { user
+          ? <Dashboard user={user} /> //Компоненту Dashboard требуются данные о пользователе, чтобы отобразить их на экране
+          : <Login onLogin={handleLogin} /> //Компонент Login изменяет эти данные, поэтому они и были подняты в родительский компонент App.
+        }
+        <Footer />
+      </div>
+    );
+  };
 
 //Паттерны
   //«Композиция» - один реакт компонент вызывает (содержит в себе) другой
@@ -879,8 +946,6 @@ const element2 = React.createElement('h1', { className: 'title'}, child);
       );}
     //Еще пример деструктуризации
     const [firstCardData, secondCardData] = cards;
-
-
 
 //map для массива
   <ul>
@@ -1021,4 +1086,47 @@ import { ReactElement, ReactNode } from 'react';
       <Button /> //вызов с дефолтным свойством text: "DefaultText"
     )
   }
-//
+
+//Жизненный цикл в функциональных компонентах
+  //Для управления жизненным циклом без классовых методов в функциональных компонентах используются хуки useEffect и useLayoutEffect.
+  //Хук useEffect, содержит в себе три метода жизненного цикла:
+    //componentDidMount,
+    //componentDidUpdate,
+    //componentWillUnmount.
+
+  //Действия при монтировании (единожды)
+  useEffect(() => {
+    // Ваш код для запуска один раз при монтировании
+  }, []);
+
+  //Действия при обновлении
+  useEffect(() => {
+    // Код для выполнения при обновлении компонента,
+    // когда изменяются зависимости, указанные в массиве ниже
+  }, [firstDependency, secondDependency]);
+
+  //Действия при размонтировании
+  useEffect(() => {
+    // Код для запуска при монтировании
+    return () => {
+      // Код для выполнения при размонтировании
+    };
+  }, []);
+
+  //пример
+  function Clock() {
+    const [timerId, setTimerId] = useState<NodeJS.Timeout>();
+    const [date, setDate] = useState(new Date());
+    /* функция в хуке будет вызываться на componentDidMount и componentDidUpdate методы жизненного цикла */
+    useEffect(() => {
+      setTimerId(setInterval(() => setDate(new Date()), 1000));
+      // функция, которую возвращает useEffect, будет вызвана при размонтировании компонента, то есть она соответствует методу жизненного цикла - componentWillUnmount
+      return () => clearInterval(timerId);
+    }, []);
+      return (
+      <div>
+        <h1>Привет, мир!</h1>
+        <h2>Сейчас {date.toLocaleTimeString()}.</h2>
+      </div>
+    );
+  }
