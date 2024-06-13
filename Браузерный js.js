@@ -270,14 +270,38 @@ element.dataset.tooltipText; //dataset - получить значение да�
   firstChild.addEventListener('click', callback);
   secondChild.addEventListener('click', callback); //callback сработает 3 раза, для secondChild, firstChild, parent, body, html, document, window, т.е. всплытие к родителю
 
-  //Свойство evt.currentTarget
-  //Элемент, на котором висит обработчик, хранится в свойстве evt.currentTarget
+
+
+
 
   //Отмена всплытия
-  //Метод stopPropagation останавливает всплытие на элементе
+  //Метод stopPropagation предотвращает дальнейшее распространение события к родительским элементам, останавливая процесс всплытия
+  function DissatisfiedButton(): ReactElement {
+    function handleCaptureClick() {
+      console.log('Что-то мне подсказывает, что на кнопку сейчас надавят...')
+    }
+    function handleClickBubble() {
+      console.log('Поймаю событие после handleAgressiveButtonClick!')
+    }
+    function handleAgressiveButtonClick(e: React.MouseEvent) {
+      // Останавливаем фазы всплытия и захвата на данном элементе;
+      e.stopPropagation();
+      console.log('Не дави на меня!');
+    }
+    return (
+      <div onClick={handleClickBubble} onClickCapture={handleCaptureClick}>
+        <button
+          onClick={handleAgressiveButtonClick}
+        >
+          Поиграй со мной!
+        </button>
+      </div>
+    )
+  }
+
   //Метод stopImmediatePropagation ещё суровее: он отменяет не только всплытие событий,
-    //но и срабатывание всех других обработчиков того же события на этом элементе.
-    //Поэтому stopImmediatePropagation остановит только те обработчики, которые описаны после него
+  //но и срабатывание всех других обработчиков того же события на этом элементе.
+  //Поэтому stopImmediatePropagation остановит только те обработчики, которые описаны после него
 
 //Формы <form>
   /*
@@ -359,11 +383,42 @@ element.dataset.tooltipText; //dataset - получить значение да�
     eventTarget.setAttribute('disabled', true);
   });
 
+  //пример2
+  //e.target в примере = span
+  function DissatisfiedButton(): ReactElement {
+    function handleAgressiveButtonClick(e: React.MouseEvent) {
+      console.log(e.target);
+    }
+    return (
+      <div onClick={handleAgressiveButtonClick}>
+        <button>
+          <span>Поиграй со мной!</span>
+        </button>
+      </div>
+    )
+  }
+
   //change, submit
   checkbox.addEventListener('change', showClick); //change - событие изменения инпута
   form.addEventListener('submit', function () {}); //отправка формы, событие на теге <form>
   //при успешной отправке формы и отсутствующем атрибуте action страница перезагружается — это называется стандартным событием.
   //Чтобы такого поведения не происходило — передайте в функцию-обработчик параметр evt. В самом начале тела функции вызовите метод evt.preventDefault()
+
+//Свойство evt.currentTarget
+  //Элемент, на котором висит обработчик, хранится в свойстве evt.currentTarget
+  //e.currentTarget в примере = div
+  function DissatisfiedButton(): ReactElement {
+    function handleAgressiveButtonClick(e: React.MouseEvent) {
+      console.log(e.currentTarget);
+    }
+    return (
+      <div onClick={handleAgressiveButtonClick}>
+        <button>
+          <span>Поиграй со мной!</span>
+        </button>
+      </div>
+    )
+  }
 
 //Свойства элементов
   //Значение поля ввода. Свойство value

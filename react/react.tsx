@@ -18,7 +18,16 @@
 
 // import React from "react";
 import ReactDOM from "react-dom/client";
-import { ChangeEvent, ReactElement, SyntheticEvent, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  FormEvent,
+  ReactElement,
+  SyntheticEvent,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 
 /* JSX — расширение языка JavaScript
   С помощью babel оно преобразуется в стандартный JavaScript
@@ -290,7 +299,7 @@ const element2 = React.createElement('h1', { className: 'title'}, child);
   //пример 2 События мыши
   //чтобы обратиться к объекту события (например, чтобы получить больше информации о событии или обратиться к DOM-элементу, на котором произошло событие)
   //мы должны определить параметр (например, evt) в функции-обработчике события. В него будет подставлен объект события,
-  //но это ненативный объект события, который устанавливается браузером. Вместо нативного объекта, React предоставляет экземпляр SyntheticEvent — синтетическое событие.+
+  //но это ненативный объект события, который устанавливается браузером. Вместо нативного объекта, React предоставляет экземпляр SyntheticEvent — синтетическое событие
   //В React обработчик события добавляется не напрямую к DOM-элементу, а к React-компоненту, который в свою очередь рендерит соответствующий элемент.
   //Когда происходит событие, React создает объект SyntheticEvent и передает его в обработчик события, который был задан в качестве пропса в компоненте.
   function App() {
@@ -433,6 +442,104 @@ const element2 = React.createElement('h1', { className: 'title'}, child);
   function CustomerPage(props: CustomerPageProps): ReactElement {
     return <ProfileInfo {...props.profileData} />; //деструктуризация
   }
+
+//!События
+  //Event: SyntheticEvent — это объект, который состоит из описания события, произошедшего в DOM
+  //SyntheticEvent - обёртка над интерфейсом, синтетическое событие
+    //Синтетическое событие в React — это абстракция браузерного события, предоставляемая React для работы с событиями в виртуальном DOM. React создает собственную систему обработки событий для упрощения и стандартизации работы событий в компонентах.
+
+  //События мыши SyntheticEvent
+  //пример, onFocus, onBlur
+  //При клике на инпут (или при фокусировании с помощью Tab) будет срабатывать событие onFocus, а при уходе с инпута - onBlur.
+  function BigDiv(): ReactElement {
+    const handleFocus = (e: SyntheticEvent) => {
+      console.log('Инпут в фокусе');
+    };
+    const handleBlur = (e: SyntheticEvent) => {
+      console.log('Инпут потерял фокус');
+    };
+    return (
+      <div>
+        <input
+          type="text"
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          placeholder="Введите что-нибудь"
+        />
+      </div>
+    );
+  }
+
+  //События клавиатуры KeyboardEvent
+  //onKeyDown — срабатывает при нажатии клавиши (Событие onKeyPress устарело)
+  //onKeyPress — срабатывает при нажатии клавиши, показывает введённый символ;
+  //onKeyUp — срабатывает, когда клавишу отпустили.
+
+  //пример, код ниже, выводит информацию о событии, только по клику на Esc
+  function Escape(): ReactElement {
+    const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+      e.preventDefault();
+      if (e.key === 'Escape') {
+        console.log(e);
+      };
+    };
+    return (
+      <input onKeyUp={handleKeyUp} />
+    )
+  }
+
+  //События формы FormEvent
+  //onChange (или onInput) — в поле ввода происходит изменение (событие onChange всплывает.)
+  //onSubmit — отправка формы;
+  //onInvalid — при отправке формы есть некорректно заполненные поля;
+  //onReset — сброс формы.
+
+  //пример отправки формы
+  function FormName(): ReactElement {
+    const handleSubmit = (e: FormEvent) => {
+      e.preventDefault();
+      const defaultWasPrevented = e.defaultPrevented; // записываем в переменную отменены действия по умолчанию или нет
+      if (defaultWasPrevented) {
+        console.log(e);
+      }
+    };
+    return (
+      <form action="" onSubmit={handleSubmit}>
+        <input />
+      </form>
+    )
+  }
+
+//Регистрация событий
+  //Когда происходит какое-либо событие, на самом деле оно возникает не на самом целевом элементе сразу, а всё происходит в 3 фазы
+  //Фаза захвата (Capture Phase): Событие начинается с верхнего элемента в DOM и погружается вниз до целевого элемента. В этой фазе события обрабатываются на вложенных элементах перед тем, как достигнуть целевого элемента.
+    //возможно регистрировать события не на фазе всплытия, а на фазе захвата. Для этого нужно просто на целевом элементе к названию нужного события добавить слово Capture
+  //Целевая фаза (Target Phase): Событие достигает целевого элемента, где обрабатывается.
+  //Фаза всплытия (Bubbling Phase): После обработки целевого элемента событие начинает всплывать обратно вверх по иерархии DOM, начиная с целевого элемента и заканчивая верхним элементом.
+    //По умолчанию регистрация событий в React происходит на фазе всплытия.
+
+  //Фаза захвата
+  function DissatisfiedButton(): ReactElement {
+    function handleCaptureClick() { // Добавим хендлер для события, зарегистрированного на фазе захвата.
+      console.log('В консоль выйдет первым')
+    }
+    function handleAgressiveButtonClick() {
+      console.log('В консоль выйдет вторым');
+    }
+    function handleClickBubble() {
+      console.log('В консоль выйдет третьим')
+    }
+    return (
+    <div onClick={handleClickBubble} onClickCapture={handleCaptureClick}>
+      <button
+        onClick={handleAgressiveButtonClick}
+      >
+        Поиграй со мной!
+      </button>
+    </div>
+    )
+  }
+
 
 //Стили scc
   const planet = 'Земля';

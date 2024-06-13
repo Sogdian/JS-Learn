@@ -10,7 +10,7 @@ function Input() {
     setValue(e.target.value);
   }
   return (
-    <input type="text" value={value} onChange={handleChange} /> //Значение элемента «привязывается» к значению состояния
+    <input type="text" value={value} onInput={handleChange} /> //Значение элемента «привязывается» к значению состояния
   );
 }
 

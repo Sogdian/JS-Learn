@@ -1,8 +1,4 @@
-Дополнительные возможности: модификация компонентов
-https://practicum.yandex.ru/learn/frontend-developer/courses/67fda678-3b6c-4758-8e58-a35cea7afc92/sprints/294557/topics/807e82ce-3a24-4873-a77e-d0880be25cc2/lessons/c6485689-bd42-40fa-bc89-b632cb79866c/
-Ничего не понял
-
-Про useRef
-Ничего не понял
+https://practicum.yandex.ru/trainer/frontend-developer/lesson/6ddb598f-71fb-447c-97b0-e5d91f8a5676/task/00d2610e-5dbe-4506-9524-f21df1aedd39/
+рассказать про onClickCapture и про stopPropagation
 
 
