@@ -19,12 +19,12 @@
 // import React from "react";
 import ReactDOM from "react-dom/client";
 import {
-  ChangeEvent,
+  ChangeEvent, createContext,
   FormEvent,
-  ReactElement,
-  SyntheticEvent,
+  ReactElement, Reducer,
+  SyntheticEvent, useContext,
   useEffect,
-  useLayoutEffect,
+  useLayoutEffect, useReducer,
   useRef,
   useState,
 } from 'react';
@@ -540,7 +540,6 @@ const element2 = React.createElement('h1', { className: 'title'}, child);
     )
   }
 
-
 //Стили scc
   const planet = 'Земля';
   const styles = {
@@ -602,6 +601,94 @@ const element2 = React.createElement('h1', { className: 'title'}, child);
       </label>
     </div>
   );
+
+//Метод forwardRef
+  //Для этого существуют рефы — ссылки на конкретный DOM-элемент.
+  //Но вам может понадобиться передать реф из родительского компонента в качестве параметра.
+  //Например, если вы создаёте компонент-обёртку над стандартным DOM-элементом.
+  export const Apps = () => {
+    const ref = useRef<HTMLInputElement | null>(null);
+    useEffect(() => {
+      if (ref.current) {
+        ref.current.focus();
+      }
+    }, []);
+    return (
+      <>
+        <Input ref={ref} label='Введите email:' placeHolder='email'/>
+      </>
+    )
+  };
+  export const Input = React.forwardRef(({ label, placeHolder }, ref) => {
+    return (
+      <>
+        <input ref={ref} placeholder={placeHolder} />
+      </>
+    );
+  });
+
+//Порталы React.createPortal
+  //Функция React.createPortal позволяет отрендерить дочерние элементы вне DOM-иерархии родительского компонента:
+  //Первый её аргумент — любой React-компонент, который может быть отрендерен.
+  //Второй аргумент — любой доступный на странице HTML-элемент, контейнер, в который будут отрендерены дочерние элементы.
+  interface ModalProps {
+    children: React.ReactNode;
+    header: string;
+    onClose: () => void;
+  }
+
+  const modalRoot = document.getElementById("react-modals");
+
+  export function Modal(props: ModalProps): ReactElement {
+    const { children, header, onClose } = props;
+
+    return ReactDOM.createPortal(
+      (
+        <>
+          <div className="modal">
+            <h3 onClose={onClose}>{header}</h3>
+            {children}
+          </div>
+          <div className="modalOverlay" onClose={onClose} />
+        </>
+      ),
+      modalRoot!
+    );
+  }
+  //Вот так может выглядеть HTML-код, в котором есть несколько точек входа для приложения:
+  <body>
+    <!-- Корневой элемент для всего приложения -->
+    <div id="root"></div>
+    <!-- Корневой элемент для модальных окон -->
+    <div id="react-modals"></div>
+    <!-- Корневой элемент для уведомлений на сайте -->
+    <div id="react-notifications"></div>
+  </body>
+  //При нажатии на кнопку открывается модальное окно. При этом оно рендерится внутри элемента с id="react-modals", а элемент div cо стилем overflow: hidden в компоненте ему не помеха.
+  export function App(): ReactElement {
+    const [visible, setVisible] = useState(false);
+
+    const handleOpenModal = () => {
+      setVisible(true);
+    };
+
+    const handleCloseModal = () => {
+      setVisible(false);
+    };
+
+    return (
+      <div style={{ overflow: 'hidden' }}>
+        <button onClick={handleOpenModal}>Открыть модальное окно</button>
+        {visible &&
+          <Modal header="Внимание!" onClose={handleCloseModal}>
+            <p>Спасибо за внимание!</p>
+            <p>Открывай меня, если станет скучно :)</p>
+          </Modal>
+        }
+      </div>
+    );
+  };
+
 
 //Функциональные компоненты
   //Функции возвращают 1 из 3 типов значений:
@@ -1193,6 +1280,117 @@ import { ReactElement, ReactNode } from 'react';
       <Button /> //вызов с дефолтным свойством text: "DefaultText"
     )
   }
+
+//Состояния
+  //Локальное состояние
+  //Локальное состояние определяется для одного компонента, для остальных доступ к нему ограничен. Его реализуют с помощью хука useState:
+    function Modal() {
+      const [isOpen, setIsOpen] = useState(true);   /* Локальное состояние компонента Modal */
+      return (
+        isOpen && (
+          <div>
+            <p>Модальное окно</p>
+            <button onClick={() => setIsOpen(false)}>Закрыть</button>
+          </div>
+        )
+      );
+    }
+
+  //Глобальное состояние
+  //Глобальное состояние — это данные, к которым может получить доступ каждый компонент. Их можно получить или даже изменить в любой части приложения.
+
+  //Создание контекста
+  //Более того, контексты могут быть вложенными.
+  //Разные контексты друг на друга не влияют,
+  //Если контекст один и тот же, то вложенный будет переопределять все верхние.
+    //Нужно вместе с данными передать колбэк-функцию для изменения
+  //React.Context — реактивная штука. Это значит, что, как только данные в провайдере поменяются, все компоненты, использующие этот контекст, обновятся.
+  interface UserContextValue {
+    login: string | undefined;
+    currency: string;
+  }
+  const UserContext = createContext<UserContextValue>( /* Создание контекста */
+    { login: undefined, currency: 'rub' } /* Данные по-умолчанию */
+  );
+  const userValue: UserContextValue = { /* Формируем данные контекста */
+    login: 'vasiliy',
+    currency: '$',
+  };
+  function Appq() {
+    return (
+      //Провайдер Provider - Это специальный JSX-элемент, оборачивающий дерево компонентов, в которых должен быть доступен этот контекст.
+      <UserContext.Provider value={userValue}> /* Оборачиваем в провайдер и задаём value */
+        <UserInfo />
+      </UserContext.Provider>
+    );
+  }
+
+  //Использование контекста
+  //хук useContext()
+  function UserInfo() {
+    const user = useContext(UserContext); /* Получаем данные из контекста */
+    return (
+      <div>
+        <p>{user.login}</p>
+        <p>{user.currency}</p>
+      </div>
+    );
+  }
+
+//Редюсер
+  //хук useReducer
+  //Хук принимает два аргумента:
+    //Функция-редюсер reducer — та самая функция, что мы определили выше. Передав эту функцию, TypeScript поможет хуку определить тип состояния и возможные типы событий.
+    //Начальное состояние initialValue — оно соответствует типу состояния, заданному в редюсере.
+  const [state, dispatch] = useReducer(reducer, initialValue);
+  //Можно задать и третий аргумент — функцию, вычисляющую начальное значение на основе второго аргумента. Такая функция будет вызвана только один раз при монтировании компонента:
+  const [state2, dispatch2] = useReducer(reducer, arg, (arg) => initialValue);
+  //Диспетчер, назовём его dispatch. Представляет собой функцию, которая инициирует событие и запускает его обработку. Принимает единственным аргументом одно из возможных событий, определённых в редюсере:
+  const onClick = () => {
+    dispatch({ type: 'SET_VALUE', payload: 5 });
+  }
+
+  type CounterState = number; /* Для счётчика достаточно числа */
+
+  type IsNever<T, True, False> = [T] extends [never] ? True : False; /* Проверяет, является ли тип never */
+  type Action<Type extends string, Payload = never> = IsNever< /* Тип события. Type — название, Payload — данные */
+    Payload,
+    {
+      type: Type; /* Простое событие, содержащее только тип */
+    },
+    { /* Событие с дополнительными данными */
+      type: Type;
+      payload: Payload;
+    }
+  >;
+  //Теперь события описываются достаточно просто:
+  type CounterAction =
+  /* Событие инкремента */
+    | Action<'INCREMENT'>
+    /* Событие декремента */
+    | Action<'DECREMENT'>
+    /* Событие установки нового значения */
+    | Action<'SET_VALUE', number>;
+
+    //import { Reducer } from 'react';
+    const counterReducer: Reducer<CounterState, CounterAction> = (value, action) => {
+      switch (action.type) {
+        case 'INCREMENT':
+          return value + 1;
+        case 'DECREMENT':
+          return value - 1;
+        case 'SET_VALUE':
+          return action.payload;
+      }
+    };
+
+  //Лайфхаки с useReducer
+  //Представьте, что вам нужен простой переключатель true/false.
+  const [isOpen, toggleIsOpen] = useReducer(v => !v, false);
+
+  //Состояние для HTML-инпута тоже можно реализовать в одну строку
+  const [value, onChange] = useReducer((_, e: ChangeEvent) => e.target.value, '');
+
 
 //Жизненный цикл в функциональных компонентах
   //Для управления жизненным циклом без классовых методов в функциональных компонентах используются хуки useEffect и useLayoutEffect.
