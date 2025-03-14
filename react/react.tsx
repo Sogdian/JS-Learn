@@ -76,8 +76,8 @@ const element2 = React.createElement('h1', { className: 'title'}, child);
     return (
       <>
         <h1>Привет, Мир!!! {props.children}</h1>
-        <div style={{width: '33%'}}></div> //Первые внешние фигурные скобки означают, что внутри содержится JS-выражение. А вторые внутренние — объявление JS-объекта.
-        //В HTML в атрибуте style записан набор CSS-правил. А style у DOM-элементов — это специальный объект, который содержит список всех свойств стилей для этого элемента.
+        <div style={{width: '33%'}}></div> {/*Первые внешние фигурные скобки означают, что внутри содержится JS-выражение. А вторые внутренние — объявление JS-объекта.*/}
+        {/*В HTML в атрибуте style записан набор CSS-правил. А style у DOM-элементов — это специальный объект, который содержит список всех свойств стилей для этого элемента.*/}
       </>
     )
   }
@@ -142,6 +142,15 @@ const element2 = React.createElement('h1', { className: 'title'}, child);
     );
   };
 
+//!Объект
+  //тип значения ключа = функция (которая вызывает компонент)
+  export interface IFormStepData {
+    content: () => React.ReactNode;
+  }
+  const headFormConfig: IFormStepData[] = [
+    {
+      content: () => <GroupCompanyFormItem requiredField={requiredField} />,
+    }
 
 //Выделение компонентов
   function Button (props) { //Button - общий компонент для Product() и Order()
@@ -267,7 +276,7 @@ const element2 = React.createElement('h1', { className: 'title'}, child);
 
 //!props свойства элементов
   /**
-   * for = htmlFor
+   *  for = htmlFor
    *  class = className
    *  tabindex = tabIndex
    *  xlink:href = xlinkHref
@@ -281,9 +290,55 @@ const element2 = React.createElement('h1', { className: 'title'}, child);
    *  ... = onMouseEnter - мышка наводится на элемент
    *  ... = onMouseLeave - мышка перестала наводиться на элемент
 
-   Как и аргумент, пропс может быть чем угодно: функцией, объектом, массивом, строкой, числом, другим компонентом, элементом.
-  Пропсы можно только читать
-  Значение пропсов по умолчанию равно true */
+  Как и аргумент, пропс может быть чем угодно: функцией, объектом, массивом, строкой, числом, другим компонентом, элементом.
+  Пропсы можно только читать*/
+
+  //Значение пропсов по умолчанию равно true
+  <InformationForm requiredField /> //= <InformationForm requiredField={true} />
+
+  //пример 0
+  function Child({ isTrue }) { // Компонент Child принимает булевый пропс и отображает его значение
+    return (
+      <div>
+        <p>Булевый пропс: {isTrue ? 'True' : 'False'}</p>
+      </div>
+    );
+  }
+  function Parent() {   // Компонент Parent передает булевый пропс в компонент Child
+    const boolValue = true; // Булевое значение
+    return (
+      <div>
+        <Child isTrue={boolValue} />
+      </div>
+    );
+  }
+
+  //пример 01
+  //PeriodsContent
+  const handleOpenSidePage = (monthName: string) => {
+    setIsVisibleSidePage(true);
+    setIsClickedMonth(monthName);
+  };
+
+  <MonthCard
+    key={month.id}
+    monthName={month.monthName}
+    state={month.state}
+    isCurrent={month.isCurrent}
+    authorName={month.authorName}
+    date={month.date}
+    onClick={() => handleOpenSidePage(month.monthName)}
+  />
+  //MonthCard
+  interface IMonthCardProps {
+    monthName: string;
+    state: PeriodState;
+    isCurrent?: boolean;
+    authorName?: string;
+    date?: any;
+    onClick: () => void;
+  }
+  export const MonthCard: React.FC<IMonthCardProps> = ({ monthName, state, isCurrent, authorName, date, onClick }) => {}
 
   //пример 1 События мыши
   function Button() {
@@ -291,9 +346,9 @@ const element2 = React.createElement('h1', { className: 'title'}, child);
       console.log('Вы нажали на кнопку')
     }
     return <button type="button"
-                   onClick={print}
-                   onClick={() => alert('Hello world')}
-                   onMouseOver={() => console.log('Mouse detected!')}></button>
+             onClick={print}
+             onClick={() => alert('Hello world')}
+             onMouseOver={() => console.log('Mouse detected!')}></button>
   }
 
   //пример 2 События мыши
@@ -411,6 +466,7 @@ const element2 = React.createElement('h1', { className: 'title'}, child);
   //JavaScript-выражения как пропсы
   //пример 1
   <MusicGenreItem genre={'rock' + '&' + 'roll'} /> //props.genre равно rock&roll, потому что выражение 'rock' + '&' + 'roll' будет вычислено
+
   //пример 2
   function sayHi(name:string): string {
     return `Привет, ${name}!`
@@ -434,7 +490,7 @@ const element2 = React.createElement('h1', { className: 'title'}, child);
     return (
       <ProfileInfo
         firstName={props.profileData.firstName}
-    lastName={props.profileData.lastName}
+        lastName={props.profileData.lastName}
     />
   );
   }
@@ -810,6 +866,13 @@ const element2 = React.createElement('h1', { className: 'title'}, child);
     }
   });
 
+  //пример 6.
+  //prevState — это текущее значение isVisibleSidePage. !prevState инвертирует его (true → false, false → true).
+  const [isVisibleSidePage, setIsVisibleSidePage] = useState<boolean>(false);
+  const handleToggleSidePage = () => {
+    setIsVisibleSidePage(prevState => !prevState);
+  };
+
   //типовые команды для работы с массивом в состоянии (state)
     //Добавление элемента в массив-состояние
       //setItems([...items, newItem]);
@@ -858,7 +921,8 @@ const element2 = React.createElement('h1', { className: 'title'}, child);
       Если мы передаём второй аргумент в виде пустого массива [], побочный эффект в функции обратного вызова сработает только один раз после первого рендера компонента.
   useEffect вызывается каждый раз, когда компонент отрисовывается, и проверяет зависимости. Если зависимости изменились, эффект будет запущен заново
   useEffect использует только поверхностное (shallow) сравнение значений зависимостей.
-    Если значение зависимости представляет собой массив или объект, то эффект будет вызван повторно только тогда, когда в зависимость будет передан новый массив или объект. Изменения элементов массива или полей объекта хук useEffect обнаружить не сможет. */
+    Если значение зависимости представляет собой массив или объект, то эффект будет вызван повторно только тогда, когда в зависимость будет передан новый массив или объект.
+    Изменения элементов массива или полей объекта хук useEffect обнаружить не сможет. */
 
   //пример 1
   // Этот побочный эффект будет выполняться после первого рендера и после последующих перерендеров, вызванных изменениями значений пропса prop или состояния state
@@ -869,8 +933,8 @@ const element2 = React.createElement('h1', { className: 'title'}, child);
   }
 
   //пример 2 c localStorage
-  const [initStyle, setInitStyle] = React.useState(false);
-  React.useEffect(() => {
+  const [initStyle, setInitStyle] = useState(false);
+  useEffect(() => {
     if (initStyle) { //initStyle = true
       localStorage.setItem('initStyle', JSON.stringify(initStyle)); //initStyle = true
     }
@@ -887,7 +951,7 @@ const element2 = React.createElement('h1', { className: 'title'}, child);
   //Эффект-функция может возвращать функцию очистки, которая вызывается, когда компонент размонтируется (уничтожается).
   //Функция очистки нужна для отмены таймера или отписки от события.
   function MyComponent() {
-    React.useEffect(() => {
+    useEffect(() => {
       const timerID = setTimeout(() => { //Выполнится один раз после отрисовки компонента
         console.log('Hello from timer!');
       }, 1000);
@@ -1020,6 +1084,10 @@ const element2 = React.createElement('h1', { className: 'title'}, child);
       </div>
     );
   };
+
+  //Ширины offsetWidth, scrollWidth
+  //ref.current.offsetWidth - ширина компонента (видимая часть = настоящая часть - то, что скрыто стилями)
+  //ref.current.scrollWidth - ширина компонента (настоящая часть = видимая часть + то, что скрыто стилями)
 
   //ref Callback
   type TUser = {

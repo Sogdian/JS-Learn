@@ -41,10 +41,10 @@ div {
      ease-in-out — медленно начинается и заканчивается, а в середине ускоряется;
      linear — меняется с одинаковой скоростью. */
 }
-.header__theme-menu-button:hover {
-  outline: 1px solid currentColor; /* transition изменяет свойство, которое есть в hover, пример outline, этот outline и надо прописать в transition */
-  color: red;
-}
+  .header__theme-menu-button:hover {
+    outline: 1px solid currentColor; /* transition изменяет свойство, которое есть в hover, пример outline, этот outline и надо прописать в transition */
+    color: red;
+  }
 
 /* анимация лоадера */
 .loader {

@@ -2,3 +2,27 @@
   @margin: unit((@unit * @spacing-unit-size - @spacing-unit-size / 2), px); //unit(), которая преобразует значение в пиксели (px).
   margin-bottom: @margin; //устанавливает свойство margin-bottom с использованием рассчитанного значения @margin.
 }
+
+//SCSS (Sass)
+  //стили через &:
+  .month {
+    gap: 2px;
+    &:hover {
+      border: #ADADAD solid 1px;
+    }
+  }
+  //равны стилям на чистом CSS
+  .month {
+    gap: 2px;
+  }
+  .month:hover {
+    border: #ADADAD solid 1px;
+  }
+
+//БЭМ
+.header {
+  &__logo { //в css = .header__logo
+  }
+  &__menu { //в css = .header__menu
+  }
+}

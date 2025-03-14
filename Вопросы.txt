@@ -1,4 +1,0 @@
-https://practicum.yandex.ru/trainer/frontend-developer/lesson/6ddb598f-71fb-447c-97b0-e5d91f8a5676/task/00d2610e-5dbe-4506-9524-f21df1aedd39/
-рассказать про onClickCapture и про stopPropagation
-
-
