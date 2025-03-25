@@ -607,6 +607,26 @@ console.log(21 + "2"); //"212"
     return (item * item) * index;
   });
 
+  //пример 5. Преобразовать один массив в другой
+  export interface OrganizationServiceInfoModel //organizationServiceInfo
+  {
+    subdivisionId: string;
+    subdivisionName: string;
+    serviceStartAt: any;
+    serviceEndAt?: any;
+  }
+  export interface ExtendedSvkDirectionInfoModel //directories
+  {
+    id: string;
+    startDate: any;
+    endDate?: any;
+  }
+  const directories = organizationDataModel.organizationServiceInfo.map(item => ({
+    id: item.subdivisionId,
+    startDate: item.serviceStartAt,
+    endDate: item.serviceEndAt,
+  }));
+
   //flatMap
   //Метод flatMap() позволяет сформировать массив, применяя функцию к каждому элементу, затем уменьшает вложенность, делая этот массив плоским, и возвращает его.
 

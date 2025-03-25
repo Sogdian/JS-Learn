@@ -104,6 +104,8 @@ const formattedDate = formatPeriodsDate(date); //месяц из 3 букв, п�
     return <EmptyStateMessage title="Период еще не открывался" />;
   }
 
+  //все функции в компоненте оборачивать в колбек
+
 //ValidationWrapper для оборачивания 1го компонента для валидации
   <ValidationWrapper validationInfo={validation.inn}>
     <Input
