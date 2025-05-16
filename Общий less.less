@@ -7,6 +7,7 @@
   //стили через &:
   .month {
     gap: 2px;
+
     &:hover {
       border: #ADADAD solid 1px;
     }
@@ -20,9 +21,19 @@
   }
 
 //БЭМ
-.header {
-  &__logo { //в css = .header__logo
+  .header {
+    &__logo { //в css = .header__logo
+    }
+    &__menu { //в css = .header__menu
+    }
   }
-  &__menu { //в css = .header__menu
+
+  //БЭМ в НМ
+  //<ChipIcon className={styles.chipIcon} />
+  .chip {
+    display: flex;
+
+    &Icon {
+      width: 14px;
+    }
   }
-}

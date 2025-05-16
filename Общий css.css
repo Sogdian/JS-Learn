@@ -1,3 +1,20 @@
+/* <ChipIcon className={styles.chipIcon} /> */
+
+  .chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 8px 3px 8px;
+    border-radius: 6px;
+
+  &Icon {
+     width: 14px;
+     height: 14px;
+     padding-bottom: 2px;
+   }
+  }
+
+
 /*
 PostCSS Sorting: Run форматирование Css свойств
 В инструментах разработчика браузерные стили называются «Таблица стилей агента пользователя» или «User agent styles».
