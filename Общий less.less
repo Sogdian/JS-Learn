@@ -20,20 +20,25 @@
     border: #ADADAD solid 1px;
   }
 
-//БЭМ
-  .header {
-    &__logo { //в css = .header__logo
-    }
-    &__menu { //в css = .header__menu
-    }
-  }
-
-  //БЭМ в НМ
-  //<ChipIcon className={styles.chipIcon} />
+//БЭМ под Less (с nesting)
   .chip {
     display: flex;
 
     &Icon {
-      width: 14px;
+      width: 14px; //в css = .chipIcon
     }
   }
+  //Классический БЭМ (плоские классы) - не использовать
+  .container {
+    display: flex;
+  }
+  .container__header {
+    font-weight: bold;
+  }
+  .container__body {
+    padding: 16px;
+  }
+  .container--is-not-hide {
+    display: block;
+  }
+

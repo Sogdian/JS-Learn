@@ -18,25 +18,39 @@
 
 //thisisunsafe
 
-//devtool: 'eval-source-map',
+//для отладки хинтов
+setTimeout(() => {debugger;}, 3000); //вбить в консоль
+
+
 
 //пример конкатенации через переменную
   const isIfnsHasCode = reportingPackageRequest.model?.ifnsCode
     ? ` в ИФНС ${reportingPackageRequest.model?.ifnsCode}`
     : "";
 
-//для отладки хинтов
-  setTimeout(() => {debugger;}, 3000); //вбить в консоль
-
-//className с булевыми значениями
+//стили style
+  //стили className с булевыми значениями
   const classNameContainer = cn(styles.root, { [styles.displayInline as string]: display === "inline" });
+  const classNameIcon = cn(styles.icon, props.className && styles[`icon${props.className}`]); //передать конкретный стиль в className
+
+  //style в return
+  export function FullPageSpinner(): ReactElement {
+    const globalStyle = `body { overflow: hidden !important }`;
+    return (
+      <div className={styles.fullPageSpinner}>
+        <style type="text/css">{globalStyle}</style>
+        <Spinner caption={null} type="big" />
+      </div>
+    );
+  }
+
 //debounce задердка
-  const setIsHoverDebounced = _.debounce((value: boolean) => {
-          if (isHoverRef.current === true) {
-              setIsHover(value);
-              menuState.setHover(value);
-          }
-      }, 10);
+const setIsHoverDebounced = _.debounce((value: boolean) => {
+        if (isHoverRef.current === true) {
+            setIsHover(value);
+            menuState.setHover(value);
+        }
+    }, 10);
 
 //Два условия
   {showMainItems && !isHideFileStorage && (
@@ -45,9 +59,17 @@
     />
   )}
 
-//пример иконки
-  <InfoCircleIcon64Regular/>
-  <ChipIcon width={14} height={14} />
+//Импорт иконок https://ui.gitlab-pages.kontur.host/docs/#/icons
+  import { CheckAIcon } from '@skbkontur/icons/icons/CheckAIcon'; // ✅
+  import { MathDeltaIcon } from '@skbkontur/icons/icons/MathDeltaIcon'; // ✅
+  import { MathDeltaIcon20Light } from '@skbkontur/icons/icons/MathDeltaIcon/MathDeltaIcon20Light'; // ✅
+  import { ArchiveBoxIcon24Solid } from '@skbkontur/icons/icons/ArchiveBoxIcon/ArchiveBoxIcon24Solid'; // ✅
+
+  //пример иконки
+    <InfoCircleIcon64Regular/>
+    <ChipIcon width={14} height={14} />
+  //иконка с цветом
+    <MiniModal className={styles.icon} title={title} icon={<WarningCircleIcon64Regular color={"#FE4C4C"} />}>>
 
   //пример иконки в зависимости от пропсов
   const stateConfig =
@@ -96,6 +118,7 @@ export const getSvkPeriodsYears = () => {
   //format(parseISO(resultExecutionFormData.executedAt), "dd.MM.yyyy")
     //из iso формата в формат 10.06.25
 
+//https://wiki.skbkontur.ru/pages/viewpage.action?pageId=945361022
 //Хорошие практики
   //вместо
   {periodsDataHistory.length === 0 && <EmptyStateMessage title="Период еще не открывался" />}
@@ -135,7 +158,7 @@ export const getSvkPeriodsYears = () => {
     />
   </ValidationWrapper>
 
-//Роуты
+//Роуты в Corpmon
   //SvkRouteWorkspace - список
 
   //CardRouteWorkspace - карточка
@@ -149,9 +172,6 @@ export const getSvkPeriodsYears = () => {
         state: linkedModel);
     };
     const { state } = useLocation(); //в карточке
-
-//Omit<IResultExecutionFormData, "id">
-  //Вырезать поле из интерфейса
 
 //useShallow
   const {
@@ -171,11 +191,67 @@ export const getSvkPeriodsYears = () => {
     Совпадает с датой заполнения результата
   </Checkbox>
 
-//Импорт иконок https://ui.gitlab-pages.kontur.host/docs/#/icons
-  import { PlusIcon16Light } from "@skbkontur/icons/icons/PlusIcon"; //- правильно
+//Импорт
+  import { KnowledgeBaseReject } from "@/Modules/KnowledgeBase/Pages/KnowledgeBasePage";
+
+  KnowledgeBase
+    Pages
+      KnowledgeBasePage
+        Containers
+          KnowledgeBasePage
+            KnowledgeBaseReject.less
+            KnowledgeBaseReject.tsx
+            index.ts
+              export { KnowledgeBaseReject } from "./KnowledgeBaseReject";
+      index.ts
+        export * from "./Containers/KnowledgeBasePage";
+
+
+//Навигация
+  history.push(isKnowledgeBase)
+  window.open(isKnowledgeBase, "_blank") //в новом окне
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //Оптимизация
-  //стейты
+  //https://overreacted.io/before-you-memo/
+  //вар 1
+  //проблема - при изменении color происходит перерендер ExpensiveTree
+  export default function App() {
+    let [color, setColor] = useState('red');
+    return (
+      <div>
+        <input value={color} onChange={(e) => setColor(e.target.value)} />
+        <p style={{ color }}>Hello, world!</p>
+        <ExpensiveTree />
+      </div>
+    );
+  }
+  function ExpensiveTree() {
+    let now = performance.now();
+    while (performance.now() - now < 100) {      // Artificial delay -- do nothing for 100ms
+    }
+    return <p>I am a very slow component tree.</p>;
+  }
+  //решение - вынести стейты в отдельный компонент (Form) (в случае когда стейты связаны только с 1 компонентом)
   export default function App() {
     return (
       <>
@@ -193,9 +269,61 @@ export const getSvkPeriodsYears = () => {
       </>
     );
   }
+  let ExpensiveTree = React.memo(() => { //тут можно и без memo, т.к. ExpensiveTree не связан с состоянием color
+    let now = performance.now();
+    while (performance.now() - now < 100) { // Artificial delay -- do nothing for 100ms
+    }
+    return <p>I am a very slow component tree.</p>;
+  });
+  //вар 2
+  //проблема - при изменении color происходит перерендер ExpensiveTree
+  export default function App() {
+    let [color, setColor] = useState('red');
+    return (
+      <div style={{ color }}> //стейт связан еще и с div
+        <input value={color} onChange={(e) => setColor(e.target.value)} />
+        <p>Hello, world!</p>
+        <ExpensiveTree />
+      </div>
+    );
+  }
+  //решение - вынести стейты связанный со связанным компонентом (<div style={{ color }}>) в отдельный компонент (ColorPicker) (в случае когда стейты связаны с > 1 компонентом)
+  //ту при измении color компонент ExpensiveTree (переданный как children) не перерендеривается ?
+  export default function App() {
+    return (
+      <ColorPicker>
+        <p>Hello, world!</p>
+        <ExpensiveTree />
+      </ColorPicker>
+    );
+  }
+  function ColorPicker({ children }) {
+    let [color, setColor] = useState("red");
+    return (
+      <div style={{ color }}>
+        <input value={color} onChange={(e) => setColor(e.target.value)} />
+        {children}
+      </div>
+    );
+  }
+  //вар 3
+  //проблема - при изменении color происходит перерендер ExpensiveTree
+  export default function App() {
+    let [color, setColor] = useState('red');
+    return (
+      <div style={{ color }}> //стейт связан еще и с div
+        <input value={color} onChange={(e) => setColor(e.target.value)} />
+        <p>Hello, world!</p>
+        <ExpensiveTree />
+      </div>
+    );
+  }
+  //решение - обернуть ExpensiveTree в memo
   let ExpensiveTree = memo(() => {
     let now = performance.now();
     while (performance.now() - now < 100) { // Artificial delay -- do nothing for 100ms
     }
     return <p>I am a very slow component tree.</p>;
   });
+
+//

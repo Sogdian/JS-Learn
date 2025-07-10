@@ -11,6 +11,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin'); //берёт м
 
 module.exports = {
   devtool: 'eval-source-map', //убрать изменение файлов вебпаком и бейблом
+  devtool: 'source-map', //убрать изменение файлов вебпаком и бейблом
   entry: {
     main: './src/index.js' //точка входа
   },
